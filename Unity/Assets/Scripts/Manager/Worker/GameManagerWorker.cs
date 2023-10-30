@@ -1,6 +1,6 @@
-﻿using ForgottenEmpires.Manager.Client.Music;
+﻿using ForgottenEmpires.Manager.Workers;
 
-namespace ForgottenEmpires.Manager.Worker
+namespace ForgottenEmpires.Manager
 {
     public class GameManagerWorker
     {

@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Manager
+﻿namespace ForgottenEmpires.Managers
 {
     public class GameManager
     {

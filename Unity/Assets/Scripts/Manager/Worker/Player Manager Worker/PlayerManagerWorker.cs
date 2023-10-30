@@ -1,6 +1,6 @@
-﻿using ForgottenEmpires.Components.Actor;
+﻿using ForgottenEmpires.Elements;
 
-namespace ForgottenEmpires.Manager.Worker
+namespace ForgottenEmpires.Manager.Workers
 {
     public class PlayerManagerWorker
     {
