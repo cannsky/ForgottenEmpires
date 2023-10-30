@@ -1,7 +1,7 @@
 ﻿using ForgottenEmpires.Elements.PlayerWorkers;
 using ForgottenEmpires.Elements.PlayerDatas;
 
-namespace ForgottenEmpires.Elements
+namespace ForgottenEmpires.Entity.Elements
 {
     public class Player : Element
     {

@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Elements.PlayerDatas
+﻿namespace ForgottenEmpires.Entity.Elements.PlayerDatas
 {
     public class PlayerData
     {

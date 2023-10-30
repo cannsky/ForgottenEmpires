@@ -1,6 +1,6 @@
 ﻿using ForgottenEmpires.Validators.Checkers;
 
-namespace ForgottenEmpires.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerAttack
     {

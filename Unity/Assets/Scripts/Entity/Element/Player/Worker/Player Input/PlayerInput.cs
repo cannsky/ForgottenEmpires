@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace ForgottenEmpires.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerInput
     {
