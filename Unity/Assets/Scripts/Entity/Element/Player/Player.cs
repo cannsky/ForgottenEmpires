@@ -19,13 +19,11 @@ namespace ForgottenEmpires.Entity.Elements
         {
             playerWorker = new PlayerWorker(this);
             playerData = new PlayerData();
-            //if (isServer) ServerManager.Instance
         }
 
-        private void Update()
-        {
-            //if (isServer) transform.position = new Vector3(transform.position.x + (-1 * Time.deltaTime), transform.position.y, transform.position.z);
-        }
+        private void Update() => playerWorker.OnUpdate();
+
+        private void LateUpdate() => playerWorker.OnLateUpdate();
 
         public override void TakeDamage(float damage) => playerWorker.playerStats.TakeDamage(damage);
         
