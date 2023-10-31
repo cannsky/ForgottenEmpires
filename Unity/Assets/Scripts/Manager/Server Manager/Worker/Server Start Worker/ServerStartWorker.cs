@@ -7,8 +7,7 @@ namespace ForgottenEmpires.Managers.Server.Workers
     {
         public void OnServerStart()
         {
-            if (System.Environment.GetCommandLineArgs().Any(arg => arg == "-server"))
-                NetworkManager.singleton.StartServer();
+            if (System.Environment.GetCommandLineArgs().Any(arg => arg == "-server")) NetworkManager.singleton.StartServer();
         }
     }
 }
