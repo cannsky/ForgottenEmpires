@@ -1,7 +1,7 @@
 ﻿using ForgottenEmpires.Entity.Elements;
 using System.Collections.Generic;
 
-namespace ForgottenEmpires.Manager.Workers
+namespace ForgottenEmpires.Managers.Game.Workers
 {
     public class PlayerManagerWorker
     {

@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Manager.Workers
+﻿namespace ForgottenEmpires.Managers.Game.Workers
 {
     public class MusicManagerWorker
     {
