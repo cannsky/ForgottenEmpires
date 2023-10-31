@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-
-namespace ForgottenEmpires.Entity.Elements.Enemies.BehaviourTree
+namespace ForgottenEmpires.BehaviourTrees
 {
     public class BehaviourTree
     {
-        public BehaviourNode rootNode;
+        public BehaviourNode rootNode, currentNode;
+
+        public BehaviourTree(BehaviourNode rootNode) => this.rootNode = currentNode = rootNode;
+
+        public void Iterate() => currentNode = currentNode.CheckPaths();
     }
 }

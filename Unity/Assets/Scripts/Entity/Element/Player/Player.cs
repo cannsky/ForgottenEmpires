@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using ForgottenEmpires.Entity.Elements.PlayerWorkers;
 using ForgottenEmpires.Entity.Elements.PlayerDatas;
-using ForgottenEmpires.Managers.Server;
 using Mirror;
 
 namespace ForgottenEmpires.Entity.Elements

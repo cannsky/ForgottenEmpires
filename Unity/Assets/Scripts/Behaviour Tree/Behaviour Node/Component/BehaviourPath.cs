@@ -1,6 +1,6 @@
 using System;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.BehaviourTree
+namespace ForgottenEmpires.BehaviourTrees
 {
     public class BehaviourPath
     {
