@@ -1,13 +1,13 @@
-﻿using ForgottenEmpires.Entity.Elements;
+using ForgottenEmpires.Entity.Elements;
 using System.Collections.Generic;
 
-namespace ForgottenEmpires.Managers.Game.Workers
+namespace ForgottenEmpires.Managers.Server.Workers
 {
-    public class PlayerManagerWorker
+    public class ServerPlayerWorker
     {
         public Dictionary<uint, Player> players;
 
-        public PlayerManagerWorker() => players = new Dictionary<uint, Player>();
+        public ServerPlayerWorker() => players = new Dictionary<uint, Player>();
 
         public void AddPlayer(uint id) => players.Add(id, new Player());
 

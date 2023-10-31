@@ -6,12 +6,12 @@ namespace ForgottenEmpires.Managers.Server
     {
         public static ServerManager Instance;
 
-        public ServerStartWorker serverStartWorker;
+        public ServerManagerWorker serverManagerWorker;
 
         public ServerManager()
         {
             Instance = this;
-            serverStartWorker = new ServerStartWorker();
+            serverManagerWorker = new ServerManagerWorker();
         }
 
         public void OnStart() { }
