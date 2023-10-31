@@ -5,33 +5,39 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerInput
     {
-        private PlayerWorker playerWorker;
+        public PlayerWorker playerWorker;
+
+        public PlayerInputs playerInputs;
+
+        public PlayerMovementInput playerMovementInput;
 
         private int terrainLayerMask;
         private Camera mainCamera;
+
+        public bool leftButton, rightButton;
+
         public Vector3 position;
 
         public PlayerInput(PlayerWorker playerWorker)
         {
+            this.playerWorker = playerWorker;
+
+            playerInputs = new PlayerInputs();
+            playerInputs.Player.LeftButton.performed += i => leftButton = true;
+            playerInputs.Player.RightButton.performed += i => leftButton = true;
+
+            playerMovementInput = new PlayerMovementInput(this);
+
             mainCamera = Camera.main;
             terrainLayerMask = LayerMask.GetMask("Terrain");
-            this.playerWorker = playerWorker;
+            playerInputs.Enable();
         }
 
-        public void OnUpdate() => CheckRightClickInput();
-
-        public void CheckRightClickInput()
+        public void OnUpdate()
         {
-            if (Input.GetMouseButtonDown(1)) // Right click is represented by 1
-            {
-                Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
-                if (Physics.Raycast(ray, out hit, Mathf.Infinity, terrainLayerMask))
-                {
-                    position = hit.point;
-                }
-            }
+            playerMovementInput.OnUpdate();
         }
+
+        public void OnLateUpdate() => leftButton = rightButton = false;
     }
 }
