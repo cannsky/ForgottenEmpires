@@ -2,12 +2,12 @@
 {
     public class GameManager
     {
-        public static int playerLimit;
-
         public static GameManager Instance;
 
-        private void Awake() => Instance = this;
+        public GameManager() => Instance = this;
 
-        //private void Update() => null;
+        public void OnStart() { }
+
+        public void OnUpdate() { }
     }
 }
