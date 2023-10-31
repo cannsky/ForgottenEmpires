@@ -15,7 +15,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             this.playerWorker = playerWorker;
         }
 
-        public void Move(Vector3 position)
+        public void TryMove(Vector2 position)
         {
             agent.SetDestination(position);
         }
