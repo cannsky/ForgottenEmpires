@@ -5,9 +5,9 @@ namespace ForgottenEmpires
 {
     public class Test : MonoBehaviour
     {
-        private void Awake()
+        private void Start()
         {
-            NetworkManager.singleton.StartHost();
+            NetworkManager.singleton.StartClient();
         }
     }
 }

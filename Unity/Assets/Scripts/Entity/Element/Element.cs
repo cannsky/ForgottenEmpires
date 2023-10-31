@@ -1,10 +1,9 @@
-﻿using UnityEngine;
+﻿using Mirror;
 
 namespace ForgottenEmpires.Entity.Elements
 {
-    public abstract class Element : MonoBehaviour
+    public abstract class Element : NetworkBehaviour
     {
-        //These are network variables, needs to be updated continously and shown to the other players.
         public float health, totalHealth;
 
         public abstract void TakeDamage(float damage);
