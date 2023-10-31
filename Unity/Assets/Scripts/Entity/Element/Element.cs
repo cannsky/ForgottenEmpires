@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace ForgottenEmpires.Elements
+namespace ForgottenEmpires.Entity.Elements
 {
     public abstract class Element : MonoBehaviour
     {

@@ -1,4 +1,6 @@
-﻿namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+﻿using System.Collections.Generic;
+
+namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerInventory
     {
@@ -11,7 +13,5 @@
             this.playerWorker = playerWorker;
             playerInventorySlots = new Dictionary<uint, PlayerInventorySlot>();
         }
-
-        
     }
 }

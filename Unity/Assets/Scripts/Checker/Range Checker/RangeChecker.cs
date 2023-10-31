@@ -1,6 +1,7 @@
-﻿using ForgottenEmpires.Elements;
+﻿using ForgottenEmpires.Entity.Elements;
+using System.Collections.Generic;
 
-namespace ForgottenEmpires.Validators.Checkers
+namespace ForgottenEmpires.Checkers
 {
     public class RangeChecker : Checker
     {

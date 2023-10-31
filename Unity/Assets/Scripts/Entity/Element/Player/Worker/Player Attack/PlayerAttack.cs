@@ -1,4 +1,5 @@
-﻿using ForgottenEmpires.Validators.Checkers;
+﻿using ForgottenEmpires.Checkers;
+using System.Collections.Generic;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {

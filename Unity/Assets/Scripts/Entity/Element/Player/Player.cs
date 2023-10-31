@@ -1,5 +1,5 @@
-﻿using ForgottenEmpires.Elements.PlayerWorkers;
-using ForgottenEmpires.Elements.PlayerDatas;
+﻿using ForgottenEmpires.Entity.Elements.PlayerWorkers;
+using ForgottenEmpires.Entity.Elements.PlayerDatas;
 
 namespace ForgottenEmpires.Entity.Elements
 {
@@ -8,7 +8,7 @@ namespace ForgottenEmpires.Entity.Elements
         public PlayerWorker playerWorker;
         public PlayerData playerData;
 
-        private float health, totalHealth;
+        //private float health, totalHealth;
 
         private void Start()
         {

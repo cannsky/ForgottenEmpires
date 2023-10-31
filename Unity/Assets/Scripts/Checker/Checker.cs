@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Validators
+﻿namespace ForgottenEmpires.Checkers
 {
     public abstract class Checker
     {

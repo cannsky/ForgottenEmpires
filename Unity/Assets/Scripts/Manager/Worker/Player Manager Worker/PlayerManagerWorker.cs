@@ -1,4 +1,5 @@
-﻿using ForgottenEmpires.Elements;
+﻿using ForgottenEmpires.Entity.Elements;
+using System.Collections.Generic;
 
 namespace ForgottenEmpires.Manager.Workers
 {

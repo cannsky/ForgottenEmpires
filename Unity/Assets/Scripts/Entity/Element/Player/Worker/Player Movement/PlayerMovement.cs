@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
@@ -10,7 +11,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public PlayerMovement(PlayerWorker playerWorker)
         {
-            agent = GetComponent<NavmeshAgent>();
+            agent = playerWorker.player.GetComponent<NavMeshAgent>();
             this.playerWorker = playerWorker;
         }
 
