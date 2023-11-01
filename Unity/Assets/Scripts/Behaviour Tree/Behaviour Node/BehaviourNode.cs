@@ -12,13 +12,14 @@ namespace ForgottenEmpires.BehaviourTrees
 
         public Behaviour behaviour;
 
-        public BehaviourNode returnNode;
+        public BehaviourNode newNode;
 
         public BehaviourNode CheckNodes()
         {
             foreach (BehaviourNode behaviourNode in behaviourNodes)
-                if (behaviourNode.behaviour.GetPredicate()) return returnNode;
-            return this;
+                if (behaviourNode.behaviour.GetPredicate()) return newNode;
+            if (behaviour.GetPredicate()) return this;
+            else return parentNode;
         }
     }
 }
