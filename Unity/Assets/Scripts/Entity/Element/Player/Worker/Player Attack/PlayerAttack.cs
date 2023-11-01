@@ -12,11 +12,6 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         public PlayerAttack(PlayerWorker playerWorker)
         {
             //Temporary.
-            rangeChecker = new RangeChecker(
-                playerWorker.player, 
-                5f, 
-                new List<Element>(), 
-                RangeChecker.Type.Single);
         }
 
         public void Attack()
