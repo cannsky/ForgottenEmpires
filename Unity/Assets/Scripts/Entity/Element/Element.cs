@@ -7,5 +7,7 @@ namespace ForgottenEmpires.Entity.Elements
         public float health, totalHealth;
 
         public abstract void TakeDamage(float damage);
+
+        public abstract void PlayAnimation(string animationName);
     }
 }

@@ -4,13 +4,13 @@ namespace ForgottenEmpires.BehaviourTrees
 {
     public class BehaviourPath
     {
-        public Func<bool> condition;
+        public Func<bool> predicate;
 
         public BehaviourNode nextNode;
 
         public BehaviourNode CheckPath()
         {
-            if (condition != null && condition()) return nextNode;
+            if (predicate != null && predicate()) return nextNode;
             else return null;
         }
     }

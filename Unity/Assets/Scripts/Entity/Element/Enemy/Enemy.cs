@@ -15,5 +15,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies
         {
             //Not implemented yet.
         }
+
+        public override void PlayAnimation(string animationName) { }
     }
 }
