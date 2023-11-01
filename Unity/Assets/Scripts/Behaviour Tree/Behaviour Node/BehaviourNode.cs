@@ -8,16 +8,16 @@ namespace ForgottenEmpires.BehaviourTrees
 
         public BehaviourNode parentNode;
 
-        public List<BehaviourPath> behaviourPaths;
+        public List<BehaviourNode> behaviourNodes;
 
         public Behaviour behaviour;
 
         public BehaviourNode returnNode;
 
-        public BehaviourNode CheckPaths()
+        public BehaviourNode CheckNodes()
         {
-            foreach (BehaviourPath behaviourPath in behaviourPaths)
-                if ((returnNode = behaviourPath.CheckPath()) != null) return returnNode;
+            foreach (BehaviourNode behaviourNode in behaviourNodes)
+                if (behaviourNode.behaviour.GetPredicate()) return returnNode;
             return this;
         }
     }

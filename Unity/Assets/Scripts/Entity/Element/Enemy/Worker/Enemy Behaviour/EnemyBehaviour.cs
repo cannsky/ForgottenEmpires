@@ -1,4 +1,5 @@
 using ForgottenEmpires.BehaviourTrees;
+using ForgottenEmpires.Checkers;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
 {
@@ -7,6 +8,8 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
         public EnemyWorker enemyWorker;
 
         public BehaviourTree behaviourTree;
+
+        public SingleRangeChecker singleRangeChecker;
 
         public EnemyBehaviour(EnemyWorker enemyWorker) => this.enemyWorker = enemyWorker;
 

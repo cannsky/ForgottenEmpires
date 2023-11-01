@@ -5,20 +5,16 @@ namespace ForgottenEmpires.Checkers
 {
     public class RangeChecker : Checker
     {
-        public enum Type { Single, SingleClosest, Multi }
-
         public Element self;
-        public List<Element> targets, selectedTargets;
-        public Type type;
-        public float sqrRange;
+        public List<Element> targets, activeTargets;
+        public float rangeSqr, tempDistance, targetDistance;
 
-        public RangeChecker(Element self, float range, List<Element> targets, Type type)
+        public RangeChecker(Element self, List<Element> targets, float range)
         {
             this.self = self;
-            sqrRange = range * range;
             this.targets = targets;
-            this.type = type;
-            selectedTargets = new List<Element>();
+            rangeSqr = range * range;
+            activeTargets = new List<Element>();
         }
 
         public override bool Check()
@@ -28,26 +24,10 @@ namespace ForgottenEmpires.Checkers
             else return false;
         }
 
-        public bool CheckSelectedTargets()
-        {
-            foreach (var selectedTarget in selectedTargets)
-            {
-                var result = SqrDistanceCalculation(selectedTarget);
-                if (type == Type.Single && result) return true;
-            }
-            return false;
-        }
+        public virtual bool CheckSelectedTargets() => false;
 
-        public bool CheckAllTargets()
-        {
-            foreach (var target in targets)
-            {
-                var result = SqrDistanceCalculation(target);
-                if (type == Type.Single && SqrDistanceCalculation(target)) return true;
-            }
-            return false;
-        }
+        public virtual bool CheckAllTargets() => false;
 
-        public bool SqrDistanceCalculation(Element target) => true;
+        public virtual float SqrDistanceCalculation(Element target) => (target.transform.position - self.transform.position).sqrMagnitude;
     }
 }

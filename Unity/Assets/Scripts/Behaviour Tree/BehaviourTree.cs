@@ -10,6 +10,6 @@ namespace ForgottenEmpires.BehaviourTrees
 
         public BehaviourTree(BehaviourNode rootNode) => this.rootNode = currentNode = rootNode;
 
-        public void Iterate() => currentNode = currentNode.CheckPaths();
+        public void Iterate() => (currentNode = currentNode.CheckNodes()).behaviour.HandleBehaviour();
     }
 }
