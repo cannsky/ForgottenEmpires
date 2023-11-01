@@ -10,7 +10,7 @@ namespace ForgottenEmpires.Checkers
 
         public override bool CheckSelectedTargets()
         {
-            if (targets[0] != null && targets[0].isActive && SqrDistanceCalculation(targets[0]) >= rangeSqr) return true;
+            if (targets[0] != null && targets[0].isActive && SqrDistanceCalculation(targets[0]) <= rangeSqr) return true;
             targets[0] = null;
             return false;
         }
