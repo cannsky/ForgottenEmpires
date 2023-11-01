@@ -2,6 +2,7 @@
 using ForgottenEmpires.Entity.Elements.PlayerWorkers;
 using ForgottenEmpires.Entity.Elements.PlayerDatas;
 using Mirror;
+using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entity.Elements
 {
@@ -26,10 +27,12 @@ namespace ForgottenEmpires.Entity.Elements
 
         public override void TakeDamage(float damage) => playerWorker.playerStats.TakeDamage(damage);
 
-        public override void PlayAnimation(string animationName) { }
+        public override void SetAnimation(AnimationType animationType, bool value) => PlayerAnimationClientRPC(animationType, value);
 
         //Client Requests
 
         [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.TryMove(position);
+
+        [ClientRpc] public void PlayerAnimationClientRPC(AnimationType animationType, bool value) => playerWorker.playerAnimation.SetAnimation(animationType, value);
     }
 }

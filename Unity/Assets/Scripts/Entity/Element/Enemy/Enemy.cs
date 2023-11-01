@@ -1,4 +1,5 @@
 using ForgottenEmpires.Entity.Elements.Enemies.Worker;
+using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies
 {
@@ -16,6 +17,9 @@ namespace ForgottenEmpires.Entity.Elements.Enemies
             //Not implemented yet.
         }
 
-        public override void PlayAnimation(string animationName) { }
+        public override void SetAnimation(AnimationType animationType, bool value)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -3,8 +3,11 @@
     public class PlayerWorker
     {
         public Player player;
+
         public PlayerUpdate playerUpdate;
         public PlayerLateUpdate playerLateUpdate;
+
+        public PlayerAnimation playerAnimation;
         public PlayerAttack playerAttack;
         public PlayerInput playerInput;
         public PlayerMovement playerMovement;
@@ -13,8 +16,11 @@
         public PlayerWorker(Player player)
         {
             this.player = player;
+
             playerUpdate = new PlayerUpdate(this);
             playerLateUpdate = new PlayerLateUpdate(this);
+
+            playerAnimation = new PlayerAnimation(this);
             playerAttack = new PlayerAttack(this);
             playerInput = new PlayerInput(this);
             playerMovement = new PlayerMovement(this);

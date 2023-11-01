@@ -1,4 +1,5 @@
-﻿using Mirror;
+﻿using ForgottenEmpires.Types;
+using Mirror;
 
 namespace ForgottenEmpires.Entity.Elements
 {
@@ -8,6 +9,6 @@ namespace ForgottenEmpires.Entity.Elements
 
         public abstract void TakeDamage(float damage);
 
-        public abstract void PlayAnimation(string animationName);
+        public abstract void SetAnimation(AnimationType animationType, bool value);
     }
 }
