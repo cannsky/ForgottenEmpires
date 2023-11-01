@@ -8,11 +8,6 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
 
         public EnemyIdleBehaviour(EnemyBehaviour enemyBehaviour) => this.enemyBehaviour = enemyBehaviour;
 
-        public override bool GetPredicate() => enemyBehaviour.singleRangeChecker.Check();
-
-        public override void HandleBehaviour()
-        {
-            
-        }
+        public override bool GetPredicate() => true;
     }
 }

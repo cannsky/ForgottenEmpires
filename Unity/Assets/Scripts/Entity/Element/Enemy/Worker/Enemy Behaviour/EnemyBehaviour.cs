@@ -9,8 +9,6 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
 
         public BehaviourTree behaviourTree;
 
-        public SingleRangeChecker singleRangeChecker;
-
         public EnemyBehaviour(EnemyWorker enemyWorker) => this.enemyWorker = enemyWorker;
 
         //TODO: FIX NULL IN HERE!
