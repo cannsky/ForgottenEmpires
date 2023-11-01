@@ -5,9 +5,9 @@ namespace ForgottenEmpires.Managers.Server.Workers
 {
     public class ServerPlayerWorker
     {
-        public Dictionary<uint, Player> players;
+        public Dictionary<uint, Element> players;
 
-        public ServerPlayerWorker() => players = new Dictionary<uint, Player>();
+        public ServerPlayerWorker() => players = new Dictionary<uint, Element>();
 
         public void AddPlayer(uint id) => players.Add(id, new Player());
 
