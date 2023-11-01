@@ -6,26 +6,26 @@ namespace ForgottenEmpires.Checkers
 {
     public class SingleRangeChecker : RangeChecker
     {
-        public SingleRangeChecker(Element self, float range, List<Element> targets) : base(self, targets, range) { }
+        public SingleRangeChecker(Element self, float range, Dictionary<uint, Element> targets) : base(self, targets, range) { }
 
         public override bool CheckSelectedTargets()
         {
-            if (targets[0] != null && targets[0].isActive && SqrDistanceCalculation(targets[0]) <= rangeSqr) return true;
-            targets[0] = null;
+            if (activeTargets[0] != null && activeTargets[0].isActive && SqrDistanceCalculation(activeTargets[0]) <= rangeSqr) return true;
+            activeTargets[0] = null;
             return false;
         }
 
         public override bool CheckAllTargets()
         {
-            foreach(Element target in targets)
+            foreach(KeyValuePair<uint, Element> target in targets)
             {
-                if ((tempDistance = SqrDistanceCalculation(target)) <= rangeSqr && tempDistance <= targetDistance)
+                if ((tempDistance = SqrDistanceCalculation(target.Value)) <= rangeSqr && tempDistance <= targetDistance)
                 {
-                    targets[0] = target;
+                    activeTargets[0] = target.Value;
                     targetDistance = tempDistance;
                 }
             }
-            if (targets[0] != null) return true;
+            if (activeTargets[0] != null) return true;
             else return false;
         }
     }
