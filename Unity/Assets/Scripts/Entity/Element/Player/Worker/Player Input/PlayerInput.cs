@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
@@ -10,8 +9,9 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         public PlayerInputs playerInputs;
 
         public PlayerMovementInput playerMovementInput;
+        public PlayerRotationInput playerRotationInput;
 
-        public Vector2 movementInput;
+        public Vector2 movementInput, cameraInput;
 
         public bool leftButton, rightButton;
 
@@ -26,7 +26,9 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             playerInputs.Player.RightButton.performed += i => leftButton = true;
             playerInputs.Player.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
 
+
             playerMovementInput = new PlayerMovementInput(this);
+            playerRotationInput = new PlayerRotationInput(this);
 
             playerInputs.Enable();
         }
@@ -34,6 +36,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         public void OnUpdate()
         {
             playerMovementInput.OnUpdate();
+            playerRotationInput.OnUpdate();
         }
 
         public void OnLateUpdate() => leftButton = rightButton = false;
