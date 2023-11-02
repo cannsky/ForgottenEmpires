@@ -6,20 +6,27 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
     {
         private PlayerInput playerInput;
 
-        private LayerMask groundLayer;
+        private Vector3 targetDirection;
 
-        private RaycastHit hit;
+        private Transform cameraTransform;
 
         public PlayerMovementInput(PlayerInput playerInput)
         {
             this.playerInput = playerInput;
-            groundLayer = LayerMask.GetMask("Ground");
+            cameraTransform = Camera.main.transform;
         }
 
-        public void OnUpdate()
+        public void OnUpdate() => SendMovementInput();
+
+        public void SendMovementInput()
         {
-            if (!playerInput.playerWorker.player.isOwned || !playerInput.rightButton) return;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, groundLayer)) playerInput.playerWorker.player.PlayerMovementRequest(new Vector2(hit.point.x, hit.point.z));
+            if (playerInput.movementInput == Vector2.zero) return;
+
+            targetDirection = cameraTransform.forward * playerInput.movementInput.y;
+            targetDirection += cameraTransform.right * playerInput.movementInput.x;
+            targetDirection.Normalize();
+
+            playerInput.playerWorker.player.PlayerMovementRequest(new Vector2(playerInput.movementInput.x, playerInput.movementInput.y));
         }
     }
 }
