@@ -11,6 +11,7 @@
         public PlayerAttack playerAttack;
         public PlayerInput playerInput;
         public PlayerMovement playerMovement;
+        public PlayerRotation playerRotation;
         public PlayerStats playerStats;
 
         public PlayerWorker(Player player)
@@ -24,6 +25,7 @@
             playerAttack = new PlayerAttack(this);
             playerInput = new PlayerInput(this);
             playerMovement = new PlayerMovement(this);
+            playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
         }
 

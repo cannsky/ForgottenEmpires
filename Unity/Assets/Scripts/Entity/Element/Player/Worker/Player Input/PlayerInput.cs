@@ -11,8 +11,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public PlayerMovementInput playerMovementInput;
 
-        private int terrainLayerMask;
-        private Camera mainCamera;
+        public Vector2 movementInput;
 
         public bool leftButton, rightButton;
 
@@ -25,11 +24,10 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             playerInputs = new PlayerInputs();
             playerInputs.Player.LeftButton.performed += i => leftButton = true;
             playerInputs.Player.RightButton.performed += i => leftButton = true;
+            playerInputs.Player.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
 
             playerMovementInput = new PlayerMovementInput(this);
 
-            mainCamera = Camera.main;
-            terrainLayerMask = LayerMask.GetMask("Terrain");
             playerInputs.Enable();
         }
 
