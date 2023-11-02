@@ -31,7 +31,11 @@ namespace ForgottenEmpires.Entity.Elements
 
         //Client Requests
 
-        [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.TryMove(position);
+        [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetTargetMovement(position);
+
+        [Command] public void PlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
+
+        //Server Requests
 
         [ClientRpc] public void PlayerAnimationClientRPC(AnimationType animationType, bool value) => playerWorker.playerAnimation.SetAnimation(animationType, value);
     }

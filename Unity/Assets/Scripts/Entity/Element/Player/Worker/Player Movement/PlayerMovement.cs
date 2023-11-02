@@ -7,17 +7,19 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
     {
         private PlayerWorker playerWorker;
 
-        private NavMeshAgent agent;
+        private Rigidbody rigidbody;
+
+        private Vector3 velocity, normalVector;
 
         public PlayerMovement(PlayerWorker playerWorker)
         {
-            agent = playerWorker.player.GetComponent<NavMeshAgent>();
             this.playerWorker = playerWorker;
         }
 
-        public void TryMove(Vector2 position)
-        {
-            agent.SetDestination(position);
-        }
+        public void OnUpdate() => SmoothMovement();
+
+        public void SetTargetMovement(Vector2 position) => velocity = Vector3.ProjectOnPlane(position, normalVector);
+
+        public void SmoothMovement() => rigidbody.velocity = velocity;
     }
 }
