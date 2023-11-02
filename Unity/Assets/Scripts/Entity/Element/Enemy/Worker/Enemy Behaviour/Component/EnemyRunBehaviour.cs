@@ -1,7 +1,6 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
-using System.Linq;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
 {

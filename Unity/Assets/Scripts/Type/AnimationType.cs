@@ -4,6 +4,7 @@
     {
         Idle,
         Run,
+        AttackStance,
         Attack
     }
 }
