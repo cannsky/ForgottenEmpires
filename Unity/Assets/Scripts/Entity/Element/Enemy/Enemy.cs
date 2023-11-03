@@ -1,4 +1,4 @@
-using ForgottenEmpires.Entity.Elements.Enemies.Worker;
+using ForgottenEmpires.Entity.Elements.Enemies.Workers;
 using ForgottenEmpires.Entity.Elements.PlayerWorkers;
 using ForgottenEmpires.Types;
 using Mirror;
@@ -12,7 +12,10 @@ namespace ForgottenEmpires.Entity.Elements.Enemies
         private void Start()
         {
             enemyWorker = new EnemyWorker(this);
+            enemyWorker.OnStart();
         }
+
+        private void Update() => enemyWorker.OnUpdate();
 
         public override void TakeDamage(float damage)
         {

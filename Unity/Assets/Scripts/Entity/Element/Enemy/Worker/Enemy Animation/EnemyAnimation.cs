@@ -1,7 +1,7 @@
 ﻿using ForgottenEmpires.Types;
 using UnityEngine;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
+namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
     public class EnemyAnimation
     {

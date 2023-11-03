@@ -1,7 +1,7 @@
 using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
+namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
     public class EnemyBehaviour
     {

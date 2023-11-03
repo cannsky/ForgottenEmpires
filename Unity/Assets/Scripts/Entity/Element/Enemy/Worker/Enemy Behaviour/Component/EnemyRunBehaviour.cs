@@ -2,7 +2,7 @@
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
+namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
     public class EnemyRunBehaviour : RunBehaviour
     {

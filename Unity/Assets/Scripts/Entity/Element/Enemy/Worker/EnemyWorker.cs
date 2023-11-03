@@ -1,4 +1,4 @@
-namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
+namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
     public class EnemyWorker
     {
@@ -20,5 +20,9 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
             enemyAnimation = new EnemyAnimation(this);
             enemyBehaviour = new EnemyBehaviour(this);
         }
+
+        public void OnStart() => enemyStart.OnStart();
+
+        public void OnUpdate() => enemyUpdate.OnUpdate();
     }
 }

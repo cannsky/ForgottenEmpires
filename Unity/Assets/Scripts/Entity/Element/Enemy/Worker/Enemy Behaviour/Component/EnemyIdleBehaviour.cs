@@ -1,6 +1,6 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Worker
+namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
     public class EnemyIdleBehaviour : IdleBehaviour
     {
