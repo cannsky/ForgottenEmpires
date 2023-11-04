@@ -4,7 +4,7 @@ using ForgottenEmpires.Managers.Server;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
-    public class EnemyAttackStanceBehaviour : RunBehaviour
+    public class EnemyAttackStanceBehaviour : AttackStanceBehaviour
     {
         private EnemyBehaviour enemyBehaviour;
 
