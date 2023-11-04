@@ -9,7 +9,10 @@
 
         public PlayerAnimation playerAnimation;
         public PlayerAttack playerAttack;
+        public PlayerCamera playerCamera;
+        public PlayerEconomy playerEconomy;
         public PlayerInput playerInput;
+        public PlayerInventory playerInventory;
         public PlayerMovement playerMovement;
         public PlayerRotation playerRotation;
         public PlayerStats playerStats;
@@ -23,7 +26,10 @@
 
             playerAnimation = new PlayerAnimation(this);
             playerAttack = new PlayerAttack(this);
+            playerCamera = new PlayerCamera(this);
+            playerEconomy = new PlayerEconomy(this);
             playerInput = new PlayerInput(this);
+            playerInventory = new PlayerInventory(this);
             playerMovement = new PlayerMovement(this);
             playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
