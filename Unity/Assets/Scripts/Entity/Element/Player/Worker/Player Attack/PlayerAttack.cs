@@ -1,25 +1,26 @@
 ﻿using ForgottenEmpires.Checkers;
+using ForgottenEmpires.Managers.Server;
 using System.Collections.Generic;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerAttack
     {
-        private Player player;
+        private PlayerWorker playerWorker;
 
-        public RangeChecker rangeChecker;
+        private SingleRangeChecker singleRangeChecker;
 
         public PlayerAttack(PlayerWorker playerWorker)
         {
-            //Temporary.
+            this.playerWorker = playerWorker;
+            singleRangeChecker = new SingleRangeChecker(playerWorker.player, 2f, 
+                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
         }
 
         public void Attack()
         {
-            if (rangeChecker.Check())
-            {
-                //APPLY DAMAGE HERE!
-            }
+            if (!singleRangeChecker.Check()) return;
+            singleRangeChecker.targets[0].TakeDamage(10f);
         }
     }
 }
