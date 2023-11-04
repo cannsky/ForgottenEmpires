@@ -10,6 +10,7 @@
         public PlayerAnimation playerAnimation;
         public PlayerAttack playerAttack;
         public PlayerCamera playerCamera;
+        public PlayerDamage playerDamage;
         public PlayerEconomy playerEconomy;
         public PlayerInput playerInput;
         public PlayerInventory playerInventory;
@@ -27,6 +28,7 @@
             playerAnimation = new PlayerAnimation(this);
             playerAttack = new PlayerAttack(this);
             playerCamera = new PlayerCamera(this);
+            playerDamage = new PlayerDamage(this);
             playerEconomy = new PlayerEconomy(this);
             playerInput = new PlayerInput(this);
             playerInventory = new PlayerInventory(this);

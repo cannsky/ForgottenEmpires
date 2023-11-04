@@ -19,6 +19,7 @@ namespace ForgottenEmpires.Entity.Elements
         {
             playerWorker = new PlayerWorker(this);
             playerData = new PlayerData();
+            isActive = isEnabled = true;
         }
 
         private void Update() => playerWorker.OnUpdate();

@@ -5,7 +5,7 @@ namespace ForgottenEmpires.Entity.Elements
 {
     public abstract class Element : NetworkBehaviour
     {
-        public bool isActive;
+        public bool isActive, isEnabled;
 
         public float health, totalHealth;
 

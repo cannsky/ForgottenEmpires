@@ -5,6 +5,7 @@
         Idle,
         Run,
         AttackStance,
-        Attack
+        Attack,
+        Hit
     }
 }
