@@ -32,7 +32,7 @@ namespace ForgottenEmpires.Entity.Elements
 
         //Client Requests
 
-        [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetTargetMovement(position);
+        [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
 
         [Command] public void PlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
 

@@ -11,15 +11,13 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         private Vector3 velocity, normalVector;
 
-        public PlayerMovement(PlayerWorker playerWorker)
-        {
-            this.playerWorker = playerWorker;
-        }
+        public PlayerMovement(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
-        public void OnUpdate() => SmoothMovement();
+        public void OnUpdate() => Move();
 
-        public void SetTargetMovement(Vector2 position) => velocity = Vector3.ProjectOnPlane(position, normalVector);
+        public void SetMovementPosition(Vector2 position) => velocity = Vector3.ProjectOnPlane(position, normalVector);
 
-        public void SmoothMovement() => rigidbody.velocity = velocity;
+        //TODO: CONTINOUS MOVEMENT BUG, FIX HERE.
+        public void Move() => rigidbody.velocity = velocity;
     }
 }
