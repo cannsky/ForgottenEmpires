@@ -18,5 +18,11 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
         }
 
         public override bool GetPredicate() => singleRangeChecker.Check();
+
+        public override void HandleBehaviour()
+        {
+            enemyBehaviour.enemyWorker.enemyMovement.Move(singleRangeChecker.targets[0].transform.position);
+            base.HandleBehaviour();
+        }
     }
 }
