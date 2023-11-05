@@ -1,9 +1,9 @@
 ﻿using ForgottenEmpires.Managers.Client.Workers;
-using Mirror;
+using UnityEngine;
 
 namespace ForgottenEmpires.Managers.Client
 {
-    public class ClientManager
+    public class ClientManager : MonoBehaviour
     {
         public static ClientManager Instance;
 
@@ -17,6 +17,6 @@ namespace ForgottenEmpires.Managers.Client
 
         public void OnStart() => clientManagerWorker.OnStart();
 
-        public void OnUpdate() { }
+        public void OnUpdate() => clientManagerWorker.OnUpdate();
     }
 }
