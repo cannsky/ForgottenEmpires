@@ -1,10 +1,24 @@
-﻿namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+﻿using UnityEngine;
+
+namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
     public class PlayerStats
     {
         private PlayerWorker playerWorker;
 
         public PlayerStats(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+
+        public void OnUpdate()
+        {
+
+        }
+
+        public void Regenerate()
+        {
+            if (playerWorker.player.health <= playerWorker.player.totalHealth)
+                if ((playerWorker.player.health += 1f * Time.deltaTime) > playerWorker.player.totalHealth) 
+                    playerWorker.player.health = playerWorker.player.totalHealth;
+        }
 
         public void TakeDamage(float damage)
         {

@@ -18,6 +18,11 @@ namespace ForgottenEmpires.Entity.Elements.NonPlayableCharacters
             throw new System.NotImplementedException();
         }
 
+        public override void Regenerate()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void TakeDamage(float damage)
         {
             throw new System.NotImplementedException();

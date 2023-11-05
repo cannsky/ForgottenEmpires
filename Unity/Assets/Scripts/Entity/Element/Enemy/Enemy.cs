@@ -17,6 +17,11 @@ namespace ForgottenEmpires.Entity.Elements.Enemies
 
         private void Update() => enemyWorker.OnUpdate();
 
+        public override void Regenerate()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public override void TakeDamage(float damage)
         {
             //Not implemented yet.

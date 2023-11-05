@@ -26,6 +26,8 @@ namespace ForgottenEmpires.Entity.Elements
 
         private void LateUpdate() => playerWorker.OnLateUpdate();
 
+        public override void Regenerate() => playerWorker.playerStats.Regenerate();
+
         public override void TakeDamage(float damage) => playerWorker.playerStats.TakeDamage(damage);
 
         public override void SetAnimation(AnimationType animationType, bool value) => PlayerAnimationClientRPC(animationType, value);
