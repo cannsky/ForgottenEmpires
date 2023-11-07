@@ -1,8 +1,9 @@
+using UnityEngine;
 using ForgottenEmpires.Managers.Server.Workers;
 
 namespace ForgottenEmpires.Managers.Server
 {
-    public class ServerManager
+    public class ServerManager : MonoBehaviour
     {
         public static ServerManager Instance;
 
