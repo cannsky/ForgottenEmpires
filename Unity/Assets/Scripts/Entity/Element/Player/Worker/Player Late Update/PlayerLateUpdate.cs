@@ -14,6 +14,12 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void OnClientLateUpdate()
         {
+            OwnerClientOnLateUpdate();
+        }
+
+        public void OwnerClientOnLateUpdate()
+        {
+            if (!playerWorker.player.isLocalPlayer) return;
             playerWorker.playerInput.OnLateUpdate();
         }
 

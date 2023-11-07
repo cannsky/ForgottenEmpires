@@ -14,7 +14,13 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void ClientOnUpdate()
         {
+            if (playerWorker.player.isLocalPlayer) OwnerClientOnUpdate();
+        }
+
+        public void OwnerClientOnUpdate()
+        {
             playerWorker.playerInput.OnUpdate();
+            playerWorker.playerCamera.OnUpdate();
         }
 
         public void ServerOnUpdate()
