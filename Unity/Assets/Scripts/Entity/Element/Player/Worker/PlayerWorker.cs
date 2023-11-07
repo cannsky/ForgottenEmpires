@@ -4,6 +4,7 @@
     {
         public Player player;
 
+        public PlayerStart playerStart;
         public PlayerUpdate playerUpdate;
         public PlayerLateUpdate playerLateUpdate;
 
@@ -22,6 +23,7 @@
         {
             this.player = player;
 
+            playerStart = new PlayerStart(this);
             playerUpdate = new PlayerUpdate(this);
             playerLateUpdate = new PlayerLateUpdate(this);
 
@@ -36,6 +38,8 @@
             playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
         }
+
+        public void OnStart() => playerStart.OnStart();
 
         public void OnUpdate() => playerUpdate.OnUpdate();
 
