@@ -20,6 +20,7 @@ namespace ForgottenEmpires.Entity.Elements
             playerWorker = new PlayerWorker(this);
             playerData = new PlayerData();
             isActive = isEnabled = true;
+            playerWorker.OnStart();
         }
 
         private void Update() => playerWorker.OnUpdate();
@@ -34,11 +35,11 @@ namespace ForgottenEmpires.Entity.Elements
 
         //Client Requests
 
-        [Command] public void PlayerAttackRequest() => playerWorker.playerAttack.Attack();
+        [Command] public void CmdPlayerAttackRequest() => playerWorker.playerAttack.Attack();
 
-        [Command] public void PlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
+        [Command] public void CmdPlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
 
-        [Command] public void PlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
+        [Command] public void CmdPlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
 
         //Server Requests
 
