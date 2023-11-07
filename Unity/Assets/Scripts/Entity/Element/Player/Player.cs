@@ -25,6 +25,8 @@ namespace ForgottenEmpires.Entity.Elements
 
         private void Update() => playerWorker.OnUpdate();
 
+        private void FixedUpdate() => playerWorker.OnFixedUpdate();
+
         private void LateUpdate() => playerWorker.OnLateUpdate();
 
         public override void Regenerate() => playerWorker.playerStats.Regenerate();

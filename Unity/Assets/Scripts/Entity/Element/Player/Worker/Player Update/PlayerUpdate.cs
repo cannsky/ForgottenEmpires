@@ -25,7 +25,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void ServerOnUpdate()
         {
-
+            
         }
     }
 }

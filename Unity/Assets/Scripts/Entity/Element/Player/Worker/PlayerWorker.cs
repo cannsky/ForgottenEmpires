@@ -6,6 +6,7 @@
 
         public PlayerStart playerStart;
         public PlayerUpdate playerUpdate;
+        public PlayerFixedUpdate playerFixedUpdate;
         public PlayerLateUpdate playerLateUpdate;
 
         public PlayerAnimation playerAnimation;
@@ -25,6 +26,7 @@
 
             playerStart = new PlayerStart(this);
             playerUpdate = new PlayerUpdate(this);
+            playerFixedUpdate = new PlayerFixedUpdate(this);
             playerLateUpdate = new PlayerLateUpdate(this);
 
             playerAnimation = new PlayerAnimation(this);
@@ -42,6 +44,8 @@
         public void OnStart() => playerStart.OnStart();
 
         public void OnUpdate() => playerUpdate.OnUpdate();
+
+        public void OnFixedUpdate() => playerFixedUpdate.OnFixedUpdate();
 
         public void OnLateUpdate() => playerLateUpdate.OnLateUpdate();
     }
