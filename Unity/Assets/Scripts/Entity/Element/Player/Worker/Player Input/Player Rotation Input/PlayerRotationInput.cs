@@ -8,7 +8,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         private Transform cameraTransform;
 
-        private Vector3 rotationDirection;
+        private Vector3 oldRotationDirection, rotationDirection;
 
         public PlayerRotationInput(PlayerInput playerInput)
         {
@@ -25,7 +25,11 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             rotationDirection += cameraTransform.right * playerInput.movementInput.x;
             rotationDirection.Normalize();
             rotationDirection.y = 0;
-            playerInput.playerWorker.player.PlayerRotationRequest(rotationDirection);
+            if(oldRotationDirection != rotationDirection)
+            {
+                playerInput.playerWorker.player.CmdPlayerRotationRequest(rotationDirection);
+                oldRotationDirection = rotationDirection;
+            }
         }
     }
 }

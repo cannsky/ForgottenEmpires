@@ -26,7 +26,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             targetDirection += cameraTransform.right * playerInput.movementInput.x;
             targetDirection.Normalize();
 
-            playerInput.playerWorker.player.PlayerMovementRequest(new Vector2(playerInput.movementInput.x, playerInput.movementInput.y));
+            playerInput.playerWorker.player.CmdPlayerMovementRequest(new Vector2(playerInput.movementInput.x, playerInput.movementInput.y));
         }
     }
 }
