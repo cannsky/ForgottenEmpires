@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
@@ -7,15 +6,13 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
     {
         private PlayerWorker playerWorker;
 
-        private Rigidbody rigidbody;
-
         private Vector3 velocity, normalVector;
 
-        public PlayerMovement(PlayerWorker playerWorker)
-        {
-            this.playerWorker = playerWorker;
-            rigidbody = playerWorker.player.GetComponent<Rigidbody>();
-        }
+        private float speed = 5f;
+
+        public PlayerMovement(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+
+        public void OnStart() => playerWorker.player.transform.position = new Vector3(playerWorker.player.transform.position.x, 1f, playerWorker.player.transform.position.z);
 
         public void OnUpdate() => Move();
 
@@ -23,7 +20,10 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void Move()
         {
-            rigidbody.velocity = velocity;
+            playerWorker.player.transform.position = Vector3.MoveTowards(
+                playerWorker.player.transform.position,
+                playerWorker.player.transform.position + velocity,
+                Time.deltaTime * speed);
             ApplyFriction();
         }
 
