@@ -20,16 +20,15 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void SendRotationInput()
         {
+            if (playerInput.movementInput.x == 0 && playerInput.movementInput.y == 0) return;
             rotationDirection = Vector3.zero;
             rotationDirection = cameraTransform.forward * playerInput.movementInput.y;
             rotationDirection += cameraTransform.right * playerInput.movementInput.x;
             rotationDirection.Normalize();
             rotationDirection.y = 0;
-            if(oldRotationDirection != rotationDirection)
-            {
-                playerInput.playerWorker.player.CmdPlayerRotationRequest(rotationDirection);
-                oldRotationDirection = rotationDirection;
-            }
+            if (oldRotationDirection == rotationDirection) return;
+            playerInput.playerWorker.player.CmdPlayerRotationRequest(rotationDirection);
+            oldRotationDirection = rotationDirection;
         }
     }
 }
