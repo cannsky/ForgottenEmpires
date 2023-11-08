@@ -11,8 +11,6 @@ namespace ForgottenEmpires.Entity.Elements
         public PlayerWorker playerWorker;
         public PlayerData playerData;
 
-        public static int playerCount = 0;
-
         //private float health, totalHealth;
 
         private void Start()
