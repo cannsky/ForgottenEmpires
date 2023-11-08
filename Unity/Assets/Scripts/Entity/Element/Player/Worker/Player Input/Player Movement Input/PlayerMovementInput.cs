@@ -6,7 +6,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
     {
         private PlayerInput playerInput;
 
-        private Vector3 targetDirection;
+        private Vector3 targetDirection, forward, right;
 
         private Transform cameraTransform;
 
@@ -22,11 +22,15 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         {
             if (playerInput.movementInput == Vector2.zero) return;
 
-            targetDirection = cameraTransform.forward * playerInput.movementInput.y;
-            targetDirection += cameraTransform.right * playerInput.movementInput.x;
+            forward = cameraTransform.forward;
+            forward.y = 0;
+            right = cameraTransform.right;
+            right.y = 0;
+
+            targetDirection = forward * playerInput.movementInput.y + right * playerInput.movementInput.x;
             targetDirection.Normalize();
 
-            playerInput.playerWorker.player.CmdPlayerMovementRequest(new Vector2(playerInput.movementInput.x, playerInput.movementInput.y));
+            playerInput.playerWorker.player.CmdPlayerMovementRequest(new Vector2(targetDirection.x, targetDirection.z));
         }
     }
 }
