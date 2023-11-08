@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 {
@@ -6,8 +7,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
     {
         private PlayerWorker playerWorker;
         private Transform cameraTransform;
-        private Vector3 offset = new Vector3(0, 7, -4);
-        private float angle = 60f, dampingFactor = 2f;
+        private float angle = 60f, rotationSpeed = 140f, yRotation, cameraDistance = 7f;
 
         public PlayerCamera (PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
@@ -15,22 +15,23 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void OnLateUpdate()
         {
-            FollowOwnerPlayer();
             RotateCamera();
         }
 
         public void FocusMainCameraToOwnerPlayer()
         {
             cameraTransform = Camera.main.transform;
-            cameraTransform.position = playerWorker.player.transform.position + offset;
-            cameraTransform.rotation = Quaternion.Euler(angle, 0, 0);
+            RotateCamera();
         }
-
-        public void FollowOwnerPlayer() => cameraTransform.position = Vector3.Lerp(cameraTransform.position, playerWorker.player.transform.position + offset, Time.deltaTime * dampingFactor);
 
         public void RotateCamera()
         {
+            if (playerWorker.playerInput.rightButton) yRotation += playerWorker.playerInput.cameraInput.x * rotationSpeed * Time.deltaTime;
 
+            Vector3 cameraPosition = playerWorker.player.transform.position - (Quaternion.Euler(angle, yRotation, 0) * new Vector3(0, 0, cameraDistance));
+
+            cameraTransform.position = cameraPosition;
+            cameraTransform.LookAt(playerWorker.player.transform.position);
         }
     }
 }
