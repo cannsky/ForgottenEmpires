@@ -7,13 +7,13 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         private PlayerWorker playerWorker;
         private Transform cameraTransform;
         private Vector3 offset = new Vector3(0, 7, -4);
-        private float angle = 60;
+        private float angle = 60f, dampingFactor = 2f;
 
         public PlayerCamera (PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
         public void OnStart() => FocusMainCameraToOwnerPlayer();
 
-        public void OnUpdate()
+        public void OnLateUpdate()
         {
             FollowOwnerPlayer();
             RotateCamera();
@@ -26,7 +26,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             cameraTransform.rotation = Quaternion.Euler(angle, 0, 0);
         }
 
-        public void FollowOwnerPlayer() => cameraTransform.position = playerWorker.player.transform.position + offset;
+        public void FollowOwnerPlayer() => cameraTransform.position = Vector3.Lerp(cameraTransform.position, playerWorker.player.transform.position + offset, Time.deltaTime * dampingFactor);
 
         public void RotateCamera()
         {
