@@ -20,8 +20,8 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         public void OwnerClientOnLateUpdate()
         {
             if (!playerWorker.player.isLocalPlayer) return;
-            playerWorker.playerInput.OnLateUpdate();
             playerWorker.playerCamera.OnLateUpdate();
+            playerWorker.playerInput.OnLateUpdate();
         }
 
         public void OnServerLateUpdate()

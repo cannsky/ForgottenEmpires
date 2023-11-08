@@ -24,7 +24,7 @@
 
         public void ServerOnFixedUpdate()
         {
-            playerWorker.playerMovement.OnUpdate();
+            
         }
     }
 }
