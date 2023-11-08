@@ -20,12 +20,12 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         public void OwnerClientOnUpdate()
         {
             playerWorker.playerInput.OnUpdate();
-            playerWorker.playerCamera.OnUpdate();
         }
 
         public void ServerOnUpdate()
         {
             playerWorker.playerRotation.OnUpdate();
+            playerWorker.playerMovement.OnUpdate();
         }
     }
 }

@@ -21,6 +21,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
         {
             if (!playerWorker.player.isLocalPlayer) return;
             playerWorker.playerInput.OnLateUpdate();
+            playerWorker.playerCamera.OnLateUpdate();
         }
 
         public void OnServerLateUpdate()

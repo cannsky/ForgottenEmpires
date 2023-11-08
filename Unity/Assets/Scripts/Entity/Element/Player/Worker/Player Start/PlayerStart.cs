@@ -24,7 +24,7 @@
 
         public void ServerOnStart()
         {
-
+            playerWorker.playerMovement.OnStart();
         }
     }
 }
