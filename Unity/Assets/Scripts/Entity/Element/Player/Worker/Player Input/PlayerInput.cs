@@ -8,6 +8,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public PlayerInputs playerInputs;
 
+        public PlayerCameraInput playerCameraInput;
         public PlayerMovementInput playerMovementInput;
         public PlayerRotationInput playerRotationInput;
 
@@ -23,10 +24,12 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
             playerInputs = new PlayerInputs();
             playerInputs.Player.LeftButton.performed += i => leftButton = true;
-            playerInputs.Player.RightButton.performed += i => leftButton = true;
+            playerInputs.Player.RightButton.performed += i => rightButton = true;
+            playerInputs.Player.RightButton.canceled += i => rightButton = false;
             playerInputs.Player.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
+            playerInputs.Player.Rotation.performed += i => cameraInput = i.ReadValue<Vector2>();
 
-
+            playerCameraInput = new PlayerCameraInput(this);
             playerMovementInput = new PlayerMovementInput(this);
             playerRotationInput = new PlayerRotationInput(this);
 
@@ -39,6 +42,6 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             playerRotationInput.OnUpdate();
         }
 
-        public void OnLateUpdate() => leftButton = rightButton = false;
+        public void OnLateUpdate() => leftButton = false;
     }
 }
