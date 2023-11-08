@@ -15,6 +15,16 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
             animator = playerWorker.player.GetComponent<Animator>();
         }
 
-        public void SetAnimation(AnimationType animationType, bool value) => animator.SetBool(animationType.ToString(), value);
+        public void ResetAnimator()
+        {
+            animator.SetBool("Run", false);
+            animator.SetBool("Attack", false);
+        }
+
+        public void SetAnimation(AnimationType animationType, bool value)
+        {
+            ResetAnimator();
+            animator.SetBool(animationType.ToString(), value);
+        }
     }
 }

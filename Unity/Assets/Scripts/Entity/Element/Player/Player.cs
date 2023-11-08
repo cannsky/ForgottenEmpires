@@ -31,7 +31,7 @@ namespace ForgottenEmpires.Entity.Elements
 
         public override void TakeDamage(float damage) => playerWorker.playerStats.TakeDamage(damage);
 
-        public override void SetAnimation(AnimationType animationType, bool value) => PlayerAnimationClientRPC(animationType, value);
+        public override void SetAnimation(AnimationType animationType, bool value) => playerWorker.playerAnimation.SetAnimation(animationType, value);
 
         //Client Requests
 
@@ -40,9 +40,5 @@ namespace ForgottenEmpires.Entity.Elements
         [Command] public void CmdPlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
 
         [Command] public void CmdPlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
-
-        //Server Requests
-
-        [ClientRpc] public void PlayerAnimationClientRPC(AnimationType animationType, bool value) => playerWorker.playerAnimation.SetAnimation(animationType, value);
     }
 }
