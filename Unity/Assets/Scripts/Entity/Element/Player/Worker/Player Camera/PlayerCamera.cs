@@ -13,10 +13,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void OnStart() => FocusMainCameraToOwnerPlayer();
 
-        public void OnLateUpdate()
-        {
-            RotateCamera();
-        }
+        public void OnLateUpdate() => RotateCamera();
 
         public void FocusMainCameraToOwnerPlayer()
         {
@@ -26,7 +23,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         public void RotateCamera()
         {
-            if (playerWorker.playerInput.rightButton) yRotation += playerWorker.playerInput.cameraInput.x * rotationSpeed * Time.deltaTime;
+            yRotation += playerWorker.playerInput.cameraInput.x * rotationSpeed * Time.deltaTime;
 
             Vector3 cameraPosition = playerWorker.player.transform.position - (Quaternion.Euler(angle, yRotation, 0) * new Vector3(0, 0, cameraDistance));
 
