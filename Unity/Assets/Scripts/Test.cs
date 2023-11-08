@@ -7,7 +7,7 @@ namespace ForgottenEmpires
     {
         private void Start()
         {
-            NetworkManager.singleton.StartClient();
+            NetworkManager.singleton.StartHost();
         }
     }
 }
