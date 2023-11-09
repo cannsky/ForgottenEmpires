@@ -27,8 +27,6 @@ namespace ForgottenEmpires.Entity.Elements.Enemies
             //Not implemented yet.
         }
 
-        public override void SetAnimation(AnimationType animationType, bool value) => EnemyAnimationClientRpc(animationType, value);
-
-        [ClientRpc] public void EnemyAnimationClientRpc(AnimationType animationType, bool value) => enemyWorker.enemy.SetAnimation(animationType, value);
+        public override void SetAnimation(AnimationType animationType, bool value) => enemyWorker.enemyAnimation.SetAnimation(animationType, value);
     }
 }
