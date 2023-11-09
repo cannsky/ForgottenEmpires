@@ -3,6 +3,8 @@ using ForgottenEmpires.Entity.Elements.PlayerWorkers;
 using ForgottenEmpires.Entity.Elements.PlayerDatas;
 using Mirror;
 using ForgottenEmpires.Types;
+using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Managers.Server.Workers;
 
 namespace ForgottenEmpires.Entity.Elements
 {
@@ -11,14 +13,13 @@ namespace ForgottenEmpires.Entity.Elements
         public PlayerWorker playerWorker;
         public PlayerData playerData;
 
-        //private float health, totalHealth;
-
         private void Start()
         {
             playerWorker = new PlayerWorker(this);
             playerData = new PlayerData();
             isActive = isEnabled = true;
             playerWorker.OnStart();
+            ServerManager.Instance.serverManagerWorker.serverPlayerWorker.AddPlayer(this);
         }
 
         private void Update() => playerWorker.OnUpdate();
