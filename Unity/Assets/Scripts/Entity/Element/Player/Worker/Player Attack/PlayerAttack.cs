@@ -2,7 +2,7 @@
 using ForgottenEmpires.Managers.Server;
 using System.Collections.Generic;
 
-namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerAttack
     {

@@ -1,12 +1,12 @@
 ﻿using UnityEngine;
-using ForgottenEmpires.Entity.Elements.PlayerWorkers;
-using ForgottenEmpires.Entity.Elements.PlayerDatas;
+using ForgottenEmpires.Entities.Elements.PlayerWorkers;
+using ForgottenEmpires.Entities.Elements.PlayerDatas;
 using Mirror;
 using ForgottenEmpires.Types;
 using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Managers.Server.Workers;
 
-namespace ForgottenEmpires.Entity.Elements
+namespace ForgottenEmpires.Entities.Elements
 {
     public class Player : Element
     {

@@ -1,7 +1,7 @@
-﻿using ForgottenEmpires.Entity.Elements.NonPlayableCharacters.Workers;
+﻿using ForgottenEmpires.Entities.Elements.NonPlayableCharacters.Workers;
 using ForgottenEmpires.Types;
 
-namespace ForgottenEmpires.Entity.Elements.NonPlayableCharacters
+namespace ForgottenEmpires.Entities.Elements.NonPlayableCharacters
 {
     public class NonPlayableCharacter : Element
     {

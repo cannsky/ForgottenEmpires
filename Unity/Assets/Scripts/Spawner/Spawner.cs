@@ -1,4 +1,4 @@
-﻿using ForgottenEmpires.Entity.Elements;
+﻿using ForgottenEmpires.Entities.Elements;
 using ForgottenEmpires.Spawners.Workers;
 using Mirror;
 using UnityEngine;

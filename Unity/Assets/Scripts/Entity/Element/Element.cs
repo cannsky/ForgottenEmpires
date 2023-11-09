@@ -1,7 +1,7 @@
 ﻿using ForgottenEmpires.Types;
 using Mirror;
 
-namespace ForgottenEmpires.Entity.Elements
+namespace ForgottenEmpires.Entities.Elements
 {
     public abstract class Element : NetworkBehaviour
     {
@@ -14,5 +14,7 @@ namespace ForgottenEmpires.Entity.Elements
         public abstract void TakeDamage(float damage);
 
         public abstract void SetAnimation(AnimationType animationType, bool value);
+
+        public virtual void Interact(Element element) { }
     }
 }

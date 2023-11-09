@@ -3,7 +3,7 @@ using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Types;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
+namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
     public class EnemyAttackStanceBehaviour : AttackStanceBehaviour
     {

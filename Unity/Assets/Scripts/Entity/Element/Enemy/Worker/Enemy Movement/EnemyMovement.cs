@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
+namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
     public class EnemyMovement
     {

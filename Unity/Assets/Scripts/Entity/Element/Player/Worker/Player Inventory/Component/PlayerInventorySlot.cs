@@ -1,6 +1,6 @@
-﻿using ForgottenEmpires.Entity.Items;
+﻿using ForgottenEmpires.Entities.Items;
 
-namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerInventorySlot
     {

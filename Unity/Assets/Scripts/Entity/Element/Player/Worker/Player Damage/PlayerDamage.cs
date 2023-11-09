@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerDamage
     {

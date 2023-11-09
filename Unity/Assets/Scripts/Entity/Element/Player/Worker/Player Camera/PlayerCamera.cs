@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerCamera
     {

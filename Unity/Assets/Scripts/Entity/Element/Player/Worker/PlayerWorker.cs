@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
+﻿namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerWorker
     {
@@ -19,6 +19,7 @@
         public PlayerMovement playerMovement;
         public PlayerRotation playerRotation;
         public PlayerStats playerStats;
+        public PlayerInteraction playerInteraction;
 
         public PlayerWorker(Player player)
         {
@@ -39,6 +40,7 @@
             playerMovement = new PlayerMovement(this);
             playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
+            playerInteraction = new PlayerInteraction(this);
         }
 
         public void OnStart() => playerStart.OnStart();

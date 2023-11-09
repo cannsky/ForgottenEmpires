@@ -5,7 +5,7 @@ using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Types;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
+namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
     public class EnemyAttackBehaviour : AttackBehaviour
     {
@@ -22,7 +22,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
                 ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
         }
 
-        public override bool GetPredicate() => isAttacked;
+        public override bool GetPredicate() => !isAttacked;
 
         public override void HandleBehaviour()
         {
@@ -35,7 +35,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 
         public override IEnumerator ResetState()
         {
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(5f);
             isAttacked = false;
         }
     }

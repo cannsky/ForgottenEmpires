@@ -1,9 +1,9 @@
-using ForgottenEmpires.Entity.Elements.Enemies.Workers;
-using ForgottenEmpires.Entity.Elements.PlayerWorkers;
+using ForgottenEmpires.Entities.Elements.Enemies.Workers;
+using ForgottenEmpires.Entities.Elements.PlayerWorkers;
 using ForgottenEmpires.Types;
 using Mirror;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies
+namespace ForgottenEmpires.Entities.Elements.Enemies
 {
     public class Enemy : Element
     {

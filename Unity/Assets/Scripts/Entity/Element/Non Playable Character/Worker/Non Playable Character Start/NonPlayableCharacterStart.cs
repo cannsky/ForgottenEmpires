@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Entity.Elements.NonPlayableCharacters.Workers
+﻿namespace ForgottenEmpires.Entities.Elements.NonPlayableCharacters.Workers
 {
     public class NonPlayableCharacterStart
     {

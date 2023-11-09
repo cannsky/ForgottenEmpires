@@ -1,4 +1,4 @@
-﻿using ForgottenEmpires.Entity.Elements;
+﻿using ForgottenEmpires.Entities.Elements;
 using ForgottenEmpires.Managers.Server;
 using System.Collections.Generic;
 using UnityEngine;

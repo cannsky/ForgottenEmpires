@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Entity.Items
+﻿namespace ForgottenEmpires.Entities.Items
 {
     public class Item
     {
