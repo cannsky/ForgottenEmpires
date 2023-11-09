@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ForgottenEmpires.BehaviourTrees
 {
-    public abstract class BehaviourNode
+    public class BehaviourNode
     {
         public BehaviourTree behaviourTree;
 
@@ -12,12 +13,16 @@ namespace ForgottenEmpires.BehaviourTrees
 
         public Behaviour behaviour;
 
-        public BehaviourNode newNode;
+        public BehaviourNode(Behaviour behaviour)
+        {
+            this.behaviour = behaviour;
+            behaviourNodes = new List<BehaviourNode>();
+        }
 
         public BehaviourNode CheckNodes()
         {
             foreach (BehaviourNode behaviourNode in behaviourNodes)
-                if (behaviourNode.behaviour.GetPredicate()) return newNode;
+                if (behaviourNode.behaviour.GetPredicate()) return behaviourNode;
             if (behaviour.GetPredicate()) return this;
             else return parentNode;
         }
