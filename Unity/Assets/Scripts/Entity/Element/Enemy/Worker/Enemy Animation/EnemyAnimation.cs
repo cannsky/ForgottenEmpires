@@ -1,7 +1,7 @@
 ﻿using ForgottenEmpires.Types;
 using UnityEngine;
 
-namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
+namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
     public class EnemyAnimation
     {
@@ -15,6 +15,18 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
             animator = enemyWorker.enemy.GetComponent<Animator>();
         }
 
-        public void SetAnimation(AnimationType animationType, bool value) => animator.SetBool(animationType.ToString(), value);
+        public void ResetAnimator()
+        {
+            animator.SetBool(AnimationType.Idle.ToString(), false);
+            animator.SetBool(AnimationType.Run.ToString(), false);
+            animator.SetBool(AnimationType.AttackStance.ToString(), false);
+            animator.SetBool(AnimationType.Attack.ToString(), false);
+        }
+
+        public void SetAnimation(AnimationType animationType, bool value)
+        {
+            ResetAnimator();
+            animator.SetBool(animationType.ToString(), value);
+        }
     }
 }
