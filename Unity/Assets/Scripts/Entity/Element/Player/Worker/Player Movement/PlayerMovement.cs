@@ -8,7 +8,7 @@ namespace ForgottenEmpires.Entity.Elements.PlayerWorkers
 
         private Vector3 velocity, normalVector;
 
-        private float speed = 5f;
+        private float speed = 2f;
 
         public PlayerMovement(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
