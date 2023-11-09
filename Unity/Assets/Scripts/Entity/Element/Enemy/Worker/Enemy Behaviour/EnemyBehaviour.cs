@@ -9,10 +9,37 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 
         public BehaviourTree behaviourTree;
 
-        public EnemyBehaviour(EnemyWorker enemyWorker) => this.enemyWorker = enemyWorker;
+        public EnemyIdleBehaviour enemyIdleBehaviour;
+        public EnemyRunBehaviour enemyRunBehaviour;
+        public EnemyAttackStanceBehaviour enemyAttackStanceBehaviour;
+        public EnemyAttackBehaviour enemyAttackBehaviour;
 
-        //TODO: FIX NULL IN HERE!
-        public void OnStart() => behaviourTree = new BehaviourTree(null);
+        public EnemyBehaviour(EnemyWorker enemyWorker)
+        {
+            this.enemyWorker = enemyWorker;
+
+            enemyIdleBehaviour = new EnemyIdleBehaviour(this);
+            enemyRunBehaviour = new EnemyRunBehaviour(this);
+            enemyAttackStanceBehaviour = new EnemyAttackStanceBehaviour(this);
+            enemyAttackBehaviour = new EnemyAttackBehaviour(this);
+        }
+
+        public void GenerateBehaviourTree()
+        {
+            BehaviourNode idleNode = new BehaviourNode(enemyIdleBehaviour);
+            BehaviourNode runNode = new BehaviourNode(enemyRunBehaviour);
+            idleNode.behaviourNodes.Add(runNode);
+            runNode.parentNode = idleNode;
+            BehaviourNode attackStanceNode = new BehaviourNode(enemyAttackStanceBehaviour);
+            runNode.behaviourNodes.Add(attackStanceNode);
+            attackStanceNode.parentNode = runNode;
+            BehaviourNode attackNode = new BehaviourNode(enemyAttackBehaviour);
+            attackStanceNode.behaviourNodes.Add(attackNode);
+            attackNode.parentNode = attackStanceNode;
+            behaviourTree = new BehaviourTree(idleNode);
+        }
+
+        public void OnStart() => GenerateBehaviourTree();
 
         public void OnUpdate() => behaviourTree.Iterate();
     }
