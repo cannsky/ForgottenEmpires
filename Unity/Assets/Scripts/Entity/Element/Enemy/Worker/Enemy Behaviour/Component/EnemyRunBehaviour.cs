@@ -1,6 +1,7 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
@@ -10,7 +11,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 
         public SingleRangeChecker singleRangeChecker;
 
-        public EnemyRunBehaviour(EnemyBehaviour enemyBehaviour) 
+        public EnemyRunBehaviour(EnemyBehaviour enemyBehaviour)
         {
             this.enemyBehaviour = enemyBehaviour;
             singleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 10f,
@@ -22,7 +23,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
         public override void HandleBehaviour()
         {
             enemyBehaviour.enemyWorker.enemyMovement.Move(singleRangeChecker.targets[0].transform.position);
-            base.HandleBehaviour();
+            enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.Run, true);
         }
     }
 }

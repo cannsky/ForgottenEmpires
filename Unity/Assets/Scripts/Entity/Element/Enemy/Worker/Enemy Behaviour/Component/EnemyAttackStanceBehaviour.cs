@@ -1,6 +1,7 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
@@ -18,5 +19,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
         }
 
         public override bool GetPredicate() => singleRangeChecker.Check();
+
+        public override void HandleBehaviour() => enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.AttackStance, true);
     }
 }

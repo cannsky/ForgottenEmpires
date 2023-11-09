@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
 {
@@ -29,7 +30,7 @@ namespace ForgottenEmpires.Entity.Elements.Enemies.Workers
             singleRangeChecker.targets[0].TakeDamage(10f);
             isAttacked = true;
             enemyBehaviour.enemyWorker.enemy.StartCoroutine(ResetState());
-            base.HandleBehaviour();
+            enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.Attack, true);
         }
 
         public override IEnumerator ResetState()
