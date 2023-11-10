@@ -9,14 +9,14 @@ namespace ForgottenEmpires.Managers.Server
 
         public ServerManagerWorker serverManagerWorker;
 
-        public ServerManager()
+        private void Awake()
         {
             Instance = this;
             serverManagerWorker = new ServerManagerWorker();
         }
 
-        public void OnStart() => serverManagerWorker.OnStart();
+        private void Start() => serverManagerWorker.OnStart();
 
-        public void OnUpdate() { }
+        private void Update() { }
     }
 }
