@@ -13,6 +13,8 @@ namespace ForgottenEmpires.Entities.Elements
         public PlayerWorker playerWorker;
         public PlayerData playerData;
 
+        public string walletAddress;
+
         private void Start()
         {
             playerWorker = new PlayerWorker(this);
@@ -35,6 +37,8 @@ namespace ForgottenEmpires.Entities.Elements
         public override void SetAnimation(AnimationType animationType, bool value) => playerWorker.playerAnimation.SetAnimation(animationType, value);
 
         //Client Requests
+
+        [Command] public void CmdPlayerUpdateWalletAddressRequest(string walletAddress) => this.walletAddress = walletAddress;
 
         [Command] public void CmdPlayerAttackRequest() => playerWorker.playerAttack.Attack();
 

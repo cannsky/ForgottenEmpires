@@ -22,7 +22,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public void TakeDamage(float damage)
         {
-            var appliedDamage = damage - playerWorker.player.playerData.armor;
+            var appliedDamage = damage;
             if (appliedDamage <= 0) return;
             else if ((playerWorker.player.health -= appliedDamage) <= 0) Die();
             else playerWorker.playerDamage.OnPlayerDamage();
