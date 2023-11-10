@@ -8,6 +8,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public PlayerInputs playerInputs;
 
+        public PlayerAttackInput playerAttackInput;
         public PlayerMovementInput playerMovementInput;
         public PlayerRotationInput playerRotationInput;
 
@@ -29,6 +30,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             playerInputs.Player.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerInputs.Player.Rotation.performed += i => cameraInput = i.ReadValue<Vector2>();
 
+            playerAttackInput = new PlayerAttackInput(this);
             playerMovementInput = new PlayerMovementInput(this);
             playerRotationInput = new PlayerRotationInput(this);
 
@@ -37,6 +39,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public void OnUpdate()
         {
+            playerAttackInput.OnUpdate();
             playerMovementInput.OnUpdate();
             playerRotationInput.OnUpdate();
         }
