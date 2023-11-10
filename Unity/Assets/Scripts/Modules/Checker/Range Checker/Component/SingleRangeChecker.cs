@@ -21,7 +21,8 @@ namespace ForgottenEmpires.Checkers
             targetDistance = rangeSqr;
             foreach (KeyValuePair<uint, Element> target in targets)
             {
-                if ((tempDistance = SqrDistanceCalculation(target.Value)) <= rangeSqr && tempDistance <= targetDistance)
+                if (target.Value == self) continue;
+                else if ((tempDistance = SqrDistanceCalculation(target.Value)) <= rangeSqr && tempDistance <= targetDistance)
                 {
                     if (activeTargets.Count == 0) activeTargets.Add(target.Value);
                     else activeTargets[0] = target.Value;
