@@ -9,17 +9,31 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
     {
         private EnemyBehaviour enemyBehaviour;
 
-        public SingleRangeChecker singleRangeChecker;
+        public SingleRangeChecker firstSingleRangeChecker, secondSingleRangeChecker;
+
+        private bool isWaitingForAttack, value;
 
         public EnemyAttackStanceBehaviour(EnemyBehaviour enemyBehaviour)
         {
             this.enemyBehaviour = enemyBehaviour;
-            singleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 2f,
+            firstSingleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 1f,
+                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+            secondSingleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 1.2f,
                 ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
         }
 
-        public override bool GetPredicate() => singleRangeChecker.Check();
+        public override bool GetPredicate() 
+        {
+            value = isWaitingForAttack ? secondSingleRangeChecker.Check() : firstSingleRangeChecker.Check();
+            isWaitingForAttack = value;
+            return value;
+        }
 
-        public override void HandleBehaviour() => enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.AttackStance, true);
+        public override void HandleBehaviour()
+        {
+            isWaitingForAttack = true;
+            enemyBehaviour.enemyWorker.enemyMovement.StopMovement();
+            enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.AttackStance, true);
+        }
     }
 }
