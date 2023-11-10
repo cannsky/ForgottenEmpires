@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "deployAliases": {
+    "berkeley": {
+      "url": "https://proxy.berkeley.minaexplorer.com/graphql",
+      "keyPath": "keys/berkeley.json",
+      "feepayerKeyPath": "/root/.cache/zkapp-cli/keys/berkley.json",
+      "feepayerAlias": "berkley",
+      "fee": "2",
+      "smartContract": "Game"
+    }
+  }
+}
