@@ -17,7 +17,11 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 
         public void Move(Vector3 position)
         {
-            if (navMeshAgent.pathEndPosition != position) navMeshAgent.SetDestination(position);
+            if (navMeshAgent.pathEndPosition == position) return;
+            navMeshAgent.SetDestination(position);
+            navMeshAgent.isStopped = false;
         }
+
+        public void StopMovement() => navMeshAgent.isStopped = true;
     }
 }
