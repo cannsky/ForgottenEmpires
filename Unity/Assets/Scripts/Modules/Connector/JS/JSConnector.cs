@@ -15,6 +15,14 @@ namespace ForgottenEmpires.Managers.JS
         [DllImport("__Internal")]
         private static extern void ConnectWallet(string callbackObjectName, string callbackMethodName);
 
+        [DllImport("__Internal")]
+        private static extern void DebugMessage(string callbackObjectName, string callbackMethodName);
+
+        public void BuyPotion()
+        {
+
+        }
+
         public void ReturnMessage(string message)
         {
             string[] keyValue = message.Split(':');
