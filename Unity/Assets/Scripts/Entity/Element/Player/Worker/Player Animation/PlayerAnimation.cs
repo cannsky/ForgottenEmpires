@@ -7,7 +7,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         private PlayerWorker playerWorker;
 
-        private Animator animator;
+        public Animator animator;
 
         public PlayerAnimation(PlayerWorker playerWorker) 
         {

@@ -1,7 +1,7 @@
 using ForgottenEmpires.Entities.Elements.Enemies.Workers;
-using ForgottenEmpires.Entities.Elements.PlayerWorkers;
+using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Types;
-using Mirror;
+using UnityEngine;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies
 {
@@ -12,6 +12,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
         private void Start()
         {
             enemyWorker = new EnemyWorker(this);
+            ServerManager.Instance.serverManagerWorker.serverEnemyWorker.AddEnemy(this);
             enemyWorker.OnStart();
         }
 
@@ -24,7 +25,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
 
         public override void TakeDamage(float damage)
         {
-            //Not implemented yet.
+            Debug.Log(damage);
         }
 
         public override void SetAnimation(AnimationType animationType, bool value) => enemyWorker.enemyAnimation.SetAnimation(animationType, value);
