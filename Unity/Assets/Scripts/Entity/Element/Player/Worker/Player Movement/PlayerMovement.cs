@@ -20,7 +20,8 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         {
             if (velocity.magnitude == 0)
             {
-                playerWorker.playerAnimation.SetAnimation(Types.AnimationType.Run, false);
+                if(playerWorker.playerAnimation.animator.GetBool(Types.AnimationType.Run.ToString()))
+                    playerWorker.playerAnimation.SetAnimation(Types.AnimationType.Run, false);
                 return;
             }
             playerWorker.player.transform.position = Vector3.MoveTowards(
