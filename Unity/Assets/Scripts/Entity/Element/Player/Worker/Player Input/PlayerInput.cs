@@ -6,8 +6,10 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         public PlayerWorker playerWorker;
 
+        // Input actions of the player.
         public PlayerInputs playerInputs;
 
+        // Inputs for specific player actions.
         public PlayerAttackInput playerAttackInput;
         public PlayerMovementInput playerMovementInput;
         public PlayerRotationInput playerRotationInput;
@@ -22,6 +24,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         {
             this.playerWorker = playerWorker;
 
+            // Initialize input actions and define event handlers for specific actions.
             playerInputs = new PlayerInputs();
             playerInputs.Player.LeftButton.performed += i => leftButton = true;
             playerInputs.Player.RightButton.performed += i => rightButton = true;
@@ -30,10 +33,12 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             playerInputs.Player.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             playerInputs.Player.Rotation.performed += i => cameraInput = i.ReadValue<Vector2>();
 
+            // Initialize specific inputs
             playerAttackInput = new PlayerAttackInput(this);
             playerMovementInput = new PlayerMovementInput(this);
             playerRotationInput = new PlayerRotationInput(this);
 
+            // Enable input actions.
             playerInputs.Enable();
         }
 

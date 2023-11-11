@@ -10,17 +10,20 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public bool someBool;
 
+        // General Update
         public void OnUpdate()
         {
             if (playerWorker.player.isClient) ClientOnUpdate();
             if (playerWorker.player.isServer) ServerOnUpdate();
         }
 
+        // Client Update
         public void ClientOnUpdate()
         {
             if (playerWorker.player.isLocalPlayer) OwnerClientOnUpdate();
         }
 
+        // Client Owner Update
         public void OwnerClientOnUpdate()
         {
             playerWorker.playerInput.OnUpdate();
@@ -32,6 +35,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             }
         }
 
+        // Server Update
         public void ServerOnUpdate()
         {
             playerWorker.playerRotation.OnUpdate();

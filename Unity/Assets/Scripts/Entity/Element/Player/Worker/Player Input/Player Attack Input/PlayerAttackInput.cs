@@ -10,6 +10,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public void OnUpdate() => SendAttackInput();
 
+        // Send attack request to the server if left button is clicked
         public void SendAttackInput()
         {
             if (playerInput.leftButton) playerInput.playerWorker.player.CmdPlayerAttackRequest();

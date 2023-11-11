@@ -17,8 +17,10 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             vfxs.Add(VFXType.Heal, playerWorker.player.transform.GetChild(1).GetChild(0).gameObject);
         }
 
+        // Play VFX
         public void PlayVFX(VFXType vfxType) => vfxs[vfxType].SetActive(true);
 
+        // Stop VFX
         public void StopVFX(VFXType vfxType) => vfxs[vfxType].SetActive(false);
     }
 }
