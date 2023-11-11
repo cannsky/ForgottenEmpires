@@ -7,7 +7,7 @@ namespace ForgottenEmpires.Entities.Elements
     {
         public bool isActive, isEnabled;
 
-        public float health, totalHealth;
+        public float health = 100f, totalHealth = 100f;
 
         public abstract void Regenerate();
 

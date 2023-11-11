@@ -25,7 +25,8 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
 
         public override void TakeDamage(float damage)
         {
-            Debug.Log(damage);
+            health -= damage;
+            if (health < 0) Destroy(gameObject);
         }
 
         public override void SetAnimation(AnimationType animationType, bool value) => enemyWorker.enemyAnimation.SetAnimation(animationType, value);

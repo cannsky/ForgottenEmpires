@@ -2,6 +2,7 @@
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Types;
+using UnityEngine;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
@@ -18,7 +19,11 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
                 ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
         }
 
-        public override bool GetPredicate() => singleRangeChecker.Check();
+        public override bool GetPredicate()
+        {
+            return singleRangeChecker.Check();
+            
+        }
 
         public override void HandleBehaviour()
         {
