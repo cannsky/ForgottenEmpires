@@ -11,6 +11,8 @@ export async function buyPotion(): Promise<ReturnValue<'potionBuy'>> {
 
         return 'potionBuy:1'
     } catch (error) {
+        console.log('buyPotion hatasi asagida:')
+        console.log(error)
         if (error.code === 4001) return 'potionBuy:2'
         else return 'potionBuy:0'
     }
@@ -31,10 +33,10 @@ export async function usePotion(): Promise<ReturnValue<'potionUse'>> {
     }
 }
 
-export async function connectWallet(): Promise<ReturnValue<'wallet'>> {
+export async function connectWallet() {
     try {
         const address = await getAddress()
-        return 'wallet:1'
+        return `wallet:${address}`
     } catch (error) {
         if (error.code === 4001) return 'wallet:2'
         else return 'wallet:0'

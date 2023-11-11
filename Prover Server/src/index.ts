@@ -17,7 +17,7 @@ const storage = new Storage()
 
 createServer(async (req, res) => {
     if (req.url !== '/get-merkle-witness-and-potion-count') {
-        res.writeHead(200, { 'Content-Type': 'application/json' })
+        res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
         res.end(JSON.stringify(storage.users))
         return
     }
@@ -50,9 +50,10 @@ createServer(async (req, res) => {
         return
     }
 
-    res.writeHead(200, { 'Content-Type': 'application/json' })
+
+    res.writeHead(200, { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' })
     res.end(JSON.stringify({
-        merkleWitnessAsJson: JSON.stringify(result.merkleWitness),
+        merkleWitness: result.merkleWitness,
         potionCount: result.potionCount,
     }))
 
@@ -82,3 +83,4 @@ function getReqData(req: IncomingMessage) {
         }
     });
 }
+
