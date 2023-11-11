@@ -5,7 +5,17 @@
         public ClientStartWorker clientStartWorker;
         public ClientUpdateWorker clientUpdateWorker;
 
+        public ClientDataWorker clientDataWorker;
         public ClientMusicWorker clientMusicWorker;
+
+        public ClientManagerWorker()
+        {
+            clientStartWorker = new ClientStartWorker();
+            clientUpdateWorker = new ClientUpdateWorker();
+
+            clientDataWorker = new ClientDataWorker();
+            clientMusicWorker = new ClientMusicWorker();
+        }
 
         public void OnStart() => clientStartWorker.OnStart();
 

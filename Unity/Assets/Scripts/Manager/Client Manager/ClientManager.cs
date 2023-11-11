@@ -1,4 +1,4 @@
-﻿using ForgottenEmpires.Managers.Client.Workers;
+using ForgottenEmpires.Managers.Client.Workers;
 using UnityEngine;
 
 namespace ForgottenEmpires.Managers.Client
@@ -9,14 +9,14 @@ namespace ForgottenEmpires.Managers.Client
 
         public ClientManagerWorker clientManagerWorker;
 
-        public ClientManager()
+        private void Awake()
         {
             Instance = this;
             clientManagerWorker = new ClientManagerWorker();
         }
 
-        public void OnStart() => clientManagerWorker.OnStart();
+        private void Start() => clientManagerWorker.OnStart();
 
-        public void OnUpdate() => clientManagerWorker.OnUpdate();
+        private void Update() => clientManagerWorker.OnUpdate();
     }
 }

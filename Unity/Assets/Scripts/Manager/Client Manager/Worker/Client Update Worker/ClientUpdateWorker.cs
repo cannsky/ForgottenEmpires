@@ -8,7 +8,7 @@
 
         public void OnUpdate()
         {
-            clientManagerWorker.clientMusicWorker.OnUpdate();
+            //clientManagerWorker.clientMusicWorker.OnUpdate();
         }
     }
 }

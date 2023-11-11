@@ -8,7 +8,7 @@
 
         public void OnStart()
         {
-            clientManagerWorker.clientMusicWorker.OnStart();
+            //clientManagerWorker.clientMusicWorker.OnStart();
         }
     }
 }
