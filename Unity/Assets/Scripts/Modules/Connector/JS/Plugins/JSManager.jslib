@@ -1,31 +1,33 @@
 ﻿mergeInto(LibraryManager.library, {
 
-  BuyPotion: async function(callbackObjectNameStr, callbackMethodNameStr) {
+  BP: async function(callbackObjectNameStr, callbackMethodNameStr) {
 	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	const return = await buyPotion();
-	console.log(return);
-	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, return);
+	console.log("test");
+	const message = await buyPotion();
+	console.log(message);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
-  UsePotion: async function(callbackObjectNameStr, callbackMethodNameStr) {
+  UP: async function(callbackObjectNameStr, callbackMethodNameStr) {
   	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	const return = await usePotion();
-	console.log(return);
-	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, return);
+	const message = await usePotion();
+	console.log(message);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
-  ConnectWallet: async function(callbackObjectNameStr, callbackMethodNameStr) {
+  CW: async function(callbackObjectNameStr, callbackMethodNameStr) {
   	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	const return = await connectWallet();
-	console.log(return);
-	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, return);
+	const message = await connectWallet();
+	console.log(message);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
   DebugMessage: function(messageStr) {
-	console.log(DebugMessage);
+	const message = UTF8ToString(messageStr);
+	console.log(message);
   }
 
 });
