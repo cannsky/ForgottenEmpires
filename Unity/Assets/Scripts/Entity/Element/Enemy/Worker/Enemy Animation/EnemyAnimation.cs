@@ -5,16 +5,21 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
     public class EnemyAnimation
     {
+        // Enemy worker of the enemy animation
         private EnemyWorker enemyWorker;
 
+        // Animator component used for animations.
         private Animator animator;
 
         public EnemyAnimation(EnemyWorker enemyWorker)
         {
             this.enemyWorker = enemyWorker;
+
+            // Get the Animator component from enemy gameobject
             animator = enemyWorker.enemy.GetComponent<Animator>();
         }
 
+        // Reset all animator parameters to false
         public void ResetAnimator()
         {
             animator.SetBool(AnimationType.Idle.ToString(), false);
@@ -23,9 +28,13 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
             animator.SetBool(AnimationType.Attack.ToString(), false);
         }
 
+        // Set the specified animation type parameter to the given value and resets other animations.
         public void SetAnimation(AnimationType animationType, bool value)
         {
+            // Reset animator.
             ResetAnimator();
+
+            // Set the specified animation.
             animator.SetBool(animationType.ToString(), value);
         }
     }

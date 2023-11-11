@@ -11,6 +11,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 
         public override bool GetPredicate() => true;
 
+        // Set animation to idle
         public override void HandleBehaviour() => enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.Idle, true);
     }
 }

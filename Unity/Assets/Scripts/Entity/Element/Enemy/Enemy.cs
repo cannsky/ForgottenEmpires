@@ -7,12 +7,18 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
 {
     public class Enemy : Element
     {
+        // The worker responsible for handling enemy works
         public EnemyWorker enemyWorker;
 
         private void Start()
         {
+            // Initialize the enemy worker for enemy.
             enemyWorker = new EnemyWorker(this);
+
+            // Add enemy to the server's enemy list
             ServerManager.Instance.serverManagerWorker.serverEnemyWorker.AddEnemy(this);
+
+            // Call enemy worker on start method
             enemyWorker.OnStart();
         }
 
@@ -23,9 +29,12 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
             throw new System.NotImplementedException();
         }
 
+        // Handle when the enemy takes damage.
         public override void TakeDamage(float damage)
         {
+            // Reduce the enemy's health by the amount of damage.
             health -= damage;
+            // If the enemy's health is lower than or equal to zero, destroy the enemy object.
             if (health < 0) Destroy(gameObject);
         }
 

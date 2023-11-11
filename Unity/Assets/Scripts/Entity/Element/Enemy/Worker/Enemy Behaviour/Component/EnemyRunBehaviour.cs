@@ -15,6 +15,8 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
         public EnemyRunBehaviour(EnemyBehaviour enemyBehaviour)
         {
             this.enemyBehaviour = enemyBehaviour;
+
+            // Single range checker with 10f radius to start running
             singleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 10f,
                 ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
         }
@@ -25,6 +27,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
             
         }
 
+        // Set animation to run
         public override void HandleBehaviour()
         {
             enemyBehaviour.enemyWorker.enemyMovement.Move(singleRangeChecker.targets[0].transform.position);
