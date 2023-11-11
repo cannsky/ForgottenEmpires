@@ -3,6 +3,6 @@
     public class MerkleTreeNode
     {
         public int potionCount;
-        public string walletAddress;
+        public string publicKey;
     }
 }
