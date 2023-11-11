@@ -1,10 +1,6 @@
 # ForgottenEmpires
 
-Welcome to Forgotten Empires, an onchain game built on the Mina Protocol.
-
-### Overview
-
-Forgotten Empires is based on zk-proof technology. Some in-game actions are a transactions on the Mina blockchain with changes captured by a prover-server. Prover server also builds and maintains a Merkle tree, interfacing directly with the game server.
+Forgotten Empires is an onchain game built on the Mina Protocol and based on zk-proof technology. Some in-game actions are transactions on the Mina blockchain with changes captured by a prover-server. Prover server also builds and maintains a Merkle tree, interfacing directly with the game server.
 
 ### Prerequisites
 
