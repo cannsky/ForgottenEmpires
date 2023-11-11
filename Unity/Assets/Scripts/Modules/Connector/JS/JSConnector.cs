@@ -26,26 +26,33 @@ namespace ForgottenEmpires.Managers.JS
             Instance = this;
         }
 
+        // Called when a button is clicked
         public void OnClick()
         {
             CW(gameObject.name, "ReturnMessage");
         }
 
+        // Called when a button is clicked
         public void BuyPotion()
         {
             BP(gameObject.name, "ReturnMessage");
         }
 
+        // Called when a message is returned from JavaScript
         public void ReturnMessage(string message)
         {
+            // Log the received message to the JavaScript console
             DebugMessage(message);
 
+            // Split the message into category and value
             string[] keyValue = message.Split(':');
 
+            // Check if the message has the expected format
             if (keyValue.Length != 2) return;
             string category = keyValue[0].Trim();
             string value = keyValue[1].Trim();
 
+            // Process the message based on its category
             switch (category)
             {
                 case "wallet":
@@ -62,19 +69,29 @@ namespace ForgottenEmpires.Managers.JS
             }
         }
 
+        // Process wallet information
         private void ProcessWallet(string value)
         {
+            // Check if the value is "0" or "1"; if so, return
             if (value == "0" || value == "1") return;
+
+            // Start client
             NetworkManager.singleton.StartClient();
+
+            // Set the wallet address in the client data worker
             ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress = value;
+
+            // Deactivate the "Enter Canvas" GameObject
             GameObject.Find("Enter Canvas").SetActive(false);
         }
 
+        // Process potion use information
         private void ProcessPotionUse(string value)
         {
             GameObject.Find("Merchant Canvas").SetActive(false);
         }
 
+        // Process potion buy information
         private void ProcessPotionBuy(string value)
         {
 

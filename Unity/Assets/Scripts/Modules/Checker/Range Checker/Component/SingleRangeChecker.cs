@@ -9,13 +9,17 @@ namespace ForgottenEmpires.Checkers
     {
         public SingleRangeChecker(Element self, float range, Dictionary<uint, Element> targets) : base(self, targets, range) { }
 
+        // Checks if the first active target, if any, is within range
         public override bool CheckSelectedTargets()
         {
+            // Return true if the first active target is within range
+            // Remove the first active target if not within range
             if (activeTargets.Count != 0 && activeTargets[0].isActive && SqrDistanceCalculation(activeTargets[0]) <= rangeSqr) return true;
             else if (activeTargets.Count > 0) activeTargets.RemoveAt(0);
             return false;
         }
 
+        // Checks all potential targets and selects the closest one within range
         public override bool CheckAllTargets()
         {
             targetDistance = rangeSqr;
