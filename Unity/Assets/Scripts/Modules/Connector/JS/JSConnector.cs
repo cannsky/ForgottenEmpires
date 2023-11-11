@@ -1,35 +1,50 @@
-﻿using System.Runtime.InteropServices;
+﻿using ForgottenEmpires.Managers.Client;
+using Mirror;
+using System.Runtime.InteropServices;
+using UnityEngine;
 
 namespace ForgottenEmpires.Managers.JS
 {
-    public class JSConnector
+    public class JSConnector : MonoBehaviour
     {
         public static JSConnector Instance;
 
         [DllImport("__Internal")]
-        private static extern void BuyPotion(string callbackObjectName, string callbackMethodName);
+        private static extern void BP(string callbackObjectName, string callbackMethodName);
 
         [DllImport("__Internal")]
-        private static extern void UsePotion(string callbackObjectName, string callbackMethodName);
+        private static extern void UP(string callbackObjectName, string callbackMethodName);
 
         [DllImport("__Internal")]
-        private static extern void ConnectWallet(string callbackObjectName, string callbackMethodName);
+        private static extern void CW(string callbackObjectName, string callbackMethodName);
 
         [DllImport("__Internal")]
-        private static extern void DebugMessage(string callbackObjectName, string callbackMethodName);
+        public static extern void DebugMessage(string message);
+
+        private void Awake()
+        {
+            Instance = this;
+        }
+
+        public void OnClick()
+        {
+            CW(gameObject.name, "ReturnMessage");
+        }
 
         public void BuyPotion()
         {
-
+            BP(gameObject.name, "ReturnMessage");
         }
 
         public void ReturnMessage(string message)
         {
+            DebugMessage(message);
+
             string[] keyValue = message.Split(':');
 
             if (keyValue.Length != 2) return;
             string category = keyValue[0].Trim();
-            int value = int.Parse(keyValue[1].Trim());
+            string value = keyValue[1].Trim();
 
             switch (category)
             {
@@ -47,17 +62,20 @@ namespace ForgottenEmpires.Managers.JS
             }
         }
 
-        private void ProcessWallet(int value)
+        private void ProcessWallet(string value)
         {
-
+            if (value == "0" || value == "1") return;
+            NetworkManager.singleton.StartClient();
+            ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress = value;
+            GameObject.Find("Enter Canvas").SetActive(false);
         }
 
-        private void ProcessPotionUse(int value)
+        private void ProcessPotionUse(string value)
         {
-
+            GameObject.Find("Merchant Canvas").SetActive(false);
         }
 
-        private void ProcessPotionBuy(int value)
+        private void ProcessPotionBuy(string value)
         {
 
         }
