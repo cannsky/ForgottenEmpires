@@ -4,7 +4,8 @@ using ForgottenEmpires.Entities.Elements.PlayerDatas;
 using Mirror;
 using ForgottenEmpires.Types;
 using ForgottenEmpires.Managers.Server;
-using ForgottenEmpires.Managers.Server.Workers;
+using ForgottenEmpires.Managers.Client;
+using TMPro;
 
 namespace ForgottenEmpires.Entities.Elements
 {
@@ -13,15 +14,24 @@ namespace ForgottenEmpires.Entities.Elements
         public PlayerWorker playerWorker;
         public PlayerData playerData;
 
+        public static Player local;
+
+        public TMP_Text healthText;
+
+        [SyncVar] public int potionCount = 0;
+
         public string walletAddress;
 
         private void Start()
         {
             playerWorker = new PlayerWorker(this);
-            playerData = new PlayerData();
+            playerData = new PlayerData(this);
             isActive = isEnabled = true;
             playerWorker.OnStart();
             ServerManager.Instance.serverManagerWorker.serverPlayerWorker.AddPlayer(this);
+            healthText = GameObject.Find("Health Potion Text").GetComponent<TMP_Text>();
+            if (isLocalPlayer) local = this;
+            //if (isLocalPlayer) CmdUpdateWalletAddress(ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress);
         }
 
         private void Update() => playerWorker.OnUpdate();
@@ -45,5 +55,19 @@ namespace ForgottenEmpires.Entities.Elements
         [Command] public void CmdPlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
 
         [Command] public void CmdPlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
+
+        [Command]
+        public void CmdPlayerHealthRequest()
+        {
+            if (potionCount <= 0) return;
+            transform.GetChild(1).GetChild(0).gameObject.SetActive(true);
+            potionCount--;
+        }
+
+        [Command] public void CmdUpdateWalletAddress(string walletAddress)
+        {
+            return;
+            this.walletAddress = walletAddress;
+        }
     }
 }

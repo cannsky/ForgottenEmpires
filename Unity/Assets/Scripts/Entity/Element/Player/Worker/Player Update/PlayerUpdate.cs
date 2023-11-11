@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerUpdate
@@ -5,6 +7,8 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         private PlayerWorker playerWorker;
 
         public PlayerUpdate(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+
+        public bool someBool;
 
         public void OnUpdate()
         {
@@ -20,6 +24,12 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         public void OwnerClientOnUpdate()
         {
             playerWorker.playerInput.OnUpdate();
+            playerWorker.player.healthText.text = playerWorker.player.potionCount.ToString();
+            if (!someBool && Input.GetKeyDown(KeyCode.R))
+            {
+                someBool = true;
+                playerWorker.player.CmdPlayerHealthRequest();
+            }
         }
 
         public void ServerOnUpdate()
