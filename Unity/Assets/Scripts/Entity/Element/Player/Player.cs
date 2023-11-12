@@ -80,7 +80,6 @@ namespace ForgottenEmpires.Entities.Elements
 
         [Command] public void CmdUpdateWalletAddress(string walletAddress)
         {
-            return;
             this.walletAddress = walletAddress;
         }
     }
