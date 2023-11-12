@@ -6,6 +6,7 @@
         public ClientUpdateWorker clientUpdateWorker;
 
         public ClientDataWorker clientDataWorker;
+        public ClientLoginWorker clientLoginWorker;
         public ClientMusicWorker clientMusicWorker;
 
         public ClientManagerWorker()
@@ -14,6 +15,7 @@
             clientUpdateWorker = new ClientUpdateWorker();
 
             clientDataWorker = new ClientDataWorker();
+            clientLoginWorker = new ClientLoginWorker();
             clientMusicWorker = new ClientMusicWorker();
         }
 

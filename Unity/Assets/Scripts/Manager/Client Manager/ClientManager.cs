@@ -11,12 +11,14 @@ namespace ForgottenEmpires.Managers.Client
 
         private void Awake()
         {
-            Instance = this;
+            DontDestroyOnLoad(Instance = this);
             clientManagerWorker = new ClientManagerWorker();
         }
 
         private void Start() => clientManagerWorker.OnStart();
 
         private void Update() => clientManagerWorker.OnUpdate();
+
+        public void OnLoginButtonClicked() => clientManagerWorker.clientLoginWorker.Login();
     }
 }
