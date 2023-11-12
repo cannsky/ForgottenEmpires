@@ -6,28 +6,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using System.Linq;
+using Mirror;
 
 namespace ForgottenEmpires.Managers.Data
 {
     public class DataManager : MonoBehaviour
     {
-        public bool isServer;
-
         private MerkleTree merkleTree;
 
         public static DataManager Instance;
 
         private string url = "http://localhost:4321/";
 
-        private void Awake()
-        {
-            Instance = this;
-        }
+        private void Awake() => DontDestroyOnLoad(Instance = this);
 
         private void Start()
         {
-            // If this instance is running on the server, start updating the MerkleTree
-            if (isServer) ServerManager.Instance.StartCoroutine(UpdateMerkleTree());
+            if (NetworkManager.singleton.isNetworkActive && NetworkServer.active) StartGettingData();
+        }
+
+        public void StartGettingData()
+        {
+            // Start updating the MerkleTree
+            ServerManager.Instance.StartCoroutine(UpdateMerkleTree());
 
             // Initialize the MerkleTree
             merkleTree = new MerkleTree();
@@ -79,11 +80,7 @@ namespace ForgottenEmpires.Managers.Data
         // Get player data based on player's wallet address from the MerkleTree
         public MerkleTreeNode GetPlayerData(string walletAddress)
         {
-            if (merkleTree == null || merkleTree.nodes == null)
-            {
-                // If the MerkleTree or its nodes are null, return null
-                return null;
-            }
+            if (merkleTree == null || merkleTree.nodes == null) return null;
             return merkleTree.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
         }
     }
