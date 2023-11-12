@@ -1,5 +1,5 @@
 export async function getMerkleWitnessAndPotionCount(userAddress: string) {
-    const res = await fetch('http://87.248.157.121:4321/get-merkle-witness-and-potion-count', {
+    const res = await fetch('http://localhost:4321/get-merkle-witness-and-potion-count', {
         method: 'POST',
         body: JSON.stringify(userAddress)
     })
