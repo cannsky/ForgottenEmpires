@@ -21,16 +21,10 @@ namespace ForgottenEmpires.Managers.JS
         [DllImport("__Internal")]
         public static extern void DebugMessage(string message);
 
-        private void Awake()
-        {
-            Instance = this;
-        }
+        private void Awake() => DontDestroyOnLoad(Instance = this);
 
         // Called when a button is clicked
-        public void OnClick()
-        {
-            CW(gameObject.name, "ReturnMessage");
-        }
+        public void ConnectWallet() => CW(gameObject.name, "ReturnMessage");
 
         // Called when a button is clicked
         public void BuyPotion()

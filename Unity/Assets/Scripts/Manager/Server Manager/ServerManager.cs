@@ -11,7 +11,7 @@ namespace ForgottenEmpires.Managers.Server
 
         private void Awake()
         {
-            Instance = this;
+            DontDestroyOnLoad(Instance = this);
             serverManagerWorker = new ServerManagerWorker();
         }
 
