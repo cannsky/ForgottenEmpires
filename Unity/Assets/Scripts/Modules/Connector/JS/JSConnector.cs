@@ -69,14 +69,10 @@ namespace ForgottenEmpires.Managers.JS
             // Check if the value is "0" or "1"; if so, return
             if (value == "0" || value == "1") return;
 
-            // Start client
-            NetworkManager.singleton.StartClient();
-
             // Set the wallet address in the client data worker
             ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress = value;
 
-            // Deactivate the "Enter Canvas" GameObject
-            GameObject.Find("Enter Canvas").SetActive(false);
+            ClientManager.Instance.clientManagerWorker.clientUIWorker.ChangeWelcomeScreen();
         }
 
         // Process potion use information

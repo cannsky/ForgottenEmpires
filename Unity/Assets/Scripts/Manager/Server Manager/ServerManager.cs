@@ -15,7 +15,10 @@ namespace ForgottenEmpires.Managers.Server
             serverManagerWorker = new ServerManagerWorker();
         }
 
-        private void Start() => serverManagerWorker.OnStart();
+        private void Start()
+        {
+            serverManagerWorker.OnStart();
+        }
 
         private void Update() { }
     }
