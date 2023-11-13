@@ -14,7 +14,7 @@ namespace ForgottenEmpires.Checkers
         {
             // Return true if the first active target is within range
             // Remove the first active target if not within range
-            if (activeTargets.Count != 0 && activeTargets[0].isActive && SqrDistanceCalculation(activeTargets[0]) <= rangeSqr) return true;
+            if (activeTargets.Count != 0 && activeTargets[0] != null && activeTargets[0].isActive && SqrDistanceCalculation(activeTargets[0]) <= rangeSqr) return true;
             else if (activeTargets.Count > 0) activeTargets.RemoveAt(0);
             return false;
         }
@@ -25,7 +25,7 @@ namespace ForgottenEmpires.Checkers
             targetDistance = rangeSqr;
             foreach (KeyValuePair<uint, Element> target in targets)
             {
-                if (target.Value == self) continue;
+                if (target.Value == null || target.Value == self) continue;
                 else if ((tempDistance = SqrDistanceCalculation(target.Value)) <= rangeSqr && tempDistance <= targetDistance)
                 {
                     if (activeTargets.Count == 0) activeTargets.Add(target.Value);
