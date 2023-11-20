@@ -34,7 +34,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
             if (!singleRangeChecker.Check() || isAttacking) return;
 
             // Deal damage to the first target in range.
-            singleRangeChecker.targets[0].TakeDamage(10f);
+            (target = singleRangeChecker.targets[0]).TakeDamage(10f);
 
             // Set attack state and set animation.
             isAttacking = true;
@@ -45,10 +45,16 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
         // Coroutine to reset attack state after a delay.
         public override IEnumerator ResetState()
         {
+            // Start enemy rotation towards player
+            enemyBehaviour.enemyWorker.enemyRotation.StartRotation();
+
             yield return new WaitForSeconds(2f);
 
             // Set isAttacked to true and wait for an additional delay.
             isAttacked = true;
+
+            // Stop enemy rotation towards player
+            enemyBehaviour.enemyWorker.enemyRotation.StopRotation();
 
             yield return new WaitForSeconds(3f);
 

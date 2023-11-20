@@ -35,12 +35,17 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 
         public override void HandleBehaviour()
         {
+            if (!isWaitingForAttack) target = firstSingleRangeChecker.targets[0];
+
             // Set state for an attack opportunity.
             isWaitingForAttack = true;
 
             // Stop the enemy's movement and set attack stance animation.
             enemyBehaviour.enemyWorker.enemyMovement.StopMovement();
             enemyBehaviour.enemyWorker.enemy.SetAnimation(AnimationType.AttackStance, true);
+
+            // Start rotation for the target
+            enemyBehaviour.enemyWorker.enemyRotation.StartRotation();
         }
     }
 }

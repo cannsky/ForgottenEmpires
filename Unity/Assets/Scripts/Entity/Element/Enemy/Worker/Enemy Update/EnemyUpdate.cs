@@ -23,6 +23,7 @@
         public void OnServerUpdate()
         {
             enemyWorker.enemyBehaviour.OnUpdate();
+            enemyWorker.enemyRotation.OnUpdate();
         }
     }
 }
