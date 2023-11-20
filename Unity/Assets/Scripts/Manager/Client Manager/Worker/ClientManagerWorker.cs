@@ -8,6 +8,7 @@
         public ClientDataWorker clientDataWorker;
         public ClientLoginWorker clientLoginWorker;
         public ClientMusicWorker clientMusicWorker;
+        public ClientUIWorker clientUIWorker;
 
         public ClientManagerWorker()
         {
@@ -17,6 +18,7 @@
             clientDataWorker = new ClientDataWorker();
             clientLoginWorker = new ClientLoginWorker();
             clientMusicWorker = new ClientMusicWorker();
+            clientUIWorker = new ClientUIWorker();
         }
 
         public void OnStart() => clientStartWorker.OnStart();
