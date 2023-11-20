@@ -6,6 +6,8 @@
         Run,
         AttackStance,
         Attack,
-        Hit
+        Hit,
+        Rotate45,
+        Rotate90
     }
 }
