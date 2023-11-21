@@ -24,6 +24,11 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
                     playerWorker.player.health = playerWorker.player.totalHealth;
         }
 
+        public float CalculateNewHealth()
+        {
+            return playerWorker.player.health += 1f * Time.deltaTime;
+        }
+
         // Apply damage to the player.
         public void TakeDamage(float damage)
         {

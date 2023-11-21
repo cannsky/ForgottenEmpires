@@ -4,7 +4,6 @@ using ForgottenEmpires.Entities.Elements.PlayerDatas;
 using Mirror;
 using ForgottenEmpires.Types;
 using ForgottenEmpires.Managers.Server;
-using ForgottenEmpires.Managers.Client;
 using TMPro;
 
 namespace ForgottenEmpires.Entities.Elements
