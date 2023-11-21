@@ -1,11 +1,15 @@
-﻿using ForgottenEmpires.Types;
+﻿using ForgottenEmpires.Entities.Kingdoms;
+using ForgottenEmpires.Types;
 using Mirror;
 
 namespace ForgottenEmpires.Entities.Elements
 {
     public abstract class Element : NetworkBehaviour
     {
-        // An elements state on certain situations
+        // Element's kingdom
+        public Kingdom kingdom;
+
+        // An element's state on certain situations
         public bool isActive, isEnabled;
 
         // Elements data used widely in the game
