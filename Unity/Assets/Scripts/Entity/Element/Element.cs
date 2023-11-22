@@ -37,7 +37,5 @@ namespace ForgottenEmpires.Entities.Elements
         // Virtual methods
 
         public virtual void Interact(Element element) { }
-
-        public virtual void AddEffect(Effect effect) { }
     }
 }
