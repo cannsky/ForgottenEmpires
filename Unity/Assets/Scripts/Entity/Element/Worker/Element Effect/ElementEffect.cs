@@ -3,26 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
+namespace ForgottenEmpires.Entities.Elements.Workers
 {
-    public class PlayerEffect
+    public class ElementEffect
     {
-        private PlayerWorker playerWorker;
+        private ElementWorker elementWorker;
 
         // Player's current effects
         public List<Effect> effects;
 
-        public PlayerEffect(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+        public ElementEffect(ElementWorker elementWorker) => this.elementWorker = elementWorker;
 
         public void OnUpdate() => ApplyEffects();
 
         // Apply effects to the player stats
         public void ApplyEffects()
         {
-            foreach(Effect effect in effects)
-            {
-                
-            }
+            // Apply each effect in the update
+            foreach (Effect effect in effects) effect.Apply();
         }
 
         public void AddEffect(Effect effect)
@@ -31,14 +29,14 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             effects.Add(effect);
 
             // Start remove effect coroutine for removing the effect when the time of the effect ends
-            playerWorker.player.StartCoroutine(RemoveEffect(effect));
+            elementWorker.element.StartCoroutine(RemoveEffect(effect));
         }
 
         public IEnumerator RemoveEffect(Effect effect)
         {
             // Wait until effect's time is completed
             yield return new WaitForSeconds(effect.time);
-            
+
             // Remove effect from player effects
             effects.Remove(effect);
         }

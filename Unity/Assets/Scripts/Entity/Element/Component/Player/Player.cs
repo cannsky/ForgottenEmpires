@@ -24,8 +24,10 @@ namespace ForgottenEmpires.Entities.Elements
         // The wallet address associated with the player.
         public string walletAddress;
 
-        private void Start()
+        // Start is called once in the game object start
+        public override void Start()
         {
+            base.Start();
             // Initialize the player worker and player data components.
             playerWorker = new PlayerWorker(this);
             playerData = new PlayerData(this);
@@ -39,7 +41,12 @@ namespace ForgottenEmpires.Entities.Elements
             //if (isLocalPlayer) CmdUpdateWalletAddress(ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress);
         }
 
-        private void Update() => playerWorker.OnUpdate();
+        // Update is called in each frame of the game while game object is active
+        public override void Update()
+        {
+            base.Update();
+            playerWorker.OnUpdate();
+        }
 
         private void FixedUpdate() => playerWorker.OnFixedUpdate();
 
