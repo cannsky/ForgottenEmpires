@@ -16,5 +16,10 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             // Initialize the dictionary to store player inventory slots.
             playerInventorySlots = new Dictionary<uint, PlayerInventorySlot>();
         }
+
+        public void UseItem(uint index)
+        {
+            playerWorker.player.elementWorker.elementEffect.AddEffect(playerInventorySlots[index].Use());
+        }
     }
 }

@@ -25,6 +25,9 @@ namespace ForgottenEmpires.Entities.Elements.Workers
 
         public void AddEffect(Effect effect)
         {
+            // If effect is null return
+            if (effect == null) return;
+
             // Add effect to the effects
             effects.Add(effect);
 
