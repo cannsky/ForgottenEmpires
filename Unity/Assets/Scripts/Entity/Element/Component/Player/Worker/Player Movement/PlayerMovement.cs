@@ -10,6 +10,8 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         private float speed = 2f;
 
+        public bool isMoving;
+
         public PlayerMovement(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
         public void OnUpdate() => Move();

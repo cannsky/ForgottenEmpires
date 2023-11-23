@@ -13,7 +13,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         private SingleRangeChecker singlePlayerRangeChecker, singleEnemyRangeChecker;
 
         // Reference to the current attack target
-        private Element target;
+        public Element target;
 
         // Attack state
         private bool isAttacking;

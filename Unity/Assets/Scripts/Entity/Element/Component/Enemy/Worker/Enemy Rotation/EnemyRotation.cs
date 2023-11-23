@@ -40,8 +40,8 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
                 Time.deltaTime * rotationSpeed);
 
             // If already rotating don't play rotation animation
-            if (!isStartedRotating) return;
-            isStartedRotating = false;
+            if (isStartedRotating) return;
+            isStartedRotating = true;
 
             // Calculate rotation angle
             rotationAngle = Vector3.Angle(enemyWorker.enemy.transform.forward, targetDirection);

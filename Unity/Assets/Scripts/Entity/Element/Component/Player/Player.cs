@@ -73,7 +73,7 @@ namespace ForgottenEmpires.Entities.Elements
         [Command] public void CmdPlayerMovementRequest(Vector2 position) => playerWorker.playerMovement.SetMovementPosition(position);
 
         // Command to request player rotation.
-        [Command] public void CmdPlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetTargetRotation(rotation);
+        [Command] public void CmdPlayerRotationRequest(Vector3 rotation) => playerWorker.playerRotation.SetMovementTargetRotation(rotation);
 
         // Command to request player health update.
         [Command]
