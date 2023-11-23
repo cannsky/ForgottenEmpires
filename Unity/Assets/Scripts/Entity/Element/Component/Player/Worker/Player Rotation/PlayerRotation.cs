@@ -1,35 +1,31 @@
-﻿using UnityEngine;
+﻿using ForgottenEmpires.Entities.Elements.Enemies.Workers;
+using UnityEngine;
 
 namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerRotation
     {
-        private PlayerWorker playerWorker;
+        public PlayerWorker playerWorker;
 
-        private Quaternion targetRotation, smoothTargetRotation, oldTargetRotation;
+        public PlayerAttackRotation playerAttackRotation;
+        public PlayerMovementRotation playerMovementRotation;
 
-        private float rotationSpeed = 5f;
-
-        public PlayerRotation(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
-
-        public void OnUpdate() => SmoothRotate();
-
-        public void SetTargetRotation(Vector3 rotation) => targetRotation = Quaternion.LookRotation(rotation);
-
-        // Smoothly rotate the player towards the target rotation.
-        public void SmoothRotate()
+        public PlayerRotation(PlayerWorker playerWorker)
         {
-            // Check if the target rotation has not changed.
-            if (oldTargetRotation == targetRotation) return;
+            this.playerWorker = playerWorker;
 
-            // Store the current player rotation as the old target rotation.
-            oldTargetRotation = playerWorker.player.transform.rotation;
+            playerAttackRotation = new PlayerAttackRotation(this);
+            playerMovementRotation = new PlayerMovementRotation(this);
+        }
 
-            // Use Slerp to smoothly interpolate between current rotation and target rotation.
-            smoothTargetRotation = Quaternion.Slerp(playerWorker.player.transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        public void OnUpdate() => Rotate();
 
-            // Apply the smoothed rotation to the player.
-            playerWorker.player.transform.rotation = smoothTargetRotation;
+        public void SetMovementTargetRotation(Vector3 rotation) => playerMovementRotation.targetRotation = Quaternion.LookRotation(rotation);
+
+        public void Rotate()
+        {
+            if (playerWorker.playerState.CheckState(StateType.Moving)) playerMovementRotation.Rotate();
+            else if (playerWorker.playerState.CheckState(StateType.Attacking)) playerAttackRotation.Rotate();
         }
     }
 }
