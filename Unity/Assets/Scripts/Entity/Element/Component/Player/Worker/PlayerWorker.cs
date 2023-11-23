@@ -4,6 +4,8 @@
     {
         public Player player;
 
+        public PlayerState playerState;
+
         public PlayerStart playerStart;
         public PlayerUpdate playerUpdate;
         public PlayerFixedUpdate playerFixedUpdate;
@@ -24,6 +26,8 @@
         public PlayerWorker(Player player)
         {
             this.player = player;
+
+            playerState = new PlayerState(this);
 
             playerStart = new PlayerStart(this);
             playerUpdate = new PlayerUpdate(this);
