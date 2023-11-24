@@ -6,6 +6,8 @@ namespace ForgottenEmpires.Components.Quests
     {
         public Vector3 position;
 
-        public override bool CheckQuestGoal() => owner.transform.position == position;
+        public override bool CheckQuestGoal() => (owner.transform.position != position);
+
+        public override void GiveReward() => owner.playerWorker.playerStats.xp += xpReward;
     }
 }

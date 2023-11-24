@@ -4,8 +4,14 @@ namespace ForgottenEmpires.Components.Quests
 {
     public abstract class Quest
     {
-        public Element owner;
+        // Owner element
+        public Player owner;
+
+        // Rewards
+        public int xpReward;
 
         public abstract bool CheckQuestGoal();
+
+        public abstract void GiveReward();
     }
 }
