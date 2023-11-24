@@ -1,5 +1,6 @@
 ﻿using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Managers.Server.Workers;
 using System.Collections;
 using UnityEngine;
 
@@ -23,8 +24,8 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             this.playerWorker = playerWorker;
 
             // Initialize range checkers with player ranges and available targets
-            singlePlayerRangeChecker = new SingleRangeChecker(playerWorker.player, 1.7f, 
-                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+            singlePlayerRangeChecker = new SingleRangeChecker(playerWorker.player, 1.7f,
+                ServerPlayerWorker.players);
             singleEnemyRangeChecker = new SingleRangeChecker(playerWorker.player, 1.7f,
                 ServerManager.Instance.serverManagerWorker.serverEnemyWorker.enemies);
         }

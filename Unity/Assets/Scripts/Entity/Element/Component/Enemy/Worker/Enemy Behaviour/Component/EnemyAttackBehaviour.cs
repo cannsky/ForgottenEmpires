@@ -2,8 +2,8 @@
 using UnityEngine;
 using System.Collections;
 using ForgottenEmpires.Checkers;
-using ForgottenEmpires.Managers.Server;
 using ForgottenEmpires.Types;
+using ForgottenEmpires.Managers.Server.Workers;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
@@ -23,7 +23,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 
             // Initialize the single range checker with enemy's attack range and available targets.
             singleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 1f,
-                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+                ServerPlayerWorker.players);
         }
 
         public override bool GetPredicate() => !isAttacked;

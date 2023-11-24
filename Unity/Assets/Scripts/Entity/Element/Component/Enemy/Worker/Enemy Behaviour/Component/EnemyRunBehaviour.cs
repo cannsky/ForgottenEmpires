@@ -1,8 +1,7 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
-using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Managers.Server.Workers;
 using ForgottenEmpires.Types;
-using UnityEngine;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
@@ -18,7 +17,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 
             // Single range checker with 10f radius to start running
             singleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 10f,
-                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+                ServerPlayerWorker.players);
         }
 
         public override bool GetPredicate()

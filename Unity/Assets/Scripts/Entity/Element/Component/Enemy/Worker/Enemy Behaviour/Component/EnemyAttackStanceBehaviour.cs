@@ -1,6 +1,7 @@
 ﻿using ForgottenEmpires.BehaviourTrees;
 using ForgottenEmpires.Checkers;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Managers.Server.Workers;
 using ForgottenEmpires.Types;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
@@ -20,9 +21,9 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
             // Initialize the single range checkers with enemy's attack stance ranges and available targets
             // Second ranger is for making enemy to wait if player is getting away from the enemy
             firstSingleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 1f,
-                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+                ServerPlayerWorker.players);
             secondSingleRangeChecker = new SingleRangeChecker(enemyBehaviour.enemyWorker.enemy, 1.2f,
-                ServerManager.Instance.serverManagerWorker.serverPlayerWorker.players);
+                ServerPlayerWorker.players);
         }
 
         public override bool GetPredicate() 

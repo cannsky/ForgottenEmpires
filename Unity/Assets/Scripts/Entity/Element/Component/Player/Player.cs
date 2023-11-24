@@ -5,6 +5,7 @@ using Mirror;
 using ForgottenEmpires.Types;
 using ForgottenEmpires.Managers.Server;
 using TMPro;
+using ForgottenEmpires.Managers.Server.Workers;
 
 namespace ForgottenEmpires.Entities.Elements
 {
@@ -35,7 +36,7 @@ namespace ForgottenEmpires.Entities.Elements
             // Set the player as active and enabled.
             isActive = isEnabled = true;
             playerWorker.OnStart();
-            ServerManager.Instance.serverManagerWorker.serverPlayerWorker.AddPlayer(this);
+            ServerPlayerWorker.AddPlayer(this);
             healthText = GameObject.Find("Health Potion Text").GetComponent<TMP_Text>();
             if (isLocalPlayer) local = this;
             //if (isLocalPlayer) CmdUpdateWalletAddress(ClientManager.Instance.clientManagerWorker.clientDataWorker.walletAddress);

@@ -9,15 +9,15 @@ namespace ForgottenEmpires.Managers.Server.Workers
         public static uint playerCount;
 
         // Dictionary to store player data with unique ID
-        public Dictionary<uint, Element> players;
+        public static Dictionary<uint, Element> players;
 
         public ServerPlayerWorker() => players = new Dictionary<uint, Element>();
 
         // Method to add a new player to the dictionary
         // It assigns a unique ID to the player based on playerCount
-        public void AddPlayer(Player player) => players.Add(playerCount++, player);
+        public static void AddPlayer(Player player) => players.Add(playerCount++, player);
 
         // Method to remove a player from the dictionary using ID
-        public void RemovePlayer(uint id) => players.Remove(id);
+        public static void RemovePlayer(uint id) => players.Remove(id);
     }
 }
