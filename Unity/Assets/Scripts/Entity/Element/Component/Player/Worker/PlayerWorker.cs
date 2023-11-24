@@ -17,11 +17,13 @@
         public PlayerDamage playerDamage;
         public PlayerEconomy playerEconomy;
         public PlayerInput playerInput;
+        public PlayerInteraction playerInteraction;
         public PlayerInventory playerInventory;
         public PlayerMovement playerMovement;
         public PlayerRotation playerRotation;
         public PlayerStats playerStats;
-        public PlayerInteraction playerInteraction;
+        public PlayerTrails playerTrails;
+        public PlayerVFX playerVFX;
 
         public PlayerWorker(Player player)
         {
@@ -40,11 +42,13 @@
             playerDamage = new PlayerDamage(this);
             playerEconomy = new PlayerEconomy(this);
             playerInput = new PlayerInput(this);
+            playerInteraction = new PlayerInteraction(this);
             playerInventory = new PlayerInventory(this);
             playerMovement = new PlayerMovement(this);
             playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
-            playerInteraction = new PlayerInteraction(this);
+            playerTrails = new PlayerTrails(this);
+            playerVFX = new PlayerVFX(this);
         }
 
         public void OnStart() => playerStart.OnStart();
