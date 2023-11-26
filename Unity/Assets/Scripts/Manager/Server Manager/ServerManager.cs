@@ -21,5 +21,7 @@ namespace ForgottenEmpires.Managers.Server
         }
 
         private void Update() { }
+
+        public GameObject InstantiateGameObject(GameObject prefab) => Instantiate(prefab);
     }
 }
