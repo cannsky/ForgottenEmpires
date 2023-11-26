@@ -40,10 +40,7 @@ namespace ForgottenEmpires.Managers.Server.Workers
         // Initialize the pool with a certain number of objects (optional)
         public void InitializePool(GameObject prefab, int count)
         {
-            if (!poolDictionary.ContainsKey(prefab))
-            {
-                poolDictionary[prefab] = new List<GameObject>();
-            }
+            if (!poolDictionary.ContainsKey(prefab)) poolDictionary[prefab] = new List<GameObject>();
 
             for (int i = 0; i < count; i++)
             {

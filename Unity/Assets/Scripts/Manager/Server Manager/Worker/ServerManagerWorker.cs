@@ -4,6 +4,7 @@ namespace ForgottenEmpires.Managers.Server.Workers
     {
         public ServerEnemyWorker serverEnemyWorker;
         public ServerKingdomWorker serverKingdomWorker;
+        public ServerObjectPoolWorker serverObjectPoolWorker;
         public ServerPlayerWorker serverPlayerWorker;
         public ServerStartWorker serverStartWorker;
 
@@ -11,6 +12,7 @@ namespace ForgottenEmpires.Managers.Server.Workers
         {
             serverEnemyWorker = new ServerEnemyWorker();
             serverKingdomWorker = new ServerKingdomWorker();
+            serverObjectPoolWorker = new ServerObjectPoolWorker();
             serverPlayerWorker = new ServerPlayerWorker();
             serverStartWorker = new ServerStartWorker();
         }
