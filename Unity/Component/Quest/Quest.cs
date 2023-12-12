@@ -1,17 +1,38 @@
-﻿using ForgottenEmpires.Entities.Elements;
+﻿using UnityEngine;
+using ForgottenEmpires.Components.Quests.Goals;
+using ForgottenEmpires.Components.Quests.Rewards;
+using ForgottenEmpires.Entities.Elements;
 
 namespace ForgottenEmpires.Components.Quests
 {
-    public abstract class Quest
+    public class Quest : ScriptableObject
     {
         // Owner element
         public Player owner;
 
-        // Rewards
-        public int xpReward;
+        // Quest Goal
+        public QuestGoal questGoal;
 
-        public abstract bool CheckQuestGoal();
+        // Quest Rewards
+        public QuestReward questReward;
 
-        public abstract void GiveReward();
+        // Setup Quest
+        public void Setup()
+        {
+            // Check if quest goal or quest reward is equal to null
+            if (questGoal == null || questReward == null) return;
+            
+            // Setup quest goal
+            questGoal.Setup(this);
+
+            // Setup quest reward
+            questReward.Setup(this);
+        }
+
+        // Check Quest Goal
+        public virtual bool CheckQuestGoal() => questGoal.Check();
+
+        // Give Quest Reward
+        public virtual void GiveReward() => questReward.GiveReward();
     }
 }
