@@ -1,4 +1,4 @@
-﻿using ForgottenEmpires.Entities.Elements.Enemies.Workers;
+﻿using ForgottenEmpires.Types;
 using UnityEngine;
 
 namespace ForgottenEmpires.Entities.Elements.PlayerWorkers

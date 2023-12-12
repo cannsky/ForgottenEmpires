@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires
+﻿namespace ForgottenEmpires.Types
 {
     public enum StateType
     {

@@ -10,8 +10,11 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
         // The worker responsible for handling enemy works
         public EnemyWorker enemyWorker;
 
-        private void Start()
+        public override void Start()
         {
+            // Call element's start method
+            base.Start();
+
             // Initialize the enemy worker for enemy.
             enemyWorker = new EnemyWorker(this);
 
@@ -22,7 +25,14 @@ namespace ForgottenEmpires.Entities.Elements.Enemies
             enemyWorker.OnStart();
         }
 
-        private void Update() => enemyWorker.OnUpdate();
+        public override void Update()
+        {
+            // Call element's update method
+            base.Update();
+
+            // Call enemy worker on update method
+            enemyWorker.OnUpdate();
+        }
 
         public override void Regenerate()
         {

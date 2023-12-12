@@ -1,4 +1,5 @@
 ﻿using System;
+using ForgottenEmpires.Types;
 using System.Collections.Generic;
 
 namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
