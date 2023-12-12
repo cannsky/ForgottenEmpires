@@ -13,7 +13,7 @@ namespace ForgottenEmpires.Components.Quests
         // Quest Goal
         public QuestGoal questGoal;
 
-        // Quest Rewards
+        // Quest Reward
         public QuestReward questReward;
 
         // Setup Quest
