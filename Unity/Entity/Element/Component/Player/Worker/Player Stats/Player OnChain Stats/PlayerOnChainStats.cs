@@ -6,7 +6,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         private PlayerStats playerStats;
 
-        public int potionCount;
+        public int potionCount, xp;
 
         public PlayerStats(PlayerStats playerStats) => this.playerStats = playerStats;
 
