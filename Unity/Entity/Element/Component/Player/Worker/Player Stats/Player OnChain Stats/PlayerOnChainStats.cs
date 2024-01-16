@@ -11,7 +11,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         public PlayerStats(PlayerStats playerStats) => this.playerStats = playerStats;
 
         // Update onchain data
-        public void UpdateOnChainData(float potionCount)
+        public void UpdateOnChainData(int potionCount)
         {
             this.potionCount = potionCount;
         }
