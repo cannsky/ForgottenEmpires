@@ -24,7 +24,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerDatas
             MerkleTreeNode node = DataManager.Instance.GetPlayerData(player.walletAddress);
 
             // Update the player's potion count if data was found.
-            if (node != null) player.potionCount = node.potionCount;
+            if (node != null) player.playerWorker.playerStats.playerOnChainStats.UpdateOnChainData(node.potionCount);
         }
 
         public void OnStart()

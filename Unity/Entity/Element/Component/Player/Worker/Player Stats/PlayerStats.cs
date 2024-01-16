@@ -6,9 +6,14 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         private PlayerWorker playerWorker;
 
-        public int xp;
+        public PlayerOnChainStats playerOnChainStats;
 
-        public PlayerStats(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+        public PlayerStats(PlayerWorker playerWorker) 
+        {
+            this.playerWorker = playerWorker;
+
+            playerOnChainStats = new PlayerOnChainStats(this);
+        }
 
         public void OnUpdate()
         {
