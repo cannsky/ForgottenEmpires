@@ -53,7 +53,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             if (target == null) return;
 
             // Deal damage to the target
-            target.TakeDamage(10f);
+            target.TakeDamage(playerWorker.player.elementWorker.elementStats.attackDamage + playerWorker.player.elementWorker.elementStats.attackDamageBonus);
 
             // Start a coroutine to reset the attack state.
             playerWorker.player.StartCoroutine(ResetState());

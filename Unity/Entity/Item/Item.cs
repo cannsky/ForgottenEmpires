@@ -7,7 +7,7 @@ using static UnityEditor.Progress;
 
 namespace ForgottenEmpires.Entities.Items
 {
-    public abstract class Item
+    public abstract class Item : ScriptableObject
     {
         // Effect of the item
         public Effect effect;
