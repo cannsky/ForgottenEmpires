@@ -16,7 +16,7 @@ namespace ForgottenEmpires.Managers.Data
 
         public static DataManager Instance;
 
-        public PlayerDataManager playerDataManager;
+        public DataManagerWorker dataManagerWorker;
 
         private string url = "http://localhost:4321/";
 
@@ -36,10 +36,10 @@ namespace ForgottenEmpires.Managers.Data
             merkleTree = new MerkleTree();
 
             // Create a new player data manager
-            playerDataManager = new PlayerDataManager();
+            dataManagerWorker = new DataManagerWorker();
 
             // Start PlayerDataManager
-            playerDataManager.OnStart();
+            dataManagerWorker.OnStart();
         }
 
         // Coroutine to continuously update the MerkleTree
