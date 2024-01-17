@@ -16,6 +16,8 @@ namespace ForgottenEmpires.Managers.Data
 
         public static DataManager Instance;
 
+        public PlayerDataManager playerDataManager;
+
         private string url = "http://localhost:4321/";
 
         private void Awake() => DontDestroyOnLoad(Instance = this);
