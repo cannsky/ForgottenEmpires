@@ -7,7 +7,7 @@ namespace ForgottenEmpires.Managers.Data
     public class PlayerOnChainDataManager
     {
         // All player's data will be stored from this list
-        private List<PlayerData> allPlayersData = new List<PlayerData>();
+        private List<PlayerOnChainData> allPlayersData = new List<PlayerOnChainData>();
 
         private PlayerDataManager playerDataManager;
 
@@ -18,9 +18,9 @@ namespace ForgottenEmpires.Managers.Data
         }
 
         // Save player data to the player data list
-        public void RegisterPlayer(PlayerData playerData)
+        public void RegisterPlayer(PlayerOnChainData playerOnChainData)
         {
-            allPlayersData.Add(playerData);
+            allPlayersData.Add(playerOnChainData);
             DataManager.StartCoroutine(UpdateAllPlayersData());
         }
 
@@ -30,7 +30,7 @@ namespace ForgottenEmpires.Managers.Data
             while (true)
             {
                 // Update each player's data in 1 seconds for optimization
-                foreach (var playerData in allPlayersData) playerData.UpdatePlayerData();
+                foreach (var playerOnChainData in allPlayersData) playerOnChainData.UpdatePlayerData();
                 yield return new WaitForSeconds(1f);
             }
         }
