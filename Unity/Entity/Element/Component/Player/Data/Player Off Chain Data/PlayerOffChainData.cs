@@ -9,7 +9,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerDatas
     {
         private PlayerData playerData;
 
-        public PlayerOnData(PlayerData playerData)
+        public PlayerOffChainData(PlayerData playerData)
         {
             this.playerData = playerData;
         }
