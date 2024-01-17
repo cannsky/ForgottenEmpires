@@ -1,21 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ForgottenEmpires.Entities.Elements.PlayerDatas;
 
-namespace ForgottenEmpires.Managers.Data
+namespace ForgottenEmpires.Managers.Data.Workers
 {
-    public class PlayerOnChainDataManager
+    public class PlayerOnChainDataWorker
     {
         // All player's data will be stored from this list
         private List<PlayerOnChainData> allPlayersData = new List<PlayerOnChainData>();
 
-        private PlayerDataManager playerDataManager;
-
-        public PlayerDataManager(PlayerDataManager playerDataManager)
-        {
-            this.playerDataManager = playerDataManager;
-            DataManager.StartCoroutine(UpdateAllPlayersData());
-        }
+        public PlayerOnChainDataWorker() => DataManager.StartCoroutine(UpdateAllPlayersData());
 
         // Save player data to the player data list
         public void RegisterPlayer(PlayerOnChainData playerOnChainData)
