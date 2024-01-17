@@ -34,6 +34,9 @@ namespace ForgottenEmpires.Managers.Data
 
             // Initialize the MerkleTree
             merkleTree = new MerkleTree();
+
+            // Start PlayerDataManager
+            playerDataManager.OnStart();
         }
 
         // Coroutine to continuously update the MerkleTree

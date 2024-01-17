@@ -14,5 +14,10 @@ namespace ForgottenEmpires.Managers.Data
             playerOnChainDataManager = new PlayerOnChainDataManager(this);
             playerOffChainDataManager = new PlayerOffChainDataManager();
         }
+
+        public void OnStart(){
+            playerOnChainDataManager.OnStart();
+            playerOffChainDataManager.OnStart();
+        }
     }
 }

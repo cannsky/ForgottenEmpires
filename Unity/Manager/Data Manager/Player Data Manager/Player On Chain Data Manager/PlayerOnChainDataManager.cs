@@ -35,7 +35,7 @@ namespace ForgottenEmpires.Managers.Data
             }
         }
 
-        private void Start()
+        private void OnStart()
         {
             StartCoroutine(UpdateAllPlayersData());
         }
