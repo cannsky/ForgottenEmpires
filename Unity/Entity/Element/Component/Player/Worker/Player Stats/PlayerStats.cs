@@ -23,6 +23,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         // Regenerate player health over time.
         public void Regenerate()
         {
+            if (ServerDayNightWorker.currentTimeOfDay < 0.25 || ServerDayNightWorker.currentTimeOfDay > 0.75) return;
             // Check if player health is below the maximum limit
             // Increment player health over time (with a rate of 1 unit per second)
             // Ensure that health does not exceed the maximum limit
