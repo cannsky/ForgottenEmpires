@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace ForgottenEmpires.Managers.Server.Workers {
-    public class DayNightWorker
+    public class ServerDayNightWorker
     {
         // Reference to the directional light in the scene
         public static Light sun;
