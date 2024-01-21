@@ -20,7 +20,6 @@ export class ItemKey extends Struct({
     id: UInt32,
 }) {}
 
-
 export class ItemEntity extends Struct({
     damage: UInt32,
 }) {}

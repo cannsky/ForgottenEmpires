@@ -21,13 +21,19 @@ export class CharacterKey extends Struct({
 }) {}
 
 export class CharacterEntity extends Struct({
-    xp: UInt32,
+    level: UInt32,
 }) {}
 
 @runtimeModule()
 export class Character extends RuntimeModule<{}> {
 
     @state() public characterStats = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
+
+    @runtimeMethod()
+    public levelUP(address: PublicKey, id: UInt32) {
+        // Get the xp of the player
+        //const player = this.players.get(address).value;
+    }
 
     // methods will be added later...
 }
