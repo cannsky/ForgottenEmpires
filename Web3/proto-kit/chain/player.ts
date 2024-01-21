@@ -15,14 +15,14 @@ import {
     UInt32
 } from "o1js";
 
-export class StatsEntity extends Struct({
+export class PlayerEntity extends Struct({
     xp: UInt32
 }) {}
 
 @runtimeModule()
-export class Stats extends RuntimeModule<{}> {
+export class Player extends RuntimeModule<{}> {
 
-    @state() public playerStats = StateMap.from<PublicKey, StatsEntity>(PublicKey, StatsEntity);
+    @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
 
     // methods will be added later...
 }
