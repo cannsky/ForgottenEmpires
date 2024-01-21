@@ -27,7 +27,7 @@ export class CharacterEntity extends Struct({
 @runtimeModule()
 export class Character extends RuntimeModule<{}> {
 
-    @state() public playerStats = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
+    @state() public characterStats = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
 
     // methods will be added later...
 }
