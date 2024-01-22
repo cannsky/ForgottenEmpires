@@ -10,6 +10,7 @@ log.setLevel("error");
 
 describe("Item", () => {
     it("should demonstrate how item work", async () => {
+        // Define appchain
         const appChain = TestingAppChain.fromRuntime({
             modules: {
                 Item,
@@ -18,29 +19,31 @@ describe("Item", () => {
                 Item: {},
             },
         });
-
+        // Start appchain
         await appChain.Start();
-
+        // Create a random private key
         const alicePrivateKey = PrivateKey.random();
+        // Get public key of the private key
         const alice = alicePrivateKey.toPublicKey();
-
+        // Set private key
         appChain.setSigner(alicePrivateKey);
-
+        // Get Item
         const item = appChain.runtime.resolve("Item");
-
+        // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
             item.equipItem(alice, UInt32.from(1), UInt32.from(1));
         });
-
+        // Sign the tx
         await tx1.sign();
+        // Send the tx
         await tx1.send();
-
+        // Produce block
         const block1 = await appChain.produceBlock();
-
+        // Get the item generated
         let aliceItem = await appChain.query.runtime.Item.items.get(new EquippedItemKey( owner: alice, slot: UInt32.from(1) })).value.itemid;
-
+        // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
-
+        // Expect item on the slot to be 1
         expect(aliceXP?.toBigInt()).toBe(1n);
     });
 });
