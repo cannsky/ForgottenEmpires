@@ -73,5 +73,11 @@ export class Item extends RuntimeModule<{}> {
         );
     }
 
+    @runtimeMethod()
+    public getEquipmentSlotItem(address: PublicKey, equipeditemslot: UInt32) {
+        // Return item id of the equipment Slot
+        return this.equipedItems.get(new EquipedItemKey({ owner: address, slot: equipeditemslot }).value.itemid;
+    }
+
     // methods will be added later...
 }
