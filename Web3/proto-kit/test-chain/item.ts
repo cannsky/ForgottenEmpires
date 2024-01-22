@@ -21,6 +21,8 @@ import {
 export class ItemKey extends Struct({
     owner: PublicKey,
     id: UInt32,
+    damage: UInt32,
+    defense: UInt32,
 }) {}
 
 export class ItemEntity extends Struct({
@@ -29,11 +31,11 @@ export class ItemEntity extends Struct({
 
 export class EquippedItemKey extends Struct({
     owner: PublicKey,
-    slot: UInt32
+    slot: UInt32,
 }) {}
 
 export class EquippedItemEntity extends Struct({
-    itemid: UInt32
+    itemid: UInt32,
 }) {}
 
 @runtimeModule()
@@ -59,7 +61,7 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public unEquipItem(address: PublicKey, equipeditemslot: UInt32) {
+    public unequipItem(address: PublicKey, equipeditemslot: UInt32) {
         // Get inventory slot
         const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equipeditemslot }).value;
         // Get current item id of the inventory slot
@@ -74,7 +76,7 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public getEquipmentSlotItem(address: PublicKey, equipeditemslot: UInt32) {
+    public getEquippedItem(address: PublicKey, equipeditemslot: UInt32) {
         // Return item id of the equipment Slot
         return this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equipeditemslot })).value.itemid;
     }
