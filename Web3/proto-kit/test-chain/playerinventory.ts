@@ -49,10 +49,5 @@ export class PlayerInventory extends RuntimeModule<{}> {
         );
     }
 
-    @runtimeMethod()
-    public levelUP(address: PublicKey) {
-
-    }
-
     // methods will be added later...
 }
