@@ -26,10 +26,10 @@ describe("Item", () => {
 
         appChain.setSigner(alicePrivateKey);
 
-        const player = appChain.runtime.resolve("Player");
+        const item = appChain.runtime.resolve("Item");
 
         const tx1 = await appChain.transaction(alice, () => {
-            player.equipItem(alice, UInt32.from(1), UInt32.from(1));
+            item.equipItem(alice, UInt32.from(1), UInt32.from(1));
         });
 
         await tx1.sign();
