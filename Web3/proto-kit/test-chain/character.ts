@@ -1,3 +1,6 @@
+// This code is not completed.
+// This code is not audited.
+
 import {
     RuntimeModule,
     runtimeModule,
@@ -6,7 +9,8 @@ import {
 } from "@proto-kit/module";
 
 import {
-    StateMap
+    StateMap,
+    assert
 } from "@proto-kit/protocol";
 
 import {
@@ -22,17 +26,51 @@ export class CharacterKey extends Struct({
 
 export class CharacterEntity extends Struct({
     level: UInt32,
+    xp: UInt32,
+    statxp: UInt32,
+    damage: UInt32,
+    defense: UInt32,
 }) {}
 
 @runtimeModule()
 export class Character extends RuntimeModule<{}> {
 
-    @state() public characterStats = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
+    @state() public characters = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
 
     @runtimeMethod()
     public levelUP(address: PublicKey, id: UInt32) {
-        // Get the xp of the player
-        //const player = this.players.get(address).value;
+
+    }
+
+    @runtimeMethod()
+    public upgradeDamage(address: PublicKey, id: UInt32) {
+        // Get character
+        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        // Get current stat xp value of the character
+        const currentStatXP = character.statxp;
+        // Get current damage value of the character
+        const currentDamage = character.damage;
+        // Check if the stat xp is enough for an upgrade
+        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        // Calculate new damage value of the character
+        const newDamage = currentDamage.value.add(1);
+        // Calculate new stat xp of the character
+        const newStatXP = currentStatXP.value.sub(1);
+        // Set new xp and level of the character
+        this.characters.set(
+            new CharacterKey({ owner: address, id: id }), 
+            new CharacterEntity({ 
+                level: character.level, 
+                xp: character.xp,
+                statxp: newStatXP, 
+                damage: newDamage, 
+                defense: character.defense })
+        );
+    }
+
+    @runtimeMethod()
+    public upgradeDefense(address: PublicKey, id: UInt32) {
+        
     }
 
     // methods will be added later...
