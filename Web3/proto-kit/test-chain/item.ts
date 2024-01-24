@@ -106,5 +106,29 @@ export class Item extends RuntimeModule<{}> {
         );
     }
 
+    @runtimeMethod()
+    public upgradeDefense(address: PublicKey, id: UInt32) {
+        // Get item
+        const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
+        // Get current stat xp value of the item
+        const currentStatXP = item.statxp;
+        // Get current defense value of the item
+        const currentDefense = item.defense;
+        // Check if the stat xp is enough for an upgrade
+        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        // Calculate new defense value of the item
+        const newDefense = currentDefense.value.add(1);
+        // Calculate new stat xp of the item
+        const newStatXP = currentStatXP.value.sub(1);
+        // Set new stat xp and defense value of the item
+        this.items.set(
+            new ItemKey({ owner: address, id: id }), 
+            new ItemEntity({ 
+                statxp: newStatXP, 
+                damage: item.damage, 
+                defense: newDefense })
+        );
+    }
+
     // methods will be added later...
 }
