@@ -56,7 +56,7 @@ export class Character extends RuntimeModule<{}> {
         const newDamage = currentDamage.value.add(1);
         // Calculate new stat xp of the character
         const newStatXP = currentStatXP.value.sub(1);
-        // Set new xp and level of the character
+        // Set new stat xp and damage value of the character
         this.characters.set(
             new CharacterKey({ owner: address, id: id }), 
             new CharacterEntity({ 
@@ -70,7 +70,28 @@ export class Character extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public upgradeDefense(address: PublicKey, id: UInt32) {
-        
+        // Get character
+        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        // Get current stat xp value of the character
+        const currentStatXP = character.statxp;
+        // Get current defense value of the character
+        const currentDefense = character.defense;
+        // Check if the stat xp is enough for an upgrade
+        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        // Calculate new defense value of the character
+        const newDefense = currentDefense.value.add(1);
+        // Calculate new stat xp of the character
+        const newStatXP = currentStatXP.value.sub(1);
+        // Set stat xp and defense value of the character
+        this.characters.set(
+            new CharacterKey({ owner: address, id: id }), 
+            new CharacterEntity({ 
+                level: character.level, 
+                xp: character.xp,
+                statxp: newStatXP, 
+                damage: character.damage, 
+                defense: newDefense })
+        );
     }
 
     // methods will be added later...
