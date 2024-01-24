@@ -44,6 +44,6 @@ describe("Item", () => {
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
         // Expect item on the slot to be 1
-        expect(aliceXP?.toBigInt()).toBe(1n);
+        expect(aliceItem?.toBigInt()).toBe(1n);
     });
 });
