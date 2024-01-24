@@ -9,7 +9,8 @@ import {
 } from "@proto-kit/module";
 
 import {
-    StateMap
+    StateMap,
+    assert
 } from "@proto-kit/protocol";
 
 import {
@@ -21,12 +22,12 @@ import {
 export class ItemKey extends Struct({
     owner: PublicKey,
     id: UInt32,
-    damage: UInt32,
-    defense: UInt32,
 }) {}
 
 export class ItemEntity extends Struct({
+    statxp: UInt32,
     damage: UInt32,
+    defense: UInt32,
 }) {}
 
 export class EquippedItemKey extends Struct({
@@ -79,6 +80,30 @@ export class Item extends RuntimeModule<{}> {
     public getEquippedItem(address: PublicKey, equipeditemslot: UInt32) {
         // Return item id of the equipment Slot
         return this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equipeditemslot })).value.itemid;
+    }
+
+    @runtimeMethod()
+    public upgradeDamage(address: PublicKey, id: UInt32) {
+        // Get item
+        const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
+        // Get current stat xp value of the item
+        const currentStatXP = item.statxp;
+        // Get current damage value of the item
+        const currentDamage = item.damage;
+        // Check if the stat xp is enough for an upgrade
+        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        // Calculate new damage value of the item
+        const newDamage = currentDamage.value.add(1);
+        // Calculate new stat xp of the item
+        const newStatXP = currentStatXP.value.sub(1);
+        // Set new stat xp and damage value of the item
+        this.items.set(
+            new ItemKey({ owner: address, id: id }), 
+            new ItemEntity({ 
+                statxp: newStatXP, 
+                damage: newDamage, 
+                defense: item.defense })
+        );
     }
 
     // methods will be added later...
