@@ -58,7 +58,7 @@ export class Player extends RuntimeModule<{}> {
         // Calculate new level of the player
         const newLevel = currentLevel.value.add(1);
         // calculate new xp of the player
-        const newXP = player.currentXP.value.sub(1000);
+        const newXP = currentXP.value.sub(1000);
         // Set new xp and level of the player
         this.players.set(
             address, 
