@@ -14,7 +14,6 @@ import {
 } from "@proto-kit/protocol";
 
 import {
-    Provable,
     PublicKey,
     Struct,
     UInt64
@@ -37,18 +36,34 @@ export class Player extends RuntimeModule<{}> {
         const player = this.players.get(address).value;
         // Get current xp value of the player
         const currentXP = player.xp;
-        // Set new xp value of the player
+        // Calculate new xp value of the player
         const newXP = currentXP.value.add(amount);
         // Set the new xp of the player
         this.players.set(
             address, 
-            new PlayerEntity({ xp: newXP, level: player.level })
+            new PlayerEntity({ level: player.level, xp: newXP })
         );
     }
 
     @runtimeMethod()
     public levelUP(address: PublicKey) {
-        
+        // Get player
+        const player = this.players.get(address).value;
+        // Get current xp value of the player
+        const currentXP = player.xp;
+        // Get current level value of the player
+        const currentLevel = player.level;
+        // Check if the xp is enough for a level up
+        assert(currentXP.value.greaterThanOrEqual(1000), "not enough xp");
+        // Calculate new level of the player
+        const newLevel = currentLevel.value.add(1);
+        // calculate new xp of the player
+        const newXP = player.currentXP.value.sub(1000);
+        // Set new xp and level of the player
+        this.players.set(
+            address, 
+            new PlayerEntity({ level: newLevel, xp: newXP, })
+        );
     }
 
     // methods will be added later...
