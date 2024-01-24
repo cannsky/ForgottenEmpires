@@ -2,7 +2,7 @@ import { TestingAppChain } from "@proto-kit/sdk";
 
 import { PrivateKey, UInt32 } from "o1js";
 
-import { Character, CharacterKey } from "../character";
+import { Character, CharacterKey } from "../../character";
 
 import { log } from "@proto-kit/common";
 
