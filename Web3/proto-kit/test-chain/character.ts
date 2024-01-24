@@ -39,7 +39,28 @@ export class Character extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public levelUP(address: PublicKey, id: UInt32) {
-
+        // Get character
+        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        // Get current xp value of the character
+        const currentXP = character.xp;
+        // Get current level value of the character
+        const currentLevel = character.level;
+        // Check if the xp is enough for a level up
+        assert(currentXP.value.greaterThanOrEqual(100), "not enough xp");
+        // Calculate new level of the character
+        const newLevel = currentLevel.value.add(1);
+        // Calculate new xp of the character
+        const newXP = currentXP.value.sub(100);
+        // Set new xp and level of the character
+        this.characters.set(
+            new CharacterKey({ owner: address, id: id }), 
+            new CharacterEntity({ 
+                level: newLevel, 
+                xp: newXP, 
+                statxp: character.statxp, 
+                damage: character.damage, 
+                defense: character.defense })
+        );
     }
 
     @runtimeMethod()
