@@ -31,7 +31,7 @@ describe("Item", () => {
         const item = appChain.runtime.resolve("Item");
         // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
-            item.equipItem(alice, UInt32.from(1), UInt32.from(1));
+            item.unequipItem(alice, UInt32.from(1));
         });
         // Sign the tx
         await tx1.sign();
@@ -43,7 +43,7 @@ describe("Item", () => {
         let aliceItem = await appChain.query.runtime.Item.items.get(new EquippedItemKey( owner: alice, slot: UInt32.from(1) })).value.itemid;
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
-        // Expect item on the slot to be 1
-        expect(aliceItem?.toBigInt()).toBe(1n);
+        // Expect item on the slot to be 0
+        expect(aliceItem?.toBigInt()).toBe(0n);
     });
 });
