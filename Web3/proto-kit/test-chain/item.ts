@@ -32,6 +32,8 @@ export class ItemEntity extends Struct({
     consumable: Bool,
     upgradable: Bool,
     consumed: Bool,
+    type: UInt32,
+    value: UInt32,
 }) {}
 
 export class EquippedItemKey extends Struct({
@@ -43,12 +45,24 @@ export class EquippedItemEntity extends Struct({
     itemid: UInt32,
 }) {}
 
+export class ConsumedItemKey extends Struct({
+    owner: PublicKey,
+    itemid: UInt32,
+}) {}
+
+export class ConsumedItemEntity extends Struct({
+    type: UInt32,
+    value: UInt32,
+}) {}
+
 @runtimeModule()
 export class Item extends RuntimeModule<{}> {
 
     @state() public items = StateMap.from<ItemKey, ItemEntity>(ItemKey, ItemEntity);
 
     @state() public equippedItems = StateMap.from<EquippedItemKey, EquippedItemEntity>(EquippedItemKey, EquippedItemEntity);
+
+    @state() public consumedItems = StateMap.from<ConsumedItemKey, ConsumedItemEntity>(ConsumedItemKey, ConsumedItemEntity);
 
     @runtimeMethod()
     public equipItem(address: PublicKey, equippeditemslot: UInt32, itemid: UInt32) {
@@ -110,6 +124,8 @@ export class Item extends RuntimeModule<{}> {
                 consumable: item.consumable,
                 upgradable: item.upgradable,
                 consumed: item.consumed,
+                type: item.type,
+                value: item.value,
              })
         );
     }
@@ -138,6 +154,8 @@ export class Item extends RuntimeModule<{}> {
                 consumable: item.consumable,
                 upgradable: item.upgradable,
                 consumed: item.consumed,
+                type: item.type,
+                value: item.value,
             })
         );
     }
