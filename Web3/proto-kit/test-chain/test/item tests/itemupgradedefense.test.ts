@@ -40,10 +40,10 @@ describe("Item", () => {
         // Produce block
         const block1 = await appChain.produceBlock();
         // Get the item
-        let aliceItem = await appChain.query.runtime.Item.items.get(new ItemKey( owner: alice, id: UInt32.from(1) })).value.defense;
+        let aliceItemDefense = await appChain.query.runtime.Item.items.get(new ItemKey( owner: alice, id: UInt32.from(1) })).value.defense;
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
         // Expect defense of the item to be 2
-        expect(aliceItem?.toBigInt()).toBe(2n);
+        expect(aliceItemDefense?.toBigInt()).toBe(2n);
     });
 });

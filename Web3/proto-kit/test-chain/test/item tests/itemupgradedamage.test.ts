@@ -40,10 +40,10 @@ describe("Item", () => {
         // Produce block
         const block1 = await appChain.produceBlock();
         // Get the item
-        let aliceItem = await appChain.query.runtime.Item.items.get(new ItemKey( owner: alice, id: UInt32.from(1) })).value.damage;
+        let aliceItemDamage = await appChain.query.runtime.Item.items.get(new ItemKey( owner: alice, id: UInt32.from(1) })).value.damage;
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
         // Expect damage of the item to be 2
-        expect(aliceItem?.toBigInt()).toBe(2n);
+        expect(aliceItemDamage?.toBigInt()).toBe(2n);
     });
 });

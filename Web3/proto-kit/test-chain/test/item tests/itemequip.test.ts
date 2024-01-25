@@ -40,10 +40,10 @@ describe("Item", () => {
         // Produce block
         const block1 = await appChain.produceBlock();
         // Get the item slot generated
-        let aliceItem = await appChain.query.runtime.Item.equippedItems.get(new EquippedItemKey( owner: alice, slot: UInt32.from(1) })).value.itemid;
+        let aliceItemID = await appChain.query.runtime.Item.equippedItems.get(new EquippedItemKey( owner: alice, slot: UInt32.from(1) })).value.itemid;
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
         // Expect item on the slot to be 1
-        expect(aliceItem?.toBigInt()).toBe(1n);
+        expect(aliceItemID?.toBigInt()).toBe(1n);
     });
 });
