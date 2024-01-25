@@ -161,7 +161,7 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public consumeDamageItem(address: PublicKey, id: UInt32) {
+    public consumeItem(address: PublicKey, id: UInt32) {
         // Get item
         const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
         // Get item's consumable value
