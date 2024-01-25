@@ -16,7 +16,8 @@ import {
 import {
     PublicKey,
     Struct,
-    UInt32
+    UInt32,
+    Bool
 } from "o1js";
 
 export class ItemKey extends Struct({
@@ -28,6 +29,9 @@ export class ItemEntity extends Struct({
     statxp: UInt32,
     damage: UInt32,
     defense: UInt32,
+    consumable: Bool,
+    upgradable: Bool,
+    consumed: Bool,
 }) {}
 
 export class EquippedItemKey extends Struct({
@@ -102,7 +106,11 @@ export class Item extends RuntimeModule<{}> {
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: newDamage, 
-                defense: item.defense })
+                defense: item.defense,
+                consumable: item.consumable,
+                upgradable: item.upgradable,
+                consumed: item.consumed,
+             })
         );
     }
 
@@ -126,7 +134,11 @@ export class Item extends RuntimeModule<{}> {
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: item.damage, 
-                defense: newDefense })
+                defense: newDefense,
+                consumable: item.consumable,
+                upgradable: item.upgradable,
+                consumed: item.consumed,
+            })
         );
     }
 

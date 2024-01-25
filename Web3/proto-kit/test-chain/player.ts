@@ -62,7 +62,7 @@ export class Player extends RuntimeModule<{}> {
         // Set new xp and level of the player
         this.players.set(
             address, 
-            new PlayerEntity({ level: newLevel, xp: newXP, })
+            new PlayerEntity({ level: newLevel, xp: newXP })
         );
     }
 
