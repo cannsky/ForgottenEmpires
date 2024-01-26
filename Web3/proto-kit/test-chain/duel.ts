@@ -21,7 +21,6 @@ import {
 } from "o1js";
 
 export class DuelKey extends Struct({
-    owner: PublicKey,
     id: UInt32,
 }) {}
 
@@ -34,5 +33,26 @@ export class DuelEntity extends Struct({
 export class Duel extends RuntimeModule<{}> {
 
     @state() public duels = StateMap.from<DuelKey, DuelEntity>(DuelKey, DuelEntity);
+
+    @runtimeMethod()
+    public offerDuel(address: PublicKey, targetaddress: PublicKey) {
+        //TODO: Implement here
+    }
+
+    @runtimeMethod()
+    public acceptDuel(address: PublicKey, id: UInt32) {
+        // Get inventory slot
+        const duel = this.duels.get(new DuelKey({ id: UInt32 }).value;
+        // Accept the duel
+        this.duels.set(
+            new DuelKey({ 
+                id: duel.id
+             }),
+            new DuelEntity({ 
+                offensiveplayer: duel.offensiveplayer, 
+                defensiveplayer: duel.defensiveplayer 
+            })
+        );
+    }
 
 }
