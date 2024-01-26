@@ -31,7 +31,7 @@ describe("Player", () => {
         const player = appChain.runtime.resolve("Player");
         // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
-            player.changeKingdom(alice, UInt64.from(1));
+            player.levelUp(alice);
         });
         // Sign the tx
         await tx1.sign();
@@ -39,11 +39,11 @@ describe("Player", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get the kingdom changed
-        let aliceKingdom = await appChain.query.runtime.Player.players.get(alice).value.kingdom;
+        // Get the level upgraded
+        let aliceLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
-        // Expect player kingdom to be 1
-        expect(aliceKingdom?.toBigInt()).toBe(1n);
+        // Expect player level to be 2
+        expect(aliceLevel?.toBigInt()).toBe(1n);
     });
 });
