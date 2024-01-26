@@ -31,7 +31,7 @@ export class DuelEntity extends Struct({
 }) {}
 
 @runtimeModule()
-export class Item extends RuntimeModule<{}> {
+export class Duel extends RuntimeModule<{}> {
 
     @state() public duels = StateMap.from<DuelKey, DuelEntity>(DuelKey, DuelEntity);
 
