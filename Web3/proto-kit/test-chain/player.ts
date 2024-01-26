@@ -22,6 +22,7 @@ import {
 export class PlayerEntity extends Struct({
     level: UInt64,
     xp: UInt64,
+    kingdom: UInt64,
 }) {}
 
 @runtimeModule()
@@ -41,7 +42,11 @@ export class Player extends RuntimeModule<{}> {
         // Set the new xp of the player
         this.players.set(
             address, 
-            new PlayerEntity({ level: player.level, xp: newXP })
+            new PlayerEntity({ 
+                level: player.level, 
+                xp: newXP,
+                kingdom: player.kingdom
+            })
         );
     }
 
@@ -62,7 +67,30 @@ export class Player extends RuntimeModule<{}> {
         // Set new xp and level of the player
         this.players.set(
             address, 
-            new PlayerEntity({ level: newLevel, xp: newXP })
+            new PlayerEntity({ 
+                level: newLevel, 
+                xp: newXP,
+                kingdom: player.kingdom
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public changeKingdom(address: PublicKey, kingdom: UInt64) {
+        // Get player
+        const player = this.players.get(address).value;
+        // Get current kingdom of the player
+        const currentKingdom = player.kingdom;
+        // Check if the new kingdom is equal to old kingdom
+        assert(currentKingdom.value.equal(kingdom), "selected kingdom cannot be the same kingdom");
+        // Set new kingdom of the player
+        this.players.set(
+            address,
+            new PlayerEntity({ 
+                level: player.level, 
+                xp: player.xp,
+                kingdom: kingdom
+            })
         );
     }
 

@@ -44,6 +44,6 @@ describe("Item", () => {
         // Expect block to be true
         expect(block1?.txs[0].status).toBe(true);
         // Expect character level to be 2
-        expect(aliceCharacterDefense?.toBigInt()).toBe(2n);
+        expect(aliceCharacterLevel?.toBigInt()).toBe(2n);
     });
 });
