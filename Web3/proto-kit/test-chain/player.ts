@@ -30,24 +30,18 @@ export class Player extends RuntimeModule<{}> {
 
     @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
 
-    // For testing
     @runtimeMethod()
-    public addXP(address: PublicKey, amount: UInt64) {
-        // Get player
-        const player = this.players.get(address).value;
-        // Get current xp value of the player
-        const currentXP = player.xp;
-        // Calculate new xp value of the player
-        const newXP = currentXP.value.add(amount);
-        // Set the new xp of the player
+    public newPlayer(address: PublicKey, kingdom: UInt64) {
+        // TODO check if the player already exists
+        // Set new player
         this.players.set(
-            address, 
-            new PlayerEntity({ 
-                level: player.level, 
-                xp: newXP,
-                kingdom: player.kingdom
+            address,
+            new PlayerEntity({
+                level: 1,
+                xp: 1000,
+                kingdom: kingdom
             })
-        );
+        )
     }
 
     @runtimeMethod()
