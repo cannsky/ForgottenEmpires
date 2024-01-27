@@ -31,7 +31,7 @@ describe("Item", () => {
         const item = appChain.runtime.resolve("Item");
         // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
-            item.upgradeDefense(alice, UInt32.from(1));
+            item.upgradeDefense(UInt32.from(1));
         });
         // Sign the tx
         await tx1.sign();

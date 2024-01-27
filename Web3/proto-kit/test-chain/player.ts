@@ -31,11 +31,11 @@ export class Player extends RuntimeModule<{}> {
     @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
 
     @runtimeMethod()
-    public newPlayer(address: PublicKey, kingdom: UInt64) {
+    public newPlayer(kingdom: UInt64) {
         // TODO check if the player already exists
         // Set new player
         this.players.set(
-            address,
+            this.transaction.sender,
             new PlayerEntity({
                 level: 1,
                 xp: 1000,
@@ -45,7 +45,7 @@ export class Player extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public levelUP(address: PublicKey) {
+    public levelUP() {
         // Get player
         const player = this.players.get(address).value;
         // Get current xp value of the player
@@ -60,7 +60,7 @@ export class Player extends RuntimeModule<{}> {
         const newXP = currentXP.value.sub(1000);
         // Set new xp and level of the player
         this.players.set(
-            address, 
+            this.transaction.sender, 
             new PlayerEntity({ 
                 level: newLevel, 
                 xp: newXP,
@@ -70,7 +70,7 @@ export class Player extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public changeKingdom(address: PublicKey, kingdom: UInt64) {
+    public changeKingdom(kingdom: UInt64) {
         // Get player
         const player = this.players.get(address).value;
         // Get current kingdom of the player
@@ -79,7 +79,7 @@ export class Player extends RuntimeModule<{}> {
         assert(currentKingdom.value.equal(kingdom), "selected kingdom cannot be the same kingdom");
         // Set new kingdom of the player
         this.players.set(
-            address,
+            this.transaction.sender,
             new PlayerEntity({ 
                 level: player.level, 
                 xp: player.xp,

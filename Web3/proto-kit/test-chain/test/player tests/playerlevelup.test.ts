@@ -53,7 +53,7 @@ describe("Player", () => {
 
         // Create a tx for level up testing
         const tx1 = await appChain.transaction(alice, () => {
-            player.levelUp(alice);
+            player.levelUp();
         });
         // Sign the tx
         await tx1.sign();

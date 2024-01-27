@@ -65,45 +65,45 @@ export class Item extends RuntimeModule<{}> {
     @state() public consumedItems = StateMap.from<ConsumedItemKey, ConsumedItemEntity>(ConsumedItemKey, ConsumedItemEntity);
 
     @runtimeMethod()
-    public equipItem(address: PublicKey, equippeditemslot: UInt32, itemid: UInt32) {
+    public equipItem(equippeditemslot: UInt32, itemid: UInt32) {
         // Get inventory slot
-        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equippeditemslot }).value;
+        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equippeditemslot }).value;
         // Get current item id of the inventory slot
         const currentItemID = equipmentSlot.itemid;
         // If this slot is full return error
         assert(currentItemID.value.greaterThanOrEqual(1), "This slot is already filled with an another item.");
         // Set the new item of the equipment slot
         this.equippedItems.set(
-            new EquippedItemKey({ owner: address, slot: equipeditemslot }),
+            new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }),
             new EquippedItemEntity({ itemid: itemid })
         );
     }
 
     @runtimeMethod()
-    public unequipItem(address: PublicKey, equipeditemslot: UInt32) {
+    public unequipItem(equipeditemslot: UInt32) {
         // Get inventory slot
-        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equipeditemslot }).value;
+        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }).value;
         // Get current item id of the inventory slot
         const currentItemID = equipmentSlot.itemid;
         // If this slot is full return error
         assert(currentItemID.value.lessThanOrEqual(0), "This slot is already empty.");
         // Unequip the item from the equipment slot
         this.equippedItems.set(
-            new EquippedItemKey({ owner: address, slot: equipeditemslot }),
+            new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }),
             new EquippedItemEntity({ itemid: 0 })
         );
     }
 
     @runtimeMethod()
-    public getEquippedItem(address: PublicKey, equipeditemslot: UInt32) {
+    public getEquippedItem(equipeditemslot: UInt32) {
         // Return item id of the equipment Slot
-        return this.equippedItems.get(new EquippedItemKey({ owner: address, slot: equipeditemslot })).value.itemid;
+        return this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot })).value.itemid;
     }
 
     @runtimeMethod()
-    public upgradeDamage(address: PublicKey, id: UInt32) {
+    public upgradeDamage(id: UInt32) {
         // Get item
-        const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the item
         const currentStatXP = item.statxp;
         // Get current damage value of the item
@@ -116,7 +116,7 @@ export class Item extends RuntimeModule<{}> {
         const newStatXP = currentStatXP.value.sub(1);
         // Set new stat xp and damage value of the item
         this.items.set(
-            new ItemKey({ owner: address, id: id }), 
+            new ItemKey({ owner: this.transaction.sender, id: id }), 
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: newDamage, 
@@ -131,9 +131,9 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public upgradeDefense(address: PublicKey, id: UInt32) {
+    public upgradeDefense(id: UInt32) {
         // Get item
-        const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the item
         const currentStatXP = item.statxp;
         // Get current defense value of the item
@@ -146,7 +146,7 @@ export class Item extends RuntimeModule<{}> {
         const newStatXP = currentStatXP.value.sub(1);
         // Set new stat xp and defense value of the item
         this.items.set(
-            new ItemKey({ owner: address, id: id }), 
+            new ItemKey({ owner: this.transaction.sender, id: id }), 
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: item.damage, 
@@ -161,9 +161,9 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public consumeItem(address: PublicKey, id: UInt32) {
+    public consumeItem(id: UInt32) {
         // Get item
-        const item = this.items.get(new ItemKey({ owner: address, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get item's consumable value
         const isConsumable = item.consumable;
         // Check if item is consumable or not
@@ -178,7 +178,7 @@ export class Item extends RuntimeModule<{}> {
         const value = item.value;
         // Consume item
         this.items.set(
-            new ItemKey({ owner: address, id: id }), 
+            new ItemKey({ owner: this.transaction.sender, id: id }), 
             new ItemEntity({ 
                 statxp: item.statxp, 
                 damage: item.damage, 
@@ -192,7 +192,7 @@ export class Item extends RuntimeModule<{}> {
         );
         // Add consumed item to the consumed items
         this.consumedItems.set(
-            new ConsumedItemKey({ owner: address, id: id }), 
+            new ConsumedItemKey({ owner: this.transaction.sender, id: id }), 
             new ConsumedItemEntity({ 
                 type: item.type,
                 value: item.value,

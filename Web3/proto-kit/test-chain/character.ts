@@ -40,13 +40,13 @@ export class Character extends RuntimeModule<{}> {
     @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
 
     @runtimeMethod()
-    public newCharacter(address: PublicKey) {
+    public newCharacter() {
         // Check address character counts first
         // If not found create one and set character count to 1.
         // Use minus - 1 in here.
         this.characters.set(
             new CharacterKey({ 
-                owner: address, 
+                owner: this.transaction.sender, 
                 id: id // WILL BE GENERATED
             }), 
             new CharacterEntity({ 
@@ -60,9 +60,9 @@ export class Character extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public levelUP(address: PublicKey, id: UInt32) {
+    public levelUP(id: UInt32) {
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
         // Get current xp value of the character
         const currentXP = character.xp;
         // Get current level value of the character
@@ -75,7 +75,7 @@ export class Character extends RuntimeModule<{}> {
         const newXP = currentXP.value.sub(100);
         // Set new xp and level of the character
         this.characters.set(
-            new CharacterKey({ owner: address, id: id }), 
+            new CharacterKey({ owner: this.transaction.sender, id: id }), 
             new CharacterEntity({ 
                 level: newLevel, 
                 xp: newXP, 
@@ -86,9 +86,9 @@ export class Character extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public upgradeDamage(address: PublicKey, id: UInt32) {
+    public upgradeDamage(id: UInt32) {
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the character
         const currentStatXP = character.statxp;
         // Get current damage value of the character
@@ -102,7 +102,7 @@ export class Character extends RuntimeModule<{}> {
         // Set new stat xp and damage value of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: address, 
+                owner: this.transaction.sender, 
                 id: id 
             }), 
             new CharacterEntity({ 
@@ -116,9 +116,9 @@ export class Character extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public upgradeDefense(address: PublicKey, id: UInt32) {
+    public upgradeDefense(id: UInt32) {
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: address, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the character
         const currentStatXP = character.statxp;
         // Get current defense value of the character
@@ -132,7 +132,7 @@ export class Character extends RuntimeModule<{}> {
         // Set stat xp and defense value of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: address, 
+                owner: this.transaction.sender, 
                 id: id 
             }), 
             new CharacterEntity({ 

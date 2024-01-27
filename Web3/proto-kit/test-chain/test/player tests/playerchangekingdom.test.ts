@@ -31,7 +31,7 @@ describe("Player", () => {
         const player = appChain.runtime.resolve("Player");
         // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
-            player.changeKingdom(alice, UInt64.from(1));
+            player.changeKingdom(UInt64.from(1));
         });
         // Sign the tx
         await tx1.sign();

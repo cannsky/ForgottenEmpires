@@ -10,6 +10,9 @@ log.setLevel("error");
 
 describe("Player", () => {
     it("should demonstrate how player work", async () => {
+
+        // THIS TEST WILL BE REMOVED
+
         const appChain = TestingAppChain.fromRuntime({
             modules: {
                 Player,
@@ -28,18 +31,18 @@ describe("Player", () => {
 
         const player = appChain.runtime.resolve("Player");
 
-        const tx1 = await appChain.transaction(alice, () => {
-            player.addXP(alice, UInt64.from(1));
+        const tx2 = await appChain.transaction(alice, () => {
+            player.addXP(UInt64.from(1));
         });
 
-        await tx1.sign();
-        await tx1.send();
+        await tx2.sign();
+        await tx2.send();
 
-        const block1 = await appChain.produceBlock();
+        const block2 = await appChain.produceBlock();
 
         let aliceXP = await appChain.query.runtime.Player.players.get(alice).value.xp;
 
-        expect(block1?.txs[0].status).toBe(true);
+        expect(block2?.txs[0].status).toBe(true);
 
         expect(aliceXP?.toBigInt()).toBe(1n);
     });

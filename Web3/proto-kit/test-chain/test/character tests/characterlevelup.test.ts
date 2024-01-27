@@ -31,7 +31,7 @@ describe("Item", () => {
         const character = appChain.runtime.resolve("Character");
         // Create a tx for testing
         const tx1 = await appChain.transaction(alice, () => {
-            character.levelUp(alice, UInt32.from(1));
+            character.levelUp(UInt32.from(1));
         });
         // Sign the tx
         await tx1.sign();
