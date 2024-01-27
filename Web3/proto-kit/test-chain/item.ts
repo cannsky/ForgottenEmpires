@@ -66,6 +66,11 @@ export class Item extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public equipItem(equippeditemslot: UInt32, itemid: UInt32) {
+        // Check if there is an item with item id on the player or not
+        assert(this.items.get(new ItemKey({ 
+            owner: this.transaction.sender, 
+            id: itemid 
+        })).isSome, "there is no item specified for this address");
         // Get inventory slot
         const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equippeditemslot }).value;
         // Get current item id of the inventory slot
@@ -102,6 +107,11 @@ export class Item extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public upgradeDamage(id: UInt32) {
+        // Check if there is an item with item id on the player or not
+        assert(this.items.get(new ItemKey({ 
+            owner: this.transaction.sender, 
+            id: id 
+        })).isSome, "there is no item specified for this address");
         // Get item
         const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the item
@@ -132,6 +142,11 @@ export class Item extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public upgradeDefense(id: UInt32) {
+        // Check if there is an item with item id on the player or not
+        assert(this.items.get(new ItemKey({ 
+            owner: this.transaction.sender, 
+            id: id 
+        })).isSome, "there is no item specified for this address");
         // Get item
         const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get current stat xp value of the item
@@ -162,6 +177,11 @@ export class Item extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public consumeItem(id: UInt32) {
+        // Check if there is an item with item id on the player or not
+        assert(this.items.get(new ItemKey({ 
+            owner: this.transaction.sender, 
+            id: id 
+        })).isSome, "there is no item specified for this address");
         // Get item
         const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
         // Get item's consumable value
