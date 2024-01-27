@@ -32,7 +32,8 @@ export class Player extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public newPlayer(kingdom: UInt64) {
-        // TODO check if the player already exists
+        // Check if there is a player or not
+        assert(this.players.get(this.transaction.sender).isSome.not(), "you cannot create two players")
         // Set new player
         this.players.set(
             this.transaction.sender,
@@ -46,8 +47,10 @@ export class Player extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public levelUP() {
+        // Check if there is a player or not
+        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
         // Get player
-        const player = this.players.get(address).value;
+        const player = this.players.get(this.transaction.sender).value;
         // Get current xp value of the player
         const currentXP = player.xp;
         // Get current level value of the player
@@ -71,8 +74,10 @@ export class Player extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public changeKingdom(kingdom: UInt64) {
+        // Check if there is a player or not
+        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
         // Get player
-        const player = this.players.get(address).value;
+        const player = this.players.get(this.transaction.sender).value;
         // Get current kingdom of the player
         const currentKingdom = player.kingdom;
         // Check if the new kingdom is equal to old kingdom
