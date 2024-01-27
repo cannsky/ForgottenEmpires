@@ -10,6 +10,7 @@ import {
 
 import {
     StateMap,
+    State,
     assert
 } from "@proto-kit/protocol";
 
@@ -63,6 +64,59 @@ export class Item extends RuntimeModule<{}> {
     @state() public equippedItems = StateMap.from<EquippedItemKey, EquippedItemEntity>(EquippedItemKey, EquippedItemEntity);
 
     @state() public consumedItems = StateMap.from<ConsumedItemKey, ConsumedItemEntity>(ConsumedItemKey, ConsumedItemEntity);
+
+    @state() public itemCount = State.from<UInt32>(UInt32);
+
+    @runtimeMethod()
+    public createNewSwordItem() {
+        // Get item count
+        const itemCount = this.itemCount.get();
+        // Add 1 to item count
+        itemCount.value.add(1);
+        // Add new item to the address
+        this.items.set(
+            new ItemKey({ 
+                owner: this.transaction.sender, 
+                id: itemCount
+            }),
+            new ItemEntity({ 
+                statxp: 1, 
+                damage: 1, 
+                defense: 0,
+                consumable: Bool(false),
+                upgradable: Bool(true),
+                consumed: Bool(false),
+                type: 1,
+                value: 0,
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public createNewShieldItem() {
+        // Get item count
+        const itemCount = this.itemCount.get();
+        // Add 1 to item count
+        itemCount.value.add(1);
+        // Add new item to the address
+        this.items.set(
+            new ItemKey({ 
+                owner: this.transaction.sender, 
+                id: itemCount
+            }),
+            new ItemEntity({ 
+                statxp: 1, 
+                damage: 0, 
+                defense: 1,
+                consumable: Bool(false),
+                upgradable: Bool(true),
+                consumed: Bool(false),
+                type: 2,
+                value: 0,
+            })
+        );
+    }
+
 
     @runtimeMethod()
     public equipItem(equippeditemslot: UInt32, itemid: UInt32) {

@@ -34,7 +34,7 @@ export class Player extends RuntimeModule<{}> {
     public newPlayer(kingdom: UInt64) {
         // Check if there is a player or not
         assert(this.players.get(this.transaction.sender).isSome.not(), "you cannot create two players")
-        // Set new player
+        // Create new player
         this.players.set(
             this.transaction.sender,
             new PlayerEntity({
