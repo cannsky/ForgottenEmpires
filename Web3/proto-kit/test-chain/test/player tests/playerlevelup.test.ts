@@ -29,7 +29,29 @@ describe("Player", () => {
         appChain.setSigner(alicePrivateKey);
         // Get Player
         const player = appChain.runtime.resolve("Player");
-        // Create a tx for testing
+
+        // CREATE A NEW PLAYER FOR TESTING
+
+        // Create a new player for the key
+        const startTX = await appChain.transaction(alice, () => {
+            player.createCharacter(alice, UInt64.from(0));
+        });
+        // Sign the tx
+        await startTX.sign();
+        // Send the tx
+        await startTX.send();
+        // Produce block
+        const blockStart = await appChain.produceBlock();
+        // Get the level of the new character
+        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.xp;
+        // Expect block to be true
+        expect(blockStart?.txs[0].status).toBe(true);
+        // Expect start level to be 1
+        expect(startLevel?.toBigInt()).toBe(1n);
+
+        // TEST PLAYER LEVEL UP
+
+        // Create a tx for level up testing
         const tx1 = await appChain.transaction(alice, () => {
             player.levelUp(alice);
         });
