@@ -37,6 +37,28 @@ export class Character extends RuntimeModule<{}> {
 
     @state() public characters = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
 
+    @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
+
+    @runtimeMethod()
+    public newCharacter(address: PublicKey) {
+        // Check address character counts first
+        // If not found create one and set character count to 1.
+        // Use minus - 1 in here.
+        this.characters.set(
+            new CharacterKey({ 
+                owner: address, 
+                id: id // WILL BE GENERATED
+            }), 
+            new CharacterEntity({ 
+                level: 1, 
+                xp: 100, 
+                statxp: 1, 
+                damage: 1, 
+                defense: 1 
+            })
+        );
+    }
+
     @runtimeMethod()
     public levelUP(address: PublicKey, id: UInt32) {
         // Get character
@@ -79,13 +101,17 @@ export class Character extends RuntimeModule<{}> {
         const newStatXP = currentStatXP.value.sub(1);
         // Set new stat xp and damage value of the character
         this.characters.set(
-            new CharacterKey({ owner: address, id: id }), 
+            new CharacterKey({ 
+                owner: address, 
+                id: id 
+            }), 
             new CharacterEntity({ 
                 level: character.level, 
                 xp: character.xp,
                 statxp: newStatXP, 
                 damage: newDamage, 
-                defense: character.defense })
+                defense: character.defense 
+            })
         );
     }
 
@@ -105,13 +131,17 @@ export class Character extends RuntimeModule<{}> {
         const newStatXP = currentStatXP.value.sub(1);
         // Set stat xp and defense value of the character
         this.characters.set(
-            new CharacterKey({ owner: address, id: id }), 
+            new CharacterKey({ 
+                owner: address, 
+                id: id 
+            }), 
             new CharacterEntity({ 
                 level: character.level, 
                 xp: character.xp,
                 statxp: newStatXP, 
                 damage: character.damage, 
-                defense: newDefense })
+                defense: newDefense 
+            })
         );
     }
 
