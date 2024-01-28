@@ -40,6 +40,30 @@ export class Character extends RuntimeModule<{}> {
     @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
 
     @runtimeMethod()
+    public newCharacter() {
+        // Get character count of the player
+        const characterCount = this.characterCounts.get(this.transaction.sender);
+        // Increase character count by 1
+        characterCount.value.add(1);
+        // Update character counts
+        this.characterCounts.set(this.transaction.sender, characterCount);
+        // Create new character
+        this.characters.set(
+            new CharacterKey({ 
+                owner: this.transaction.sender, 
+                id: characterCount 
+            }), 
+            new CharacterEntity({ 
+                level: 1, 
+                xp: 100,
+                statxp: 1, 
+                damage: 1, 
+                defense: 1
+            })
+        )
+    }
+
+    @runtimeMethod()
     public levelUP(id: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 

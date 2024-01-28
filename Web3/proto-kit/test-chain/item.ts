@@ -73,6 +73,8 @@ export class Item extends RuntimeModule<{}> {
         const itemCount = this.itemCount.get();
         // Add 1 to item count
         itemCount.value.add(1);
+        // Update item count
+        this.itemCount.set(itemCount);
         // Add new item to the address
         this.items.set(
             new ItemKey({ 
@@ -98,6 +100,8 @@ export class Item extends RuntimeModule<{}> {
         const itemCount = this.itemCount.get();
         // Add 1 to item count
         itemCount.value.add(1);
+        // Update item count
+        this.itemCount.set(itemCount);
         // Add new item to the address
         this.items.set(
             new ItemKey({ 
