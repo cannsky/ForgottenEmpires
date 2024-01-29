@@ -4,7 +4,7 @@ import { Field, SmartContract, state, State, method, Struct, UInt32, MerkleTree,
  * # Contract Address
  * The address of the Game contract.
  */
-export const CONTRACT_ADDR = 'B62qkBPYVpBF7qVs52QwytKDHwvxqCJS48sM9rUJd9vFvm2YNz5AvhJ'
+export const CONTRACT_ADDR = ''
 
 /**
  * # Merkle Tree Height

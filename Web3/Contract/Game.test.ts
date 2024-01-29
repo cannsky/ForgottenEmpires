@@ -1,5 +1,5 @@
 import { Game, HEIGHT, MyMerkleWitness, UserAccount } from './Game';
-import { Field, Mina, PrivateKey, PublicKey, AccountUpdate, MerkleTree, UInt32 } from 'o1js';
+import { Mina, PrivateKey, AccountUpdate, MerkleTree, UInt32 } from 'o1js';
 
 /*
  * This file specifies how to test the `Add` example smart contract. It is safe to delete this file and replace
@@ -122,7 +122,5 @@ describe('Game Contract', () => {
     })
 
     expect(path.calculateRoot(account.hash())).toEqual(game.root.get())
-
-
   })
 });

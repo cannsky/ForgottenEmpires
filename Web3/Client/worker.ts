@@ -1,5 +1,5 @@
 
-import { Game, CONTRACT_ADDR, o1js, UserAccount } from "contracts";
+import { Game, CONTRACT_ADDR, o1js } from "contracts";
 import { getMerkleWitnessAndPotionCount } from "./api";
 
 
