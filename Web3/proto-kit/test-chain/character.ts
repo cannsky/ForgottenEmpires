@@ -30,6 +30,8 @@ export class CharacterEntity extends Struct({
     statxp: UInt32,
     damage: UInt32,
     defense: UInt32,
+    maxupgrade: UInt32,
+    maxlevel: UInt32,
 }) {}
 
 @runtimeModule()
@@ -38,6 +40,8 @@ export class Character extends RuntimeModule<{}> {
     @state() public characters = StateMap.from<CharacterKey, CharacterEntity>(CharacterKey, CharacterEntity);
 
     @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
+
+    @state() public characterLimits = 
 
     @runtimeMethod()
     public newCharacter() {
@@ -58,7 +62,9 @@ export class Character extends RuntimeModule<{}> {
                 xp: 100,
                 statxp: 1, 
                 damage: 1, 
-                defense: 1
+                defense: 1,
+                maxupgrade: 5,
+                maxlevel: 5
             })
         )
     }
@@ -90,7 +96,10 @@ export class Character extends RuntimeModule<{}> {
                 xp: newXP, 
                 statxp: character.statxp, 
                 damage: character.damage, 
-                defense: character.defense })
+                defense: character.defense,
+                maxupgrade: character.maxupgrade,
+                maxlevel: character.maxlevel
+            })
         );
     }
 
@@ -124,7 +133,9 @@ export class Character extends RuntimeModule<{}> {
                 xp: character.xp,
                 statxp: newStatXP, 
                 damage: newDamage, 
-                defense: character.defense 
+                defense: character.defense,
+                maxupgrade: character.maxupgrade,
+                maxlevel: character.maxlevel
             })
         );
     }
@@ -159,7 +170,42 @@ export class Character extends RuntimeModule<{}> {
                 xp: character.xp,
                 statxp: newStatXP, 
                 damage: character.damage, 
-                defense: newDefense 
+                defense: newDefense,
+                maxupgrade: character.maxupgrade,
+                maxlevel: character.maxlevel
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public upgradeMaxUpgrade(id: UInt32) {
+        // Check if there is a character with character id on the player or not
+        assert(this.characters.get(new CharacterKey({ 
+            owner: this.transaction.sender, 
+            id: id 
+        })).isSome, "there is no character specified for this address");
+        // Get character
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        // Get current max upgrade value of the character
+        const currentMaxUpgrade = character.maxupgrade;
+        // The maximum upgrade limit is 25
+        assert(currentMaxUpgrade.value.greaterThanOrEqual(25), "you cannot upgrade more than 25");
+        // Calculate new max upgrade value of the character
+        const newMaxUpgrade = currentMaxUpgrade.value.add(1);
+        // Set new max upgrade value of the character
+        this.characters.set(
+            new CharacterKey({ 
+                owner: this.transaction.sender, 
+                id: id 
+            }), 
+            new CharacterEntity({ 
+                level: character.level, 
+                xp: character.xp,
+                statxp: character.statxp, 
+                damage: character.damage, 
+                defense: character.defense,
+                maxupgrade: newMaxUpgrade,
+                maxlevel: character.maxlevel
             })
         );
     }

@@ -8,8 +8,8 @@ import { log } from "@proto-kit/common";
 
 log.setLevel("error");
 
-describe("Item", () => {
-    it("should demonstrate how character work", async () => {
+describe("Character Upgrade Defense Test", () => {
+    it("Tests character upgrade defense functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
             modules: {
