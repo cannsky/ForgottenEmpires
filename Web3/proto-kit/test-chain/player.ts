@@ -38,8 +38,8 @@ export class Player extends RuntimeModule<{}> {
         this.players.set(
             this.transaction.sender,
             new PlayerEntity({
-                level: 1,
-                xp: 1000,
+                level: UInt64.from(1),
+                xp: UInt64.from(1000),
                 kingdom: kingdom
             })
         )
@@ -65,9 +65,9 @@ export class Player extends RuntimeModule<{}> {
         this.players.set(
             this.transaction.sender, 
             new PlayerEntity({ 
-                level: newLevel, 
-                xp: newXP,
-                kingdom: player.kingdom
+                level: UInt64.from(newLevel.toBigInt()), 
+                xp: UInt64.from(newXP.toBigInt(),
+                kingdom: UInt64.from(player.kingdom.toBigInt())
             })
         );
     }
