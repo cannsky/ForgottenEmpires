@@ -8,7 +8,7 @@ Forgotten Empires is an onchain game built on the Mina Protocol and based on zk-
 
 #### Docs
 
-[<img src="https://img.shields.io/badge/Docs-Gitbook-green">](./StarkSharp/StarkSharp.Docs/Platforms/DotNet/Setup.md)
+[<img src="https://img.shields.io/badge/Docs-Gitbook-green">](https://forgottenempires.gitbook.io/forgotten-empires/)
 
 A detailed docs about Forgotten Empires classes, modules, setup and much more can be found on docs.
 
