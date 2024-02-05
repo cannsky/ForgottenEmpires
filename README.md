@@ -44,7 +44,7 @@ A detailed docs about Forgotten Empires classes, modules, setup and much more ca
 
 Detailed information about prerequisites can be found on Docs at [Prerequisites](https://forgottenempires.gitbook.io/forgotten-empires/prerequisites) section.
 
-### How to Set Up
+#### How to Set Up
 
 Detailed information about setup can be found on Docs at [Building On Chain Games to Web GL](https://forgottenempires.gitbook.io/forgotten-empires/building-on-chain-games-to-webgl) section.
 
