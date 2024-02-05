@@ -15,26 +15,24 @@ A detailed docs about Forgotten Empires classes, modules, setup and much more ca
 #### Features
 
 - Component Based Architecture
-- Headless, Client-Server
+- Client-Headless Server
   - Client
-    - Animation System
-    - Behaviour Tree Based AI System
-    - Game Logic (Stats System)
-    - Game Mechanics (Physics, Movement)
-    - Component Based Architecture
-    - SFX System
-    - VFX System
-    - Linux Server Build Support
+    - **Architecture:** Component Based Architecture
+    - **Visuals:** Animation System, VFX System
+    - **AI:** Behaviour Tree Based AI System
+    - **Game Logic:** Stats System
+    - **Game Mechanics:** Physics, Movement
+    - **Audio:** SFX System
     - Inventory System
     - Interaction System
     - **Elements:** Player, NPC, Enemy
     - **Modules:** Spawner System, Scene Optimizer, JS Connector, Checker System
     - **Build:** Client WebGL build is supported
   - Server
-    - Data Manager (On Chain Data Retrival from Prover Server)
+    - **Data Manager:** On Chain Data, Off Chain Data
     - **Build:** Server Linux build is supported
 - Aurora Wallet Connection
-- Zk Proof Generation with o1js
+- Zk Proof Generation with o1js (For on chain data generation to be stored in merkle tree.)
 - Transaction Sending
 - Prover Server
 
