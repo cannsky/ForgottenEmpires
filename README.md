@@ -8,7 +8,35 @@ Forgotten Empires is an onchain game built on the Mina Protocol and based on zk-
 
 ### Docs
 
-A detailed docs about Forgotten Empires can be found in here: [Docs](https://forgottenempires.gitbook.io/forgotten-empires/)
+[<img src="https://img.shields.io/badge/Docs-Gitbook-green">](./StarkSharp/StarkSharp.Docs/Platforms/DotNet/Setup.md)
+
+A detailed docs about Forgotten Empires classes, modules, setup and much more can be found on docs.
+
+### Features
+
+- Component Based Architecture
+- Headless, Client-Server Implementation
+  - Client
+    - Animation System
+    - Behaviour Tree Based AI System
+    - Game Logic (Stats System)
+    - Game Mechanics (Physics, Movement)
+    - Component Based Architecture
+    - SFX System
+    - VFX System
+    - Linux Server Build Support
+    - Inventory System
+    - Interaction System
+    - **Elements:** Player, NPC, Enemy
+    - **Modules:** Spawner System, Scene Optimizer, JS Connector, Checker System
+    - **Build:** Client WebGL build is supported
+  - Server
+    - Data Manager (On Chain Data Retrival from Prover Server)
+    - **Build:** Server Linux build is supported
+- Aurora Wallet Connection Support
+- Zk Proof Generation with o1js
+- Transaction Sending
+- Prover Server Implementation
 
 ### Prerequisites
 
