@@ -41,8 +41,6 @@ export class Character extends RuntimeModule<{}> {
 
     @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
 
-    @state() public characterLimits = 
-
     @runtimeMethod()
     public newCharacter() {
         // Get character count of the player

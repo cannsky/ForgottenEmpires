@@ -99,14 +99,14 @@ export class Item extends RuntimeModule<{}> {
         // Get item count
         const itemCount = this.itemCount.get();
         // Add 1 to item count
-        itemCount.value.add(1);
+        const newItemCount = itemCount.value.add(1);
         // Update item count
-        this.itemCount.set(itemCount);
+        this.itemCount.set(newItemCount);
         // Add new item to the address
         this.items.set(
             new ItemKey({ 
                 owner: this.transaction.sender, 
-                id: itemCount
+                id: newItemCount
             }),
             new ItemEntity({ 
                 statxp: 1, 
