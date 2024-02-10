@@ -2,7 +2,7 @@
 {
     public class MerkleTreeNode
     {
-        public int potionCount;
+        // Empty class
         public string publicKey;
     }
 }

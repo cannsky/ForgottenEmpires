@@ -12,7 +12,7 @@ namespace ForgottenEmpires.Managers.Data
 {
     public class DataManager : MonoBehaviour
     {
-        private MerkleTree merkleTree;
+        private PlayerMerkleTree playerMerkleTree;
 
         public static DataManager Instance;
 
@@ -33,7 +33,7 @@ namespace ForgottenEmpires.Managers.Data
             ServerManager.Instance.StartCoroutine(UpdateMerkleTree());
 
             // Initialize the MerkleTree
-            merkleTree = new MerkleTree();
+            playerMerkleTree = new PlayerMerkleTree();
 
             // Create a new player data manager
             dataManagerWorker = new DataManagerWorker();
@@ -76,8 +76,8 @@ namespace ForgottenEmpires.Managers.Data
             {
                 // Parse the JSON response and update the MerkleTree with the received data
                 string jsonResult = webRequest.downloadHandler.text;
-                List<MerkleTreeNode> nodes = JsonConvert.DeserializeObject<List<MerkleTreeNode>>(jsonResult);
-                merkleTree.UpdateNodes(nodes);
+                List<PlayerMerkleTree> nodes = JsonConvert.DeserializeObject<List<PlayerMerkleTreeNode>>(jsonResult);
+                playerMerkleTree.UpdateNodes(nodes);
                 Debug.Log(webRequest.downloadHandler.text);
             }
 
@@ -86,10 +86,10 @@ namespace ForgottenEmpires.Managers.Data
         }
 
         // Get player data based on player's wallet address from the MerkleTree
-        public MerkleTreeNode GetPlayerData(string walletAddress)
+        public PlayerMerkleTreeNode GetPlayerData(string walletAddress)
         {
-            if (merkleTree == null || merkleTree.nodes == null) return null;
-            return merkleTree.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
+            if (playerMerkleTree == null || playerMerkleTree.nodes == null) return null;
+            return playerMerkleTree.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
         }
     }
 }

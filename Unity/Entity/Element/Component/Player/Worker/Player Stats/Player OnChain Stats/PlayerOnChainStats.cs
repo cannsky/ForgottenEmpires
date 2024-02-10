@@ -6,14 +6,16 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         private PlayerStats playerStats;
 
-        public int potionCount, xp;
+        public int xp, level, kingdom;
 
         public PlayerStats(PlayerStats playerStats) => this.playerStats = playerStats;
 
         // Update onchain data
-        public void UpdateOnChainData(int potionCount)
+        public void UpdateOnChainData(int xp, int level, int kingdom)
         {
-            this.potionCount = potionCount;
+            this.xp = xp;
+            this.level = level;
+            this.kingdom = kingdom;
         }
     }
 }
