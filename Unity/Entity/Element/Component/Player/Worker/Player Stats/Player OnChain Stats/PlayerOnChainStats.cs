@@ -8,7 +8,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public int xp, level, kingdom;
 
-        public PlayerStats(PlayerStats playerStats) => this.playerStats = playerStats;
+        public PlayerOnChainStats(PlayerStats playerStats) => this.playerStats = playerStats;
 
         // Update onchain data
         public void UpdateOnChainData(int xp, int level, int kingdom)

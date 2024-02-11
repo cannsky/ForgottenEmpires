@@ -68,7 +68,9 @@ export class Item extends RuntimeModule<{}> {
     @state() public itemCount = State.from<UInt32>(UInt32);
 
     @runtimeMethod()
-    public createNewSwordItem() {
+    public newItem(itemType: UInt32) {
+        // Check if item type is lower than 2, if zero type it is a removed item (or consumed?)
+        assert(itemType.value.lessThanOrEqual(2), "There are only 2 item types in the game.");
         // Get item count
         const itemCount = this.itemCount.get();
         // Add 1 to item count
@@ -82,45 +84,17 @@ export class Item extends RuntimeModule<{}> {
                 id: itemCount
             }),
             new ItemEntity({ 
-                statxp: 1, 
-                damage: 1, 
-                defense: 0,
+                statxp: UInt32.from(1), 
+                damage: UInt32.from(1), 
+                defense: UInt32.from(1),
                 consumable: Bool(false),
                 upgradable: Bool(true),
                 consumed: Bool(false),
-                type: 1,
-                value: 0,
+                type: UInt32.from(itemType),
+                value: UInt32.from(0),
             })
         );
     }
-
-    @runtimeMethod()
-    public createNewShieldItem() {
-        // Get item count
-        const itemCount = this.itemCount.get();
-        // Add 1 to item count
-        const newItemCount = itemCount.value.add(1);
-        // Update item count
-        this.itemCount.set(newItemCount);
-        // Add new item to the address
-        this.items.set(
-            new ItemKey({ 
-                owner: this.transaction.sender, 
-                id: newItemCount
-            }),
-            new ItemEntity({ 
-                statxp: 1, 
-                damage: 0, 
-                defense: 1,
-                consumable: Bool(false),
-                upgradable: Bool(true),
-                consumed: Bool(false),
-                type: 2,
-                value: 0,
-            })
-        );
-    }
-
 
     @runtimeMethod()
     public equipItem(equippeditemslot: UInt32, itemid: UInt32) {
@@ -153,7 +127,7 @@ export class Item extends RuntimeModule<{}> {
         // Unequip the item from the equipment slot
         this.equippedItems.set(
             new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }),
-            new EquippedItemEntity({ itemid: 0 })
+            new EquippedItemEntity({ itemid: UInt32.from(0) })
         );
     }
 
