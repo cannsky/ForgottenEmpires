@@ -14,7 +14,7 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
         {
             this.merchant = merchant;
 
-             = new GuildMasterUpdate(this);
+            guildMasterUpdate = new GuildMasterUpdate(this);
 
             guildMasterInteraction = new GuildMasterInteraction(this);
             guildMasterTrigger = new GuildMasterTrigger(this);
