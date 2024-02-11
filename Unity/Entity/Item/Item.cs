@@ -1,9 +1,9 @@
 ﻿using ForgottenEmpires.Components.Effects;
 using ForgottenEmpires.Entities.Elements;
 using ForgottenEmpires.Managers.Server;
+using ForgottenEmpires.Entities.Items.Data;
 using System.Collections;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 namespace ForgottenEmpires.Entities.Items
 {
@@ -17,6 +17,11 @@ namespace ForgottenEmpires.Entities.Items
 
         // Is item in cooldown
         public bool isCooldown;
+
+        // Data of the item
+        public ItemData itemData;
+
+        public void Awake() => itemData = new ItemData(this);
 
         public virtual Effect GetEffect()
         {
