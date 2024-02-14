@@ -10,27 +10,45 @@ namespace ForgottenEmpires.Managers.JS
         public static JSConnector Instance;
 
         [DllImport("__Internal")]
-        private static extern void BP(string callbackObjectName, string callbackMethodName);
+        private static extern void JSCreateGuild(string callbackObjectName, string callbackMethodName);
 
         [DllImport("__Internal")]
-        private static extern void UP(string callbackObjectName, string callbackMethodName);
+        private static extern void JSJoinGuild(string callbackObjectName, string callbackMethodName, int guildID);
 
         [DllImport("__Internal")]
-        private static extern void CW(string callbackObjectName, string callbackMethodName);
+        private static extern void JSLeaveGuild(string callbackObjectName, string callbackMethodName, int guildID);
+
+        [DllImport("__Internal")]
+        private static extern void JSNewItem(string callbackObjectName, string callbackMethodName);
+
+        [DllImport("__Internal")]
+        private static extern void JSUpgradeItemDamage(string callbackObjectName, string callbackMethodName, int itemID);
+
+        [DllImport("__Internal")]
+        private static extern void JSUpgradeItemDefense(string callbackObjectName, string callbackMethodName, int itemID);
 
         [DllImport("__Internal")]
         public static extern void DebugMessage(string message);
 
         private void Awake() => DontDestroyOnLoad(Instance = this);
 
-        // Called when a button is clicked
-        public void ConnectWallet() => CW(gameObject.name, "ReturnMessage");
+        // Called when player creates the guild
+        public void CreateGuild() => JSCreateGuild(gameObject.name, "ReturnMessage");
 
-        // Called when a button is clicked
-        public void BuyPotion()
-        {
-            BP(gameObject.name, "ReturnMessage");
-        }
+        // Called when player joins to a guild
+        public void JoinGuild(int guildID) => JSJoinGuild(gameObject.name, "ReturnMessage", guildID);
+
+        // Called when player leaves the guild
+        public void LeaveGuild(int guildID) => JSLeaveGuild(gameObject.name, "ReturnMessage", guildID);
+
+        // Called when player creates a new item
+        public void NewItem() => JSNewItem(gameObject.name, "ReturnMessage");
+
+        // Called when player wants to upgrade item damage
+        public void UpgradeItemDamage(int itemID) => JSUpgradeItemDamage(gameObject.name, "ReturnMessage", itemID);
+
+        // Called when player wants to upgrade item defense
+        public void UpgradeItemDefense(int itemID) => JSIpgradeItemDefense(gameObject.name, "ReturnMessage", itemID);
 
         // Called when a message is returned from JavaScript
         public void ReturnMessage(string message)

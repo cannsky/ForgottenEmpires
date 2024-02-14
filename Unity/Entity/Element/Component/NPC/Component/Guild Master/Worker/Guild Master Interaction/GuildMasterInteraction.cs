@@ -4,7 +4,7 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
     {
         private GuildMasterWorker guildMasterWorker;
 
-        public MerchantInteraction(GuildMasterWorker guildMasterWorker) => this.guildMasterWorker = guildMasterWorker;
+        public GuildMasterInteraction(GuildMasterWorker guildMasterWorker) => this.guildMasterWorker = guildMasterWorker;
 
         public void OnInteraction(Element element) => guildMasterWorker.guildMasterUI.ToggleUI();
     }
