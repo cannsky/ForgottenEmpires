@@ -1,6 +1,6 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey } from "o1js";
+import { PrivateKey, UInt32 } from "o1js";
 
 import { Character } from "../../character";
 
@@ -34,7 +34,7 @@ describe("Character New Character Test", () => {
 
         // Create a new character for the key
         const startTX = await appChain.transaction(alice, () => {
-            character.newCharacter();
+            character.newCharacter(UInt32.from(0));
         });
         // Sign the tx
         await startTX.sign();

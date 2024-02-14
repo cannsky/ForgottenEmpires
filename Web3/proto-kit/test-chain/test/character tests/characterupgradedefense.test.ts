@@ -34,7 +34,7 @@ describe("Character Upgrade Defense Test", () => {
 
         // Create a new character for the key
         const startTX = await appChain.transaction(alice, () => {
-            character.newCharacter();
+            character.newCharacter(UInt32.from(0));
         });
         // Sign the tx
         await startTX.sign();

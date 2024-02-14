@@ -30,6 +30,7 @@ export class CharacterEntity extends Struct({
     statxp: UInt32,
     damage: UInt32,
     defense: UInt32,
+    type: UInt32,
     maxupgrade: UInt32,
     maxlevel: UInt32,
 }) {}
@@ -42,7 +43,7 @@ export class Character extends RuntimeModule<{}> {
     @state() public characterCounts = StateMap.from<PublicKey, UInt32>(PublicKey, UInt32);
 
     @runtimeMethod()
-    public newCharacter() {
+    public newCharacter(type: UInt32) {
         // Get character count of the player
         const characterCount = this.characterCounts.get(this.transaction.sender);
         // Increase character count by 1
@@ -56,13 +57,14 @@ export class Character extends RuntimeModule<{}> {
                 id: characterCount 
             }), 
             new CharacterEntity({ 
-                level: 1, 
-                xp: 100,
-                statxp: 1, 
-                damage: 1, 
-                defense: 1,
-                maxupgrade: 5,
-                maxlevel: 5
+                level: UInt32.from(1), 
+                xp: UInt32.from(100),
+                statxp: UInt32.from(1), 
+                damage: UInt32.from(1), 
+                defense: UInt32.from(1),
+                type: type,
+                maxupgrade: UInt32.from(5),
+                maxlevel: UInt32.from(5)
             })
         )
     }
@@ -95,6 +97,7 @@ export class Character extends RuntimeModule<{}> {
                 statxp: character.statxp, 
                 damage: character.damage, 
                 defense: character.defense,
+                type: character.type,
                 maxupgrade: character.maxupgrade,
                 maxlevel: character.maxlevel
             })
@@ -132,6 +135,7 @@ export class Character extends RuntimeModule<{}> {
                 statxp: newStatXP, 
                 damage: newDamage, 
                 defense: character.defense,
+                type: character.type,
                 maxupgrade: character.maxupgrade,
                 maxlevel: character.maxlevel
             })
@@ -164,11 +168,12 @@ export class Character extends RuntimeModule<{}> {
                 id: id 
             }), 
             new CharacterEntity({ 
-                level: character.level, 
+                level: character.level,
                 xp: character.xp,
                 statxp: newStatXP, 
                 damage: character.damage, 
                 defense: newDefense,
+                type: character.type,
                 maxupgrade: character.maxupgrade,
                 maxlevel: character.maxlevel
             })
@@ -202,6 +207,7 @@ export class Character extends RuntimeModule<{}> {
                 statxp: character.statxp, 
                 damage: character.damage, 
                 defense: character.defense,
+                type: character.type,
                 maxupgrade: newMaxUpgrade,
                 maxlevel: character.maxlevel
             })
