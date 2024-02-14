@@ -4,24 +4,23 @@ Forgotten Empires is an onchain game built on the Mina Protocol and based on zk-
 
 #### Version
 
-<img src="https://img.shields.io/badge/Version-Alpha 0.3-green">
+<img src="https://img.shields.io/badge/Version-Alpha 0.3.1-green">
 
 #### Docs
 
 [<img src="https://img.shields.io/badge/Docs-Gitbook-green">](https://forgottenempires.gitbook.io/forgotten-empires/)
 
-A detailed docs about Forgotten Empires classes, modules, setup and much more can be found on docs.
+A detailed information about Forgotten Empires setup, classes, modules and much more can be found on docs.
 
 #### Features
 
-- Component Based Architecture
 - Client-Headless Server
   - Client
     - **Architecture:** Component Based Architecture
     - **Visuals:** Animation System, VFX System
     - **AI:** Behaviour Tree Based AI System
     - **Game Logic:** Stats System
-    - **Game Mechanics:** Physics, Movement
+    - **Game Mechanics:** Physics, Movement, Attack, Defense
     - **Audio:** SFX System
     - Inventory System
     - Interaction System
@@ -46,4 +45,4 @@ Detailed information about prerequisites can be found on Docs at [Prerequisites]
 
 Detailed information about setup can be found on Docs at [Building On Chain Games to Web GL](https://forgottenempires.gitbook.io/forgotten-empires/building-on-chain-games-to-webgl) section.
 
-This readme file will much later be edited for features of the game, but if you are interested please check detailed docs for features of the project.
+This readme file will much later be edited for new features of the game, but if you are interested please check detailed docs for features of the project.
