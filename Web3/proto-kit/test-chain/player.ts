@@ -21,8 +21,7 @@ import {
 
 export class PlayerEntity extends Struct({
     level: UInt64,
-    xp: UInt64,
-    kingdom: UInt64,
+    xp: UInt64
 }) {}
 
 @runtimeModule()
@@ -31,7 +30,7 @@ export class Player extends RuntimeModule<{}> {
     @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
 
     @runtimeMethod()
-    public newPlayer(kingdom: UInt64) {
+    public newPlayer() {
         // Check if there is a player or not
         assert(this.players.get(this.transaction.sender).isSome.not(), "you cannot create two players")
         // Create new player
@@ -39,8 +38,7 @@ export class Player extends RuntimeModule<{}> {
             this.transaction.sender,
             new PlayerEntity({
                 level: UInt64.from(1),
-                xp: UInt64.from(1000),
-                kingdom: kingdom
+                xp: UInt64.from(1000)
             })
         )
     }
@@ -66,29 +64,7 @@ export class Player extends RuntimeModule<{}> {
             this.transaction.sender, 
             new PlayerEntity({ 
                 level: UInt64.from(newLevel.toBigInt()), 
-                xp: UInt64.from(newXP.toBigInt(),
-                kingdom: UInt64.from(player.kingdom.toBigInt())
-            })
-        );
-    }
-
-    @runtimeMethod()
-    public changeKingdom(kingdom: UInt64) {
-        // Check if there is a player or not
-        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
-        // Get player
-        const player = this.players.get(this.transaction.sender).value;
-        // Get current kingdom of the player
-        const currentKingdom = player.kingdom;
-        // Check if the new kingdom is equal to old kingdom
-        assert(currentKingdom.value.equal(kingdom), "selected kingdom cannot be the same kingdom");
-        // Set new kingdom of the player
-        this.players.set(
-            this.transaction.sender,
-            new PlayerEntity({ 
-                level: player.level, 
-                xp: player.xp,
-                kingdom: kingdom
+                xp: UInt64.from(newXP.toBigInt()
             })
         );
     }

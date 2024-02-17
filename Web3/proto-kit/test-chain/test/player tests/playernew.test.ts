@@ -34,7 +34,7 @@ describe("Player New Player Test", () => {
 
         // Create a new player for the key
         const startTX = await appChain.transaction(alice, () => {
-            player.newPlayer(UInt64.from(0));
+            player.newPlayer();
         });
         // Sign the tx
         await startTX.sign();

@@ -51,7 +51,38 @@ export class Kingdom extends RuntimeModule<{}> {
                 memberCount: UInt64.From(0)
             })
         );
-        // Add the player who created the kingdom to the guild as member
+        // Add the player who created the kingdom to the kingdom as member
         this.playerKingdoms.set(this.transaction.sender, newKingdomCount);
+    }
+
+    @runtimeMethod()
+    public changeKingdom(kingdomId: UInt64) {
+        // Check if there is a player or not
+        assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "You cannot be in two kingdoms");
+        // Check if there is a kingdom in the specified id
+        assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
+        // Get player's current kingdom id
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender).value;
+        // Check if the new kingdom is equal to old kingdom
+        assert(currentKingdomId.value.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
+        // Get kingdom
+        const kingdom = this.kingdoms.get(kingdomId).value;
+        // Get the member count of the kingdom
+        const kingdomMemberCount = kingdom.memberCount;
+        // Increase member count of the kingdom by 1
+        const newKingdomMemberCount = kingdomMemberCount.value.add(1);
+        // Update the kingdom with new member count
+        this.kingdoms.set(
+            kingdomId,
+            new KingdomEntity({
+                leader: kingdom.leader,
+                memberCount: newKingdomMemberCount
+            })
+        );
+        // Set players kingdom
+        this.playerKingdoms.set(
+            this.transaction.sender,
+            kingdomId
+        )
     }
 }
