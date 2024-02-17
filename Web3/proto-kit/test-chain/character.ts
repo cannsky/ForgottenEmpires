@@ -214,5 +214,49 @@ export class Character extends RuntimeModule<{}> {
         );
     }
 
+    @runtimeMethod()
+    public getTotalCharacterDamage(characterOwner: PublicKey, characterId: UInt32) {
+        // Check if there is a character or not at specified character key
+        assert(this.characters.get(new CharacterKey({ 
+            owner: characterOwner, 
+            id: characterId
+        })).isSome, "you don't have specified character");
+        // Get character
+        const character = this.characters.get(new CharacterKey({ 
+            owner: characterOwner, 
+            id: characterId
+        })).value;
+        // Get character level
+        const characterLevel = character.level;
+        // Get character damage
+        const characterDamage = character.damage;
+        // Get total damage
+        const totalDamage = characterDamage.mul(characterLevel);
+        // Return total damage calculated
+        return totalDamage;
+    }
+
+    @runtimeMethod()
+    public getTotalCharacterDefense(characterOwner: PublicKey, characterId: UInt32) {
+        // Check if there is a character or not at specified character key
+        assert(this.characters.get(new CharacterKey({ 
+            owner: characterOwner, 
+            id: characterId
+        })).isSome, "you don't have specified character");
+        // Get character
+        const character = this.characters.get(new CharacterKey({ 
+            owner: characterOwner, 
+            id: characterId
+        })).value;
+        // Get character level
+        const characterLevel = character.level;
+        // Get character defense
+        const characterDefense = character.defense;
+        // Get total defense
+        const totalDefense = characterDefense.mul(characterLevel);
+        // Return total defense calculated
+        return totalDefense;
+    }
+
     // methods will be added later...
 }

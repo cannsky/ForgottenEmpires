@@ -252,5 +252,49 @@ export class Item extends RuntimeModule<{}> {
         );
     }
 
+    @runtimeMethod()
+    public getTotalItemDamage(ItemOwner: PublicKey, itemId: UInt32) {
+        // Check if there is an item or not at specified item key
+        assert(this.items.get(new ItemKey({ 
+            owner: itemOwner, 
+            id: itemId
+        })).isSome, "you don't have the specified item");
+        // Get item
+        const item = this.items.get(new ItemKey({ 
+            owner: itemOwner, 
+            id: itemId
+        })).value;
+        // Get item level
+        const itemLevel = item.level;
+        // Get item damage
+        const itemDamage = item.damage;
+        // Get total damage
+        const totalDamage = itemDamage.mul(itemLevel);
+        // Return total damage calculated
+        return totalDamage;
+    }
+
+    @runtimeMethod()
+    public getTotalItemDefense(itemOwner: PublicKey, itemId: UInt32) {
+        // Check if there is an item or not at specified item key
+        assert(this.items.get(new ItemKey({ 
+            owner: itemOwner, 
+            id: itemId
+        })).isSome, "you don't have the specified item");
+        // Get item
+        const item = this.items.get(new ItemKey({ 
+            owner: itemOwner, 
+            id: itemId
+        })).value;
+        // Get item level
+        const itemLevel = item.level;
+        // Get item defense
+        const itemDefense = item.defense;
+        // Get total defense
+        const totalDefense = itemDefense.mul(itemLevel);
+        // Return total damage calculated
+        return totalDefense;
+    }
+
     // methods will be added later...
 }

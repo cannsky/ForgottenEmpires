@@ -28,6 +28,12 @@ namespace ForgottenEmpires.Managers.JS
         private static extern void JSUpgradeItemDefense(string callbackObjectName, string callbackMethodName, int itemID);
 
         [DllImport("__Internal")]
+        private static extern void JSGetTotalItemDamage(string callbackObjectName, string callbackMethodName, int itemID);
+
+        [DllImport("__Internal")]
+        private static extern void JsGetTotalItemDefense(string callbackObjectName, string callbackMethodName, int itemID);
+
+        [DllImport("__Internal")]
         public static extern void DebugMessage(string message);
 
         private void Awake() => DontDestroyOnLoad(Instance = this);
@@ -48,7 +54,13 @@ namespace ForgottenEmpires.Managers.JS
         public void UpgradeItemDamage(int itemID) => JSUpgradeItemDamage(gameObject.name, "ReturnMessage", itemID);
 
         // Called when player wants to upgrade item defense
-        public void UpgradeItemDefense(int itemID) => JSIpgradeItemDefense(gameObject.name, "ReturnMessage", itemID);
+        public void UpgradeItemDefense(int itemID) => JSUpgradeItemDefense(gameObject.name, "ReturnMessage", itemID);
+
+        // Called when item total damage on chain data is being requested
+        public void GetTotalItemDamage(int itemID) => JSGetTotalItemDamage(gameObject.name, "ReturnMessage", itemID);
+
+        // Called when item total defense on chain data is being requested
+        public void GetTotalItemDefense(int itemID) => JSGetTotalItemDefense(gameObject.name, "ReturnMessage", itemID);
 
         // Called when a message is returned from JavaScript
         public void ReturnMessage(string message)
