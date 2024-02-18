@@ -1,27 +1,45 @@
 ﻿mergeInto(LibraryManager.library, {
 
-  BP: async function(callbackObjectNameStr, callbackMethodNameStr) {
+  JSCreateGuild: async function(callbackObjectNameStr, callbackMethodNameStr) {
 	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	console.log("test");
-	const message = await buyPotion();
-	console.log(message);
+	const message = await createGuild();
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
-  UP: async function(callbackObjectNameStr, callbackMethodNameStr) {
-  	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+  JSJoinGuild: async function(callbackObjectNameStr, callbackMethodNameStr, guildID) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	const message = await usePotion();
-	console.log(message);
+	const message = await joinGuild(guildID);
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
-  CW: async function(callbackObjectNameStr, callbackMethodNameStr) {
-  	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+  JSLeaveGuild: async function(callbackObjectNameStr, callbackMethodNameStr, guildID) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
-	const message = await connectWallet();
-	console.log(message);
+	const message = await leaveGuild(guildID);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSCreateTeam: async function(callbackObjectNameStr, callbackMethodNameStr) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await createTeam();
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSInvitePlayerToTeam: async function(callbackObjectNameStr, callbackMethodNameStr, playerAddressStr, teamID) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const playerAddress = UTF8ToString(playerAddressStr);
+	const message = await invitePlayerToTeam(playerAddressStr, teamID);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSLeaveTeam: async function(callbackObjectNameStr, callbackMethodNameStr, teamID) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await leaveTeam(teamID);
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 

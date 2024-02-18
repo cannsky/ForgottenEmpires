@@ -34,6 +34,15 @@ namespace ForgottenEmpires.Managers.JS
         private static extern void JsGetTotalItemDefense(string callbackObjectName, string callbackMethodName, int itemID);
 
         [DllImport("__Internal")]
+        private static extern void JSInvitePlayerToTeam(string callbackObjectName, string callbackMethodName, string playerAddress, int teamID);
+
+        [DllImport("__Internal")]
+        private static extern void JSJoinTeam(string callbackObjectName, string callbackMethodName, int teamID);
+
+        [DllImport("__Internal")]
+        private static extern void JSLeaveTeam(string callbackObjectName, string callbackMethodName, int teamID);
+
+        [DllImport("__Internal")]
         public static extern void DebugMessage(string message);
 
         private void Awake() => DontDestroyOnLoad(Instance = this);
@@ -61,6 +70,15 @@ namespace ForgottenEmpires.Managers.JS
 
         // Called when item total defense on chain data is being requested
         public void GetTotalItemDefense(int itemID) => JSGetTotalItemDefense(gameObject.name, "ReturnMessage", itemID);
+
+        // Called when a team leader invites a player to the guild
+        public void InvitePlayerToTeam(string playerAddress, uint teamID) => JSInvitePlayerToTeam(gameObject.name, "ReturnMessage", playerAddress, teamID);
+
+        // Called when a player wants to enter to a team
+        public void JoinTeam(uint teamID) => JSJoinTeam(gameObject.name, "ReturnMessage", teamID);
+
+        // Called when a player wants to enter to a team
+        public void LeaveTeam(uint teamID) => JSLeaveTeam(gameObject.name, "ReturnMessage", teamID);
 
         // Called when a message is returned from JavaScript
         public void ReturnMessage(string message)

@@ -10,9 +10,8 @@ namespace ForgottenEmpires.Entities.Items.Data
 
         public ItemOnChainData(ItemData itemData) => this.itemData = itemData;
 
-        public void UpdateOnChainItemStats(uint totalDamage, uint totalDefense){
-            this.totalDamage = totalDamage;
-            this.totalDefense = totalDefense;
-        }
+        public void UpdateOnChainTotalDamage(uint totalDamage) => this.totalDamage = totalDamage;
+
+        public void UpdateOnChainTotalDefense(uint totalDefense) => this.totalDefense = totalDefense;
     }
 }
