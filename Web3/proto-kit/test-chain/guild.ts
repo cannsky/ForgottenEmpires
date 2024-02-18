@@ -90,7 +90,7 @@ export class Guild extends RuntimeModule<{}> {
         // Ensure the guild have at least 2 members
         assert(guild.value.memberCount.value.greaterThan(2), "You are the only player at the guild, you cannot leave the guild");
         // Ensure the guild leader is not leaving
-        assert(this.transaction.sender.equal(guild.leader), "Leader cannot leave the guild");
+        assert(this.transaction.sender.equal(guild.leader).not(), "Leader cannot leave the guild");
         // Ensure that player is in some guild
         assert(this.playerGuilds.get(this.transaction.sender).isSome, "You are not in any guild!");
         // Ensure the player is in the given guild
