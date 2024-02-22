@@ -32,7 +32,7 @@
 	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
 	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
 	const playerAddress = UTF8ToString(playerAddressStr);
-	const message = await invitePlayerToTeam(playerAddressStr, teamID);
+	const message = await invitePlayerToTeam(playerAddress, teamID);
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
