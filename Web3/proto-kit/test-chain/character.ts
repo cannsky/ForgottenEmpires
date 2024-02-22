@@ -33,6 +33,7 @@ export class CharacterEntity extends Struct({
     type: UInt32,
     maxupgrade: UInt32,
     maxlevel: UInt32,
+    world: UInt32,
 }) {}
 
 @runtimeModule()
@@ -64,7 +65,8 @@ export class Character extends RuntimeModule<{}> {
                 defense: UInt32.from(1),
                 type: type,
                 maxupgrade: UInt32.from(5),
-                maxlevel: UInt32.from(5)
+                maxlevel: UInt32.from(5),
+                world: UInt32.from(0)
             })
         )
     }
@@ -99,7 +101,8 @@ export class Character extends RuntimeModule<{}> {
                 defense: character.defense,
                 type: character.type,
                 maxupgrade: character.maxupgrade,
-                maxlevel: character.maxlevel
+                maxlevel: character.maxlevel,
+                world: character.world
             })
         );
     }
@@ -137,7 +140,8 @@ export class Character extends RuntimeModule<{}> {
                 defense: character.defense,
                 type: character.type,
                 maxupgrade: character.maxupgrade,
-                maxlevel: character.maxlevel
+                maxlevel: character.maxlevel,
+                world: character.world
             })
         );
     }
@@ -175,7 +179,8 @@ export class Character extends RuntimeModule<{}> {
                 defense: newDefense,
                 type: character.type,
                 maxupgrade: character.maxupgrade,
-                maxlevel: character.maxlevel
+                maxlevel: character.maxlevel,
+                world: character.world
             })
         );
     }
@@ -209,7 +214,43 @@ export class Character extends RuntimeModule<{}> {
                 defense: character.defense,
                 type: character.type,
                 maxupgrade: newMaxUpgrade,
-                maxlevel: character.maxlevel
+                maxlevel: character.maxlevel,
+                world: character.world
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public changeWorld(id: UInt32, worldId: UInt32) {
+        // Check if there is a character with character id on the player or not
+        assert(this.characters.get(new CharacterKey({ 
+            owner: this.transaction.sender, 
+            id: id 
+        })).isSome, "there is no character specified for this address");
+        // Get character
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        // Get current world of the character
+        const currentWorld = character.world;
+        // The maximum upgrade limit is 25
+        assert(currentWorld.equal(worldId).not(), "you are trying to change to the same world");
+        // Set new world
+        const newWorld = worldId;
+        // Set new world of the character
+        this.characters.set(
+            new CharacterKey({ 
+                owner: this.transaction.sender, 
+                id: id 
+            }), 
+            new CharacterEntity({ 
+                level: character.level, 
+                xp: character.xp,
+                statxp: character.statxp, 
+                damage: character.damage, 
+                defense: character.defense,
+                type: character.type,
+                maxupgrade: character.maxupgrade,
+                maxlevel: character.maxlevel,
+                world: newWorld
             })
         );
     }
