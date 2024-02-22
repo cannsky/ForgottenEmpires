@@ -1,17 +1,19 @@
 using UnityEngine;
 
+using ForgottenEmpires.Managers.JS;
+
 namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 {
     public class PlayerCharacterOnChainStats
     {
         private PlayerStats playerStats;
 
-        public int xp, level, statXp, damage, defense, maxUpgrade, maxLevel;
+        public uint characterID, xp, level, statXp, damage, defense, maxUpgrade, maxLevel, world;
 
         public PlayerCharacterOnChainStats(PlayerStats playerStats) => this.playerStats = playerStats;
 
         // Update onchain data
-        public void UpdateOnChainData(int xp, int level, int statXp, int damage, int defense, int maxUpgrade, int maxLevel)
+        public void UpdateOnChainData(uint xp, uint level, uint statXp, uint damage, uint defense, uint maxUpgrade, uint maxLevel, uint world)
         {
             this.xp = xp;
             this.level = level;
@@ -20,6 +22,9 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
             this.defense = defense;
             this.maxUpgrade = maxUpgrade;
             this.maxLevel = maxLevel;
+            this.world = world;
         }
+
+        public void ChangeWorld(uint newWorld) => JSConnector.Instance.ChangeWorld(newWorld);
     }
 }

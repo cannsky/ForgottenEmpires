@@ -43,6 +43,13 @@
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
+  JSChangeWorld async function(callbackObjectNameStr, callbackMethodNameStr, characterID, worldID) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await changeWorld(characterID, worldID);
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
   DebugMessage: function(messageStr) {
 	const message = UTF8ToString(messageStr);
 	console.log(message);

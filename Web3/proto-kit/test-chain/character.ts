@@ -231,7 +231,7 @@ export class Character extends RuntimeModule<{}> {
         const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
         // Get current world of the character
         const currentWorld = character.world;
-        // The maximum upgrade limit is 25
+        // Make sure the current world is not equal to the world id
         assert(currentWorld.equal(worldId).not(), "you are trying to change to the same world");
         // Set new world
         const newWorld = worldId;
