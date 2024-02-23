@@ -6,7 +6,7 @@ namespace ForgottenEmpires.Components.Events
     public abstract class Event : ScriptableObject
     {
         // ID of the event
-        public int eventID;
+        public uint eventID;
 
         // Events that needs to be handled before this event
         public List<Event> requiredEvents;
