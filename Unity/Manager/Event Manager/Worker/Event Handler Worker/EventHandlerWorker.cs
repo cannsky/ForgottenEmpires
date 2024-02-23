@@ -5,7 +5,7 @@ namespace ForgottenEmpires.Managers.Event.Workers
         public virtual void HandleEvent(uint eventID)
         {
             // Get the event
-            Event event = EventListManager.events[eventID];
+            Event event = EventListWorker.events[eventID];
             // Check each required event to be true
             foreach (Event requiredEvent in event.requiredEvents) if(!requiredEvent.HandleEvent()) return;
             // Handle Event
