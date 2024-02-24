@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ForgottenEmpires.Managers.Data.Components
+namespace ForgottenEmpires.Components.MerkleTrees
 {
     public class MerkleTree
     {

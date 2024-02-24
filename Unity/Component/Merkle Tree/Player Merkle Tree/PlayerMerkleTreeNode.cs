@@ -1,4 +1,4 @@
-namespace ForgottenEmpires.Managers.Data.Components
+namespace ForgottenEmpires.Components.MerkleTrees
 {
     public class PlayerMerkleTreeNode
     {

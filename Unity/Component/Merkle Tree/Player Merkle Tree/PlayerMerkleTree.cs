@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ForgottenEmpires.Managers.Data.Components
+namespace ForgottenEmpires.Components.MerkleTrees
 {
     public class PlayerMerkleTree
     {
@@ -8,7 +8,7 @@ namespace ForgottenEmpires.Managers.Data.Components
 
         public void UpdateNodes(List<PlayerMerkleTreeNode> newNodes)
         {
-            nodes = newNodes ?? new List<MerklPlayerMerkleTreeNodeeTreeNode>();
+            nodes = newNodes ?? new List<PlayerMerkleTreeNode>();
         }
     }
 }
