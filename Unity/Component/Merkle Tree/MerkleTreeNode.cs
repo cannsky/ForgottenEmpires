@@ -1,4 +1,4 @@
-﻿namespace ForgottenEmpires.Managers.Data.Components
+namespace ForgottenEmpires.Managers.Data.Components
 {
     public class MerkleTreeNode
     {
