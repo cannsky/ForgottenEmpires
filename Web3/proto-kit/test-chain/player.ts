@@ -24,10 +24,26 @@ export class PlayerEntity extends Struct({
     xp: UInt64
 }) {}
 
+export class PlayerReputationStatsEntity extends Struct({
+    reputationpoints: UInt64,
+    maxreputation: UInt64,
+}) {}
+
+export class PlayerReputationEntity extends Struct({
+    charismatic: UInt64,
+    leadership: UInt64,
+    bravery: UInt64,
+    maxreputationlevel: UInt64,
+}) {}
+
 @runtimeModule()
 export class Player extends RuntimeModule<{}> {
 
     @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
+
+    @state() public playerReputationStats = StateMap.from<PublicKey, PlayerReputationStatsEntity>(UInt64, PlayerReputationStatsEntity);
+
+    @state() public playerReputations = StateMap.from<PublicKey, PlayerReputationEntity>(PublicKey, PlayerReputationEntity);
 
     @runtimeMethod()
     public newPlayer() {
