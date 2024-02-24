@@ -88,8 +88,8 @@ export class Player extends RuntimeModule<{}> {
                 xp: UInt64.from(newXP.toBigInt()
             })
         );
-        // Check if there is a player or not
-        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
+        // Check if there is a player stats or not
+        assert(this.playerStats.get(this.transaction.sender).isSome, "there is no player stats on this address");
         // Get player stats
         const playerStats = this.playerStats.get(this.transaction.sender).value;
         // Get current charisma
@@ -169,6 +169,46 @@ export class Player extends RuntimeModule<{}> {
                 bravery: newBravery,
             })
         );
+    }
+
+    @runtimeMethod()
+    public getTotalLeadership() {
+        // Check if there is a player or not
+        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
+        // Check if there is a player stats or not
+        assert(this.playerStats.get(this.transaction.sender).isSome, "there is no player stats on this address");
+        // Get player
+        const player = this.players.get(this.transaction.sender).value;
+        // Get player stats
+        const playerStats = this.playerStats.get(this.transaction.sender).value;
+        // Get player level
+        const playerLevel = player.level;
+        // Get player leadership
+        const playerLeadership = playerStats.leadership;
+        // Get total leadership
+        const totalLoadership = playerLevel.mul(playerLeadership);
+        // Return total leadership calculated
+        return totalLoadership;
+    }
+
+    @runtimeMethod()
+    public getTotalBravery() {
+        // Check if there is a player or not
+        assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
+        // Check if there is a player stats or not
+        assert(this.playerStats.get(this.transaction.sender).isSome, "there is no player stats on this address");
+        // Get player
+        const player = this.players.get(this.transaction.sender).value;
+        // Get player stats
+        const playerStats = this.playerStats.get(this.transaction.sender).value;
+        // Get player bravery
+        const playerLevel = player.level;
+        // Get player bravery
+        const playerBravery = playerStats.bravery;
+        // Get total bravery
+        const totalBravery = playerLevel.mul(playerBravery);
+        // Return total bravery calculated
+        return totalBravery;
     }
 
     // methods will be added later...
