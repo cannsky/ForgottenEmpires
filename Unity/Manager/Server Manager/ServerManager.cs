@@ -1,4 +1,5 @@
 using UnityEngine;
+using Mirror;
 using ForgottenEmpires.Managers.Server.Workers;
 
 namespace ForgottenEmpires.Managers.Server
@@ -23,5 +24,7 @@ namespace ForgottenEmpires.Managers.Server
         private void Update() { }
 
         public GameObject InstantiateGameObject(GameObject prefab) => Instantiate(prefab);
+
+        public void DestroyGameObject(GameObject destroyedGameObject) => DestroyImmediate(destroyedGameObject);
     }
 }
