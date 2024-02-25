@@ -1,11 +1,11 @@
-namespace ForgottenEmpires.Components.MerkleTrees
+namespace ForgottenEmpires.Components.Maps
 {
-    public class CharacterMerkleTreeNode
+    public class CharacterMapNode
     {
-        public string owner;
         public uint id;
+        public string owner;
         public uint level;
-        public int xp;
+        public uint xp;
         public uint statXP;
         public uint damage;
         public uint defense;
