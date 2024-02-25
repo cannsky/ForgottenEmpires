@@ -37,7 +37,7 @@ export class Player extends RuntimeModule<{}> {
 
     @state() public players = StateMap.from<PublicKey, PlayerEntity>(PublicKey, PlayerEntity);
 
-    @state() public playerStats = StateMap.from<PublicKey, PlayerStatsEntity>(UInt64, PlayerStatsEntity);
+    @state() public playerStats = StateMap.from<PublicKey, PlayerStatsEntity>(PublicKey, PlayerStatsEntity);
 
     @runtimeMethod()
     public newPlayer() {
