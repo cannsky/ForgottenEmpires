@@ -25,6 +25,7 @@
         public PlayerRotation playerRotation;
         public PlayerStats playerStats;
         public PlayerTrails playerTrails;
+        public PlayerUI playerUI;
         public PlayerVFX playerVFX;
 
         public PlayerWorker(Player player)
@@ -52,6 +53,7 @@
             playerRotation = new PlayerRotation(this);
             playerStats = new PlayerStats(this);
             playerTrails = new PlayerTrails(this);
+            playerUI = new PlayerUI(this);
             playerVFX = new PlayerVFX(this);
         }
 

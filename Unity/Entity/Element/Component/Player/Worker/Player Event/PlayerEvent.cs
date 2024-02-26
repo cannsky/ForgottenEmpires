@@ -11,7 +11,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
         public Dictonary<EventType, Event> playerEvents;
 
-        public PlayerRotation(PlayerWorker playerWorker) {
+        public PlayerEvent(PlayerWorker playerWorker) {
             this.playerWorker = playerWorker;
             playerEvents = new Dictionary<EventType, Event>();
         }

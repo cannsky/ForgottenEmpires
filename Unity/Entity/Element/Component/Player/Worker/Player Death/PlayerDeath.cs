@@ -9,7 +9,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
     {
         public PlayerWorker playerWorker;
 
-        public PlayerRotation(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
+        public PlayerDeath(PlayerWorker playerWorker) => this.playerWorker = playerWorker;
 
         public void OnDeath() => playerWorker.playerEvent.TriggerEvent(EventType.DeathEvent);
     }
