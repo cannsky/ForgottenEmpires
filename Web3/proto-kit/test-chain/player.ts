@@ -58,8 +58,8 @@ export class Player extends RuntimeModule<{}> {
                 charisma: UInt64.from(1),
                 reputation: UInt64.from(1),
                 maxupgrade: UInt64.from(1),
-                leadership: UInt64.from(0),
-                bravery: UInt64.from(0),
+                leadership: UInt64.from(1),
+                bravery: UInt64.from(1),
             })
         );
     }

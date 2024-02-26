@@ -12,7 +12,7 @@ namespace ForgottenEmpires.Managers.Data
 {
     public class DataManager : MonoBehaviour
     {
-        private PlayerMerkleTree playerMerkleTree;
+        private PlayerMapNode playerMapNode;
 
         public static DataManager Instance;
 
@@ -76,8 +76,8 @@ namespace ForgottenEmpires.Managers.Data
             {
                 // Parse the JSON response and update the MerkleTree with the received data
                 string jsonResult = webRequest.downloadHandler.text;
-                List<PlayerMerkleTree> nodes = JsonConvert.DeserializeObject<List<PlayerMerkleTreeNode>>(jsonResult);
-                playerMerkleTree.UpdateNodes(nodes);
+                List<PlayerMapNode> nodes = JsonConvert.DeserializeObject<List<PlayerMapNode>>(jsonResult);
+                playerMapNode.UpdateNodes(nodes);
                 Debug.Log(webRequest.downloadHandler.text);
             }
 
@@ -86,10 +86,10 @@ namespace ForgottenEmpires.Managers.Data
         }
 
         // Get player data based on player's wallet address from the MerkleTree
-        public PlayerMerkleTreeNode GetPlayerData(string walletAddress)
+        public PlayerMapNode GetPlayerData(string walletAddress)
         {
-            if (playerMerkleTree == null || playerMerkleTree.nodes == null) return null;
-            return playerMerkleTree.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
+            if (playerMapNode == null || playerMapNode.nodes == null) return null;
+            return playerMapNode.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
         }
     }
 }

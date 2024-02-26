@@ -10,8 +10,8 @@ import { log } from "@proto-kit/common";
 
 log.setLevel("error");
 
-describe("Player New Player Test", () => {
-    it("Tests player new player functionality", async () => {
+describe("Team Invite Player Test", () => {
+    it("Tests team invite player functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
             modules: {

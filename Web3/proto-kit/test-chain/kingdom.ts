@@ -40,7 +40,7 @@ export class Kingdom extends RuntimeModule<{}> {
         // Get kingdom count
         const kingdomCount = this.kingdomCount.get();
         // Add 1 to kingdom count
-        const newKingdomCount = kingdomCount.value.add(1);
+        const newKingdomCount = kingdomCount.add(1);
         // Update kingdom count
         this.kingdomCount.set(newKingdomCount);
         // Create new kingdom
@@ -64,13 +64,13 @@ export class Kingdom extends RuntimeModule<{}> {
         // Get player's current kingdom id
         const currentKingdomId = this.playerKingdoms.get(this.transaction.sender).value;
         // Check if the new kingdom is equal to old kingdom
-        assert(currentKingdomId.value.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
+        assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
         // Get kingdom
         const kingdom = this.kingdoms.get(kingdomId).value;
         // Get the member count of the kingdom
         const kingdomMemberCount = kingdom.memberCount;
         // Increase member count of the kingdom by 1
-        const newKingdomMemberCount = kingdomMemberCount.value.add(1);
+        const newKingdomMemberCount = kingdomMemberCount.add(1);
         // Update the kingdom with new member count
         this.kingdoms.set(
             kingdomId,
