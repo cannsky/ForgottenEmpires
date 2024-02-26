@@ -8,12 +8,7 @@ namespace ForgottenEmpires.Components.Events
         // ID of the event that will be triggered
         public uint eventID;
 
-        public void OnTriggerEnter(Collider other)
-        {
-            // If triggered object is not player return
-            if (other.tag != "Player") return;
-            // Trigger the event based on event id
-            EventHandlerWorker.HandleEvent(eventID);
-        }
+        // Trigger the event based on event id
+        public void TriggerEvent() => EventHandlerWorker.HandleEvent(eventID);
     }
 }

@@ -48,13 +48,8 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
 
             // Reduce player health by the applied damage
             // If player health reaches or falls below zero, trigger player death
-            else if ((playerWorker.player.health -= appliedDamage) <= 0) Die();
+            else if ((playerWorker.player.health -= appliedDamage) <= 0) playerWorker.playerDeath.OnDeath();
             else playerWorker.playerDamage.OnPlayerDamage();
-        }
-
-        public void Die()
-        {
-            //TODO: Implement here
         }
     }
 }
