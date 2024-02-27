@@ -13,6 +13,7 @@ namespace ForgottenEmpires.Optimizers.Workers
 
         public void OnClientStart()
         {
+            optimizerWorker.optimizerCulling.OnStart();
             optimizerWorker.optimizerLevel.OnStart();
         }
     }

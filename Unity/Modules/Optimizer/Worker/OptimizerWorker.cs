@@ -7,7 +7,9 @@ namespace ForgottenEmpires.Optimizers.Workers
         public OptimizerStart optimizerStart;
         public OptimizerUpdate optimizerUpdate;
 
+        public OptimizerCulling optimizerCulling;
         public OptimizerLevel optimizerLevel;
+        public OptimizerShadow optimizerShadow;
 
         public SpawnerWorker(Optimizer optimizer)
         {
@@ -16,7 +18,9 @@ namespace ForgottenEmpires.Optimizers.Workers
             optimizerStart = new OptimizerStart(this);
             optimizerUpdate = new OptimzerUpdate(this);
 
+            optimizerCulling = new OptimizerCulling(this);
             optimizerLevel = new OptimizerLevel(this);
+            optimizerShadow = new OptimizerShadow(this);
         }
 
         public void OnStart() => optimizerStart.OnStart();
