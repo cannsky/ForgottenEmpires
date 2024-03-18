@@ -15,12 +15,16 @@ describe("Player Level Up Test", () => {
             modules: {
                 Player,
             },
-            config: {
-                Player: {},
-            },
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Player: {}
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -42,10 +46,12 @@ describe("Player Level Up Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -61,11 +67,13 @@ describe("Player Level Up Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
+        // Get the promise
+        let aliceLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level upgraded
-        let aliceLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let aliceLevel = await aliceLevelPromise?.level;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
         // Expect player level to be 2
-        expect(aliceLevel?.toBigInt()).toBe(1n);
+        expect(aliceLevel?.toBigInt()).toBe(2n);
     });
 });

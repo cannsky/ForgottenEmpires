@@ -65,7 +65,7 @@ export class Player extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public levelUP() {
+    public levelUp() {
         // Check if there is a player or not
         assert(this.players.get(this.transaction.sender).isSome, "there is no player on this address");
         // Get player
@@ -75,7 +75,7 @@ export class Player extends RuntimeModule<{}> {
         // Get current level value of the player
         const currentLevel = player.level;
         // Check if the xp is enough for a level up
-        assert(currentXP.greaterThanOrEqual(1000), "not enough xp");
+        assert(currentXP.greaterThanOrEqual(UInt64.from(1000)), "not enough xp");
         // Calculate new level of the player
         const newLevel = currentLevel.add(1);
         // calculate new xp of the player
@@ -84,8 +84,8 @@ export class Player extends RuntimeModule<{}> {
         this.players.set(
             this.transaction.sender, 
             new PlayerEntity({ 
-                level: UInt64.from(newLevel.toBigInt()), 
-                xp: UInt64.from(newXP.toBigInt()
+                level: newLevel, 
+                xp: newXP
             })
         );
         // Check if there is a player stats or not
@@ -122,7 +122,7 @@ export class Player extends RuntimeModule<{}> {
         // Get current leadership of the player
         const currentLeadership = playerStats.leadership
         // Check if the charisma is enough for a increasing the leadership
-        assert(currentCharisma.greaterThanOrEqual(1), "not enough charisma");
+        assert(currentCharisma.greaterThanOrEqual(UInt64.from(1)), "not enough charisma");
         // Calculate new leadership of the player
         const newLeadership = currentLeadership.add(1);
         // calculate new charisma of the player
@@ -153,7 +153,7 @@ export class Player extends RuntimeModule<{}> {
         // Get current bravery of the player
         const currentBravery = playerStats.bravery
         // Check if the reputation is enough for a increasing the bravery
-        assert(currentReputation.greaterThanOrEqual(1), "not enough bravery");
+        assert(currentReputation.greaterThanOrEqual(UInt64.from(1)), "not enough bravery");
         // Calculate new bravery of the player
         const newBravery = currentBravery.add(1);
         // calculate new reputation of the player

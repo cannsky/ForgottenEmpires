@@ -14,13 +14,17 @@ describe("Player New Player Test", () => {
         const appChain = TestingAppChain.fromRuntime({
             modules: {
                 Player,
-            },
-            config: {
-                Player: {},
-            },
+            }
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Player: {}
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -42,10 +46,12 @@ describe("Player New Player Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
     });
