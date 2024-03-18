@@ -274,5 +274,41 @@ export class Guild extends RuntimeModule<{}> {
         );
     }
 
+    @runtimeMethod()
+    public getAttackRunePower() {
+        // Ensure the caller has rune stats
+        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        // Ensure the caller has rune points
+        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        // Get player runes
+        const runes = this.playerRunes.get(this.transaction.sender).value;
+        // Get player fire rune level
+        const currentFireLevel = runes.firelevel;
+        // Get player air rune level
+        const currentAirLevel = runes.airlevel;
+        // Calculate attack power
+        const attackRunePower = currentFireLevel.add(currentAirLevel);
+        // Return attack rune power
+        return attackRunePower;
+    }
+
+    @runtimeMethod()
+    public getDefenseRunePower() {
+        // Ensure the caller has rune stats
+        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        // Ensure the caller has rune points
+        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        // Get player runes
+        const runes = this.playerRunes.get(this.transaction.sender).value;
+        // Get player water rune level
+        const currentWaterLevel = runes.waterlevel;
+        // Get player earth rune level
+        const currentEarthLevel = runes.earthlevel;
+        // Calculate attack power
+        const defenseRunePower = currentWaterLevel.add(currentEarthLevel);
+        // Return defense rune power
+        return defenseRunePower;
+    }
+
     // methods will be added later...
 }
