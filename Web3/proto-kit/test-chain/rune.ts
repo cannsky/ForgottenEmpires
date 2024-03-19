@@ -247,7 +247,7 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure earth rune level is not maxed yet
         assert(currentEarthLevel.lessThanOrEqual(currentMaxRuneLevel), "you already maxed your rune level");
         // Increase rune level by 1
-        const newWaterLevel = currentEarthLevel.add(1);
+        const newEarthLevel = currentEarthLevel.add(1);
         // Decrease x rune points by 2
         const newXPoints = currentXPoints.sub(2);
         // Decrease z rune points by 1
@@ -257,9 +257,9 @@ export class Rune extends RuntimeModule<{}> {
             this.transaction.sender,
             new RuneEntity({
                 firelevel: runes.firelevel,
-                waterlevel: newWaterLevel,
+                waterlevel: runes.earthlevel,
                 airlevel: runes.airlevel,
-                earthlevel: runes.earthlevel,
+                earthlevel: newEarthLevel,
                 maxrunelevel: runes.maxrunelevel
             })
         );
