@@ -34,7 +34,7 @@ export class RuneEntity extends Struct({
 }) {}
 
 @runtimeModule()
-export class Guild extends RuntimeModule<{}> {
+export class Rune extends RuntimeModule<{}> {
 
     @state() public playerRunePoints = StateMap.from<PublicKey, RunePointEntity>(PublicKey, RunePointEntity);
 
