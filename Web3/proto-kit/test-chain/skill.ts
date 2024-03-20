@@ -20,6 +20,7 @@ import {
 } from "o1js";
 
 export class BuffSkillEntity extends Struct({
+    level: UInt64,
     vitality: UInt64,
     strength: UInt64,
     dexterity: UInt64,
@@ -28,6 +29,7 @@ export class BuffSkillEntity extends Struct({
 }) {}
 
 export class DebuffSkillEntity extends Struct({
+    level: UInt64,
     damage: UInt64,
     maxlevel: UInt64,
 }) {}
@@ -87,7 +89,7 @@ export class Rune extends RuntimeModule<{}> {
         assert(skillUpgradePoints.greaterThanOrEqual(1), "you don't have any skill upgrade points available");
         // Get player buff skill
         const buffSkill = this.playerBuffSkills.get(this.transaction.sender).value;
-        // Get level fo the buff skill
+        // Get level of the buff skill
         const currentLevel = buffSkill.level;
         // Get max level of the buff skill.
         const maxLevel = buffSkill.maxlevel;
@@ -120,7 +122,49 @@ export class Rune extends RuntimeModule<{}> {
                 strength: newStrength,
                 dexterity: newDexterity,
                 intelligence: newIntelligence,
-                maxlevel: newLevel,
+                maxlevel: buffSkill.maxlevel,
+            })
+        );
+        // Decrease skill points by 1
+        const newSkillUpgradePoints = skillUpgradePoints.sub(1);
+        // Update skill upgrade points
+        this.playerSkillUpgradePoints.set(
+            this.transaction.sender,
+            newSkillUpgradePoints
+        )
+    }
+
+    @runtimeMethod()
+    public upgradePlayerDebuffSkill() {
+        // Ensure the caller has debuff skill
+        assert(this.playerDebuffSkills.get(this.transaction.sender).isSome, "you don't have buff skills");
+        // Ensure the caller has upgrade points
+        assert(this.playerSkillUpgradePoints.get(this.transaction.sender).isSome, "you don't have skill upgrade points");
+        // Get player upgrade points
+        const skillUpgradePoints = this.playerSkillUpgradePoints.get(this.transaction.sender);
+        // Check if there are any skill points or not
+        assert(skillUpgradePoints.greaterThanOrEqual(1), "you don't have any skill upgrade points available");
+        // Get player debuff skill
+        const debuffSkill = this.playerDebuffSkills.get(this.transaction.sender).value;
+        // Get level of the debuff skill
+        const currentLevel = debuffSkill.level;
+        // Get max level of the debuff skill.
+        const maxLevel = debuffSkill.maxlevel;
+        // Check if the debuff skill is already in the max level or not
+        assert(currentLevel.lessThan(maxLevel), "your skill has the max level");
+        // Get damage of the debuff skill
+        const currentDamage = debuffSkill.damage;
+        // Increase damage of the debuff skill by 1
+        const newDamage = currentDamage.add(1);
+        // Increase level of the buff skill by 1
+        const newLevel = currentLevel.add(1);
+        // Update debuff skill
+        this.playerBuffSkills.set(
+            this.transaction.sender,
+            new BuffSkillEntity({ 
+                level: newLevel,
+                damage: newDamage,
+                maxlevel: debuffSkill.maxlevel,
             })
         );
         // Decrease skill points by 1
