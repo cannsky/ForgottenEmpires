@@ -48,10 +48,10 @@ export class Rune extends RuntimeModule<{}> {
         this.playerRunes.set(
             this.transaction.sender,
             new RuneEntity({ 
-                firelevel: UInt64.From(0),
-                waterlevel: UInt64.From(0),
-                airlevel: UInt64.from(0),
-                earthlevel: UInt64.From(0),
+                firelevel: UInt64.From(1),
+                waterlevel: UInt64.From(1),
+                airlevel: UInt64.from(1),
+                earthlevel: UInt64.From(1),
                 maxrunelevel: UInt64.from(10)
             })
         );
