@@ -1,3 +1,6 @@
+using ForgottenEmpires.Types;
+using ForgottenEmpires.Managers.JS;
+
 namespace ForgottenEmpires.Entities.Runes
 {
     public class Rune
@@ -13,5 +16,25 @@ namespace ForgottenEmpires.Entities.Runes
 
         // Create new rune data on rune
         public Rune() => runeData = new RuneData();
+
+        // Try to upgrade on chain rune
+        public void UpdateRune(Runetype runeType) {
+            switch (runeType) {
+                case RuneType.Fire:
+                    JSConnector.Instance.UpgradeFireRune();
+                    break;
+                case RuneType.Water:
+                    JSConnector.Instance.UpgradeWaterRune();
+                    break;
+                case RuneType.Air:
+                    JSConnector.Instance.UpgradeAirRune();
+                    break;
+                case RuneType.Earth:
+                    JSConnector.Instance.UpgradeEarthRune();
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }

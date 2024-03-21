@@ -9,44 +9,39 @@ namespace ForgottenEmpires.Managers.JS
     {
         public static JSConnector Instance;
 
-        [DllImport("__Internal")]
-        private static extern void JSCreateGuild(string callbackObjectName, string callbackMethodName);
+        [DllImport("__Internal")] private static extern void JSCreateGuild(string callbackObjectName, string callbackMethodName);
 
-        [DllImport("__Internal")]
-        private static extern void JSJoinGuild(string callbackObjectName, string callbackMethodName, uint guildID);
+        [DllImport("__Internal")] private static extern void JSJoinGuild(string callbackObjectName, string callbackMethodName, uint guildID);
 
-        [DllImport("__Internal")]
-        private static extern void JSLeaveGuild(string callbackObjectName, string callbackMethodName, uint guildID);
+        [DllImport("__Internal")] private static extern void JSLeaveGuild(string callbackObjectName, string callbackMethodName, uint guildID);
 
-        [DllImport("__Internal")]
-        private static extern void JSNewItem(string callbackObjectName, string callbackMethodName);
+        [DllImport("__Internal")] private static extern void JSNewItem(string callbackObjectName, string callbackMethodName);
 
-        [DllImport("__Internal")]
-        private static extern void JSUpgradeItemDamage(string callbackObjectName, string callbackMethodName, uint itemID);
+        [DllImport("__Internal")] private static extern void JSUpgradeItemDamage(string callbackObjectName, string callbackMethodName, uint itemID);
 
-        [DllImport("__Internal")]
-        private static extern void JSUpgradeItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
+        [DllImport("__Internal")] private static extern void JSUpgradeItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
 
-        [DllImport("__Internal")]
-        private static extern void JSGetTotalItemDamage(string callbackObjectName, string callbackMethodName, uint itemID);
+        [DllImport("__Internal")] private static extern void JSGetTotalItemDamage(string callbackObjectName, string callbackMethodName, uint itemID);
 
-        [DllImport("__Internal")]
-        private static extern void JsGetTotalItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
+        [DllImport("__Internal")] private static extern void JsGetTotalItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
 
-        [DllImport("__Internal")]
-        private static extern void JSInvitePlayerToTeam(string callbackObjectName, string callbackMethodName, string playerAddress, uint teamID);
+        [DllImport("__Internal")] private static extern void JSInvitePlayerToTeam(string callbackObjectName, string callbackMethodName, string playerAddress, uint teamID);
 
-        [DllImport("__Internal")]
-        private static extern void JSJoinTeam(string callbackObjectName, string callbackMethodName, uint teamID);
+        [DllImport("__Internal")] private static extern void JSJoinTeam(string callbackObjectName, string callbackMethodName, uint teamID);
 
-        [DllImport("__Internal")]
-        private static extern void JSLeaveTeam(string callbackObjectName, string callbackMethodName, uint teamID);
+        [DllImport("__Internal")] private static extern void JSLeaveTeam(string callbackObjectName, string callbackMethodName, uint teamID);
 
-        [DllImport("__Internal")]
-        private static extern void JSChangeWorld(string callbackObjectName, string callbackMethodName, uint characterID, uint worldID);
+        [DllImport("__Internal")] private static extern void JSChangeWorld(string callbackObjectName, string callbackMethodName, uint characterID, uint worldID);
 
-        [DllImport("__Internal")]
-        public static extern void DebugMessage(string message);
+        [DllImport("__Internal")] private static extern void JSUpgradeFireRune(string callbackObjectName, string callbackMethodName);
+
+        [DllImport("__Internal")] private static extern void JSUpgradeWaterRune(string callbackObjectName, string callbackMethodName);
+
+        [DllImport("__Internal")] private static extern void JSUpgradeAirRune(string callbackObjectName, string callbackMethodName);
+
+        [DllImport("__Internal")] private static extern void JSUpgradeEarthRune(string callbackObjectName, string callbackMethodName);
+
+        [DllImport("__Internal")] public static extern void DebugMessage(string message);
 
         private void Awake() => DontDestroyOnLoad(Instance = this);
 
@@ -85,6 +80,18 @@ namespace ForgottenEmpires.Managers.JS
 
         // Called when a player wants to change a world
         public void ChangeWorld(uint characterID, uint worldID) => JSLeaveTeam(gameObject.name, "ReturnMessage", characterID, worldID);
+
+        // Called when a player wants to upgrade fire rune
+        public void UpgradeFireRune() => JSUpgradeFireRune(gameObject.name, "ReturnMessage");
+
+        // Called when a player wants to upgrade water rune
+        public void UpgradeWaterRune() => JSUpgradeWaterRune(gameObject.name, "ReturnMessage");
+
+        // Called when a player wants to upgrade air rune
+        public void UpgradeAirRune() => JSUpgradeAirRune(gameObject.name, "ReturnMessage");
+
+        // Called when a player wants to upgrade fire rune
+        public void UpgradeEarthRune() => JSUpgradeEarthRune(gameObject.name, "ReturnMessage");
 
         // Called when a message is returned from JavaScript
         public void ReturnMessage(string message)
