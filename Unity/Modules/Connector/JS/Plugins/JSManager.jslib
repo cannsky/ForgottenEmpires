@@ -50,6 +50,34 @@
 	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
   },
 
+  JSUpgradeFireRune async function(callbackObjectNameStr, callbackMethodNameStr) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await upgradeFireRune();
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSUpgradeWaterRune async function(callbackObjectNameStr, callbackMethodNameStr) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await upgradeWaterRune();
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSUpgradeAirRune async function(callbackObjectNameStr, callbackMethodNameStr) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await upgradeAirRune();
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
+  JSUpgradeEarthRune async function(callbackObjectNameStr, callbackMethodNameStr) {
+	const callbackObjectName = UTF8ToString(callbackObjectNameStr);
+	const callbackMethodName = UTF8ToString(callbackMethodNameStr);
+	const message = await upgradeEarthRune();
+	unityGameInstance.SendMessage(callbackObjectName, callbackMethodName, message);
+  },
+
   DebugMessage: function(messageStr) {
 	const message = UTF8ToString(messageStr);
 	console.log(message);
