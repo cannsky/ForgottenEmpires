@@ -8,12 +8,13 @@ namespace ForgottenEmpires.Managers.Data.Workers
     public class PlayerGetDataWorker
     {
         // Player on chain data url
-        private string url = "http://localhost:4321/player";
+        private string playerNodesURL = "http://localhost:4321/player/nodes";
+
+        // Player stats on chain data url
+        private string playerStatsNodesURL = "http://localhost:4321/player/statsnodes";
 
         // Player map to store player on chain data
         public PlayerMap playerMap;
-
-        public PlayerGetDataWorker() => DataManager.StartCoroutine(UpdateAllPlayersData());
 
         public void OnStart() => StartGettingPlayerData();
 
@@ -46,8 +47,11 @@ namespace ForgottenEmpires.Managers.Data.Workers
         // Coroutine to send a POST request to the specified URL
         public IEnumerator SendPostRequest()
         {
+            List<PlayerMapNode> playerNodes;
+            List<PlayerStatsNode> playerStatsNodes;
+
             // Create a UnityWebRequest object for sending the POST request
-            UnityWebRequest webRequest = new UnityWebRequest(url, UnityWebRequest.kHttpVerbPOST)
+            UnityWebRequest webRequest = new UnityWebRequest(playerNodesURL, UnityWebRequest.kHttpVerbPOST)
             {
                 downloadHandler = new DownloadHandlerBuffer(),
                 uploadHandler = new UploadHandlerRaw(new byte[0])
@@ -61,11 +65,31 @@ namespace ForgottenEmpires.Managers.Data.Workers
             else
             {
                 // Parse the JSON response and update the MerkleTree with the received data
-                string jsonResult = webRequest.downloadHandler.text;
-                List<PlayerMapNode> nodes = JsonConvert.DeserializeObject<List<PlayerMapNode>>(jsonResult);
-                playerMap.UpdateNodes(nodes);
-                Debug.Log(webRequest.downloadHandler.text);
+                string playerNodesJsonResult = webRequest.downloadHandler.text;
+                playerNodes = JsonConvert.DeserializeObject<List<PlayerMapNode>>(playerNodesJsonResult);
             }
+
+            // Create a UnityWebRequest object for sending the POST request
+            UnityWebRequest webRequest = new UnityWebRequest(playerStatsNodesURL, UnityWebRequest.kHttpVerbPOST)
+            {
+                downloadHandler = new DownloadHandlerBuffer(),
+                uploadHandler = new UploadHandlerRaw(new byte[0])
+            };
+            
+            webRequest.SetRequestHeader("Content-Type", "application/json");
+
+            // Send the POST request and wait for the response
+            yield return webRequest.SendWebRequest();
+            if (webRequest.result != UnityWebRequest.Result.Success) Debug.LogError("Error: " + webRequest.error);
+            else
+            {
+                // Parse the JSON response and update the MerkleTree with the received data
+                string playerStatsNodesJsonResult = webRequest.downloadHandler.text;
+                playerStatsNodes = JsonConvert.DeserializeObject<List<PlayerStatsNode>>(playerStatsNodesJsonResult);
+            }
+
+            // Update player nodes
+            playerMap.UpdateNodes(playerNodes, playerStatsNodes);
 
             // Dispose of the UnityWebRequest object
             webRequest.Dispose();
