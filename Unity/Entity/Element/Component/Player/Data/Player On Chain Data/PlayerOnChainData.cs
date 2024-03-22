@@ -26,23 +26,23 @@ namespace ForgottenEmpires.Entities.Elements.PlayerDatas
             // Check if the player or wallet address is null
             if (playerData.player == null || playerData.player.walletAddress == null) return;
             // Retrieve the player's data from the DataManager.
-            PlayerMerkleTreeNode playerOnChainMerkleTreeNode = DataManager.Instance.GetPlayerData(playerData.player.walletAddress);
+            PlayerMapNode playerNode = DataManager.Instance.GetPlayerData(playerData.player.walletAddress);
             // Update the player's xp, level and kingdom from onchain data
-            if (playerOnChainMerkleTreeNode == null) return;
+            if (playerNode == null) return;
             // Update player level
-            level = playerOnChainMerkleTreeNode.level;
+            level = playerNode.level;
             // Update player xp
-            xp = playerOnChainMerkleTreeNode.xp;
+            xp = playerNode.xp;
             // Update player charisma
-            charisma = playerOnChainMerkleTreeNode.charisma;
+            charisma = playerNode.charisma;
             // Update player reputation
-            reputation = playerOnChainMerkleTreeNode.reputation;
+            reputation = playerNode.reputation;
             // Update player max upgrade
-            maxUpgrade = playerOnChainMerkleTreeNode.maxUpgrade;
+            maxUpgrade = playerNode.maxUpgrade;
             // Update player leadership
-            leadership = playerOnChainMerkleTreeNode.leadership;
+            leadership = playerNode.leadership;
             // Update player bravery
-            bravery = playerOnChainMerkleTreeNode.bravery;
+            bravery = playerNode.bravery;
         }
     }
 }

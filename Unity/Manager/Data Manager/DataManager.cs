@@ -12,7 +12,7 @@ namespace ForgottenEmpires.Managers.Data
 {
     public class DataManager : MonoBehaviour
     {
-        private PlayerMapNode playerMapNode;
+        private PlayerMap playerMap;
 
         public static DataManager Instance;
 
@@ -29,11 +29,11 @@ namespace ForgottenEmpires.Managers.Data
 
         public void StartGettingData()
         {
-            // Start updating the MerkleTree
+            // Start updating the player map
             ServerManager.Instance.StartCoroutine(UpdateMerkleTree());
 
-            // Initialize the MerkleTree
-            playerMerkleTree = new PlayerMerkleTree();
+            // Initialize the player map
+            playerMap = new PlayerMap();
 
             // Create a new player data manager
             dataManagerWorker = new DataManagerWorker();
@@ -42,7 +42,7 @@ namespace ForgottenEmpires.Managers.Data
             dataManagerWorker.OnStart();
         }
 
-        // Coroutine to continuously update the MerkleTree
+        // Coroutine to continuously update the map
         public IEnumerator UpdateMerkleTree()
         {
             while (true)
@@ -77,7 +77,7 @@ namespace ForgottenEmpires.Managers.Data
                 // Parse the JSON response and update the MerkleTree with the received data
                 string jsonResult = webRequest.downloadHandler.text;
                 List<PlayerMapNode> nodes = JsonConvert.DeserializeObject<List<PlayerMapNode>>(jsonResult);
-                playerMapNode.UpdateNodes(nodes);
+                playerMap.UpdateNodes(nodes);
                 Debug.Log(webRequest.downloadHandler.text);
             }
 
@@ -88,8 +88,8 @@ namespace ForgottenEmpires.Managers.Data
         // Get player data based on player's wallet address from the MerkleTree
         public PlayerMapNode GetPlayerData(string walletAddress)
         {
-            if (playerMapNode == null || playerMapNode.nodes == null) return null;
-            return playerMapNode.nodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
+            if (playerMap == null || playerMap.playerNodes == null) return null;
+            return playerMap.playerNodes.FirstOrDefault(playerData => playerData.publicKey == walletAddress);
         }
     }
 }
