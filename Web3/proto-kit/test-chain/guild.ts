@@ -44,28 +44,6 @@ export class Guild extends RuntimeModule<{}> {
     @state() public guildWarCount = State.from<UInt64>(UInt64);
 
     @runtimeMethod()
-    public newGuild() {
-        // Ensure the caller is not already leading a guild
-        assert(this.playerGuilds.get(this.transaction.sender).isSome.not(), "you cannot be in two guilds at the same time")
-        // Get guild count
-        const guildCount = this.guildCount.get();
-        // Add 1 to guild count
-        const newGuildCount = guildCount.add(1);
-        // Update guild count
-        this.guildCount.set(newGuildCount);
-        // Create new guild
-        this.guilds.set(
-            newGuildCount,
-            new GuildEntity({ 
-                leader: this.transaction.sender,
-                memberCount: UInt64.From(0)
-            })
-        );
-        // Add the player who created the guild to the guild as member
-        this.playerGuilds.set(this.transaction.sender, newGuildCount);
-    }
-
-    @runtimeMethod()
     public joinGuild(guildId: UInt64) {
         // Ensure the guild exists
         assert(this.guilds.get(guildId).isSome, "Guild does not exist");
