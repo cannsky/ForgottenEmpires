@@ -34,28 +34,6 @@ export class Kingdom extends RuntimeModule<{}> {
     @state() public kingdomCount = State.from<UInt64>(UInt64);
 
     @runtimeMethod()
-    public newKingdom() {
-        // Ensure the caller is not already in a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "you cannot be in two kingdoms at the same time")
-        // Get kingdom count
-        const kingdomCount = this.kingdomCount.get();
-        // Add 1 to kingdom count
-        const newKingdomCount = kingdomCount.add(1);
-        // Update kingdom count
-        this.kingdomCount.set(newKingdomCount);
-        // Create new kingdom
-        this.kingdoms.set(
-            newKingdomCount,
-            new KingdomEntity({ 
-                leader: this.transaction.sender,
-                memberCount: UInt64.From(0)
-            })
-        );
-        // Add the player who created the kingdom to the kingdom as member
-        this.playerKingdoms.set(this.transaction.sender, newKingdomCount);
-    }
-
-    @runtimeMethod()
     public changeKingdom(kingdomId: UInt64) {
         // Check if there is a player or not
         assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "You cannot be in two kingdoms");
