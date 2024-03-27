@@ -65,6 +65,8 @@ export class Kingdom extends RuntimeModule<{}> {
 
     @state() public kingdomWarRequestCount = State.from<UInt64>(UInt64);
 
+    @state() public kingdomPeaceRequestCount = State.from<UInt64>(UInt64);
+
     @runtimeMethod()
     public changeKingdom(kingdomId: UInt64) {
         // Make sure player doesn't have a kingdom
@@ -98,8 +100,6 @@ export class Kingdom extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public newWarRequest(kingdomId: UInt64) {
-        // Check if the player is not selecting player's kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).equal(kingdomId).not(), "You cannot declare war to your kingdom");
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
@@ -119,6 +119,30 @@ export class Kingdom extends RuntimeModule<{}> {
                 kingdomoneid: playerKingdomId,
                 kingdomtwoid: kingdomId,
                 favor: UInt64.from(1)
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public newPeaceRequest(warId: UInt64) {
+        // Check if there is a kingdom in the specified id
+        assert(this.kingdomWars.get(warId).isSome, "There is no kingdom war in the specified id");
+        // Get player's current kingdom id
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        // Get player kingdom id
+        const playerKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        // Get kingdom peace request count
+        const currentPeaceRequestCount = this.kingdomPeaceRequestCount.get();
+        // add 1 to current kingdom peace request count
+        const newWarRequestCount = currentPeaceRequestCount.add(1);
+        // Create new peace request
+        this.kingdomPeaceRequests.set(
+            newWarRequestCount,
+            new PeaceRequest({
+                kingdomoneid: playerKingdomId,
+                kingdomtwoid: kingdomId,
+                favorone: UInt64.from(1),
+                favortwo: UInt64.from(0)
             })
         );
     }
