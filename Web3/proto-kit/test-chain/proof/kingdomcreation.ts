@@ -120,7 +120,8 @@ export class KingdomCreation extends RuntimeModule<KingdomCreationConfig>{
             newKingdomCount,
             new KingdomEntity({ 
                 leader: this.transaction.sender,
-                memberCount: UInt64.From(0)
+                memberCount: UInt64.From(0),
+                warid: UInt64.from(0)
             })
         );
         // Add the player who created the kingdom to the kingdom as member

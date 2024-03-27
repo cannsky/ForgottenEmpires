@@ -37,13 +37,13 @@ export class PeaceRequest extends Struct({
 export class KingdomWar extends Struct({
     warid: UInt64,
     kingdomoneid: UInt64,
-    kingdomtwoid: UInt64,
-    active: Bool
+    kingdomtwoid: UInt64
 }) {}
 
 export class KingdomEntity extends Struct({
     leader: PublicKey,
     memberCount: UInt64,
+    warid: UInt64
 }) {}
 
 @runtimeModule()
@@ -88,7 +88,8 @@ export class Kingdom extends RuntimeModule<{}> {
             kingdomId,
             new KingdomEntity({
                 leader: kingdom.leader,
-                memberCount: newKingdomMemberCount
+                memberCount: newKingdomMemberCount,
+                warid: kingdom.warid
             })
         );
         // Set players kingdom
@@ -100,6 +101,8 @@ export class Kingdom extends RuntimeModule<{}> {
 
     @runtimeMethod()
     public newWarRequest(kingdomId: UInt64) {
+        // Make sure player has a kingdom
+        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
@@ -118,30 +121,33 @@ export class Kingdom extends RuntimeModule<{}> {
             new WarRequest({
                 kingdomoneid: playerKingdomId,
                 kingdomtwoid: kingdomId,
-                favor: UInt64.from(1)
+                favor: UInt64.from(0)
             })
         );
     }
 
     @runtimeMethod()
     public newPeaceRequest(warId: UInt64) {
-        // Check if there is a kingdom in the specified id
+        // Make sure player has a kingdom
+        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        // Check if there is a kingdom war in the specified id
         assert(this.kingdomWars.get(warId).isSome, "There is no kingdom war in the specified id");
-        // Get player's current kingdom id
-        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
-        // Get player kingdom id
-        const playerKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        // Get war
+        const kingdomWar = this.kingdomWars.get(warId);
+        // Ensure player is in one of the kingdoms
+        assert(this.playerKingdoms.get(this.transaction.sender).equal(kingdomWar.kingdomoneid)
+            .or(this.playerKingdoms.get(this.transaction.sender).equal(kingdomWar.kingdomtwoid)), "You are not in any of the two kingdoms")
         // Get kingdom peace request count
         const currentPeaceRequestCount = this.kingdomPeaceRequestCount.get();
         // add 1 to current kingdom peace request count
-        const newWarRequestCount = currentPeaceRequestCount.add(1);
+        const newPeaceRequestCount = currentPeaceRequestCount.add(1);
         // Create new peace request
         this.kingdomPeaceRequests.set(
-            newWarRequestCount,
+            newPeaceRequestCount,
             new PeaceRequest({
-                kingdomoneid: playerKingdomId,
-                kingdomtwoid: kingdomId,
-                favorone: UInt64.from(1),
+                kingdomoneid: kingdomWar.kingdomoneid,
+                kingdomtwoid: kingdomWar.kingdomtwoid,
+                favorone: UInt64.from(0),
                 favortwo: UInt64.from(0)
             })
         );
