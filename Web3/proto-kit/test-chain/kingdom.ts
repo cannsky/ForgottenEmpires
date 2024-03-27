@@ -19,6 +19,25 @@ import {
     UInt64
 } from "o1js";
 
+export class WarRequest extends Struct({
+    kingdomoneid: UInt64,
+    kingdomtwoid: UInt64,
+    favor: UInt64
+}) {}
+
+export class PeaceRequest extends Struct({
+    kingdomoneid: UInt64,
+    kingdomtwoid: UInt64,
+    favorone: UInt64,
+    favortwo: UInt64
+}) {}
+
+export class KingdomWar extends Struct({
+    warid: UInt64,
+    kingdomoneid: UInt64,
+    kingdomtwoid: UInt64
+}) {}
+
 export class KingdomEntity extends Struct({
     leader: PublicKey,
     memberCount: UInt64,
@@ -31,12 +50,22 @@ export class Kingdom extends RuntimeModule<{}> {
 
     @state() public playerKingdoms = StateMap.from<PublicKey, UInt64>(PublicKey, UInt64);
 
+    @state() public kingdomWarRequests = StateMap.from<UInt64, WarRequest> (UInt64, WarRequest);
+
+    @state() public kingdomPeaceRequests = StateMap.from<UInt64, PeaceRequest> (UInt64, PeaceRequest);
+
+    @state() public kingdomWars = StateMap.from<UInt64, KingdomWar> (UInt64, KingdomWar);
+
     @state() public kingdomCount = State.from<UInt64>(UInt64);
+
+    @state() public kingdomWarCount = State.from<UInt64>(UInt64);
+
+    @state() public kingdomWarRequestCount = State.from<UInt64>(UInt64);
 
     @runtimeMethod()
     public changeKingdom(kingdomId: UInt64) {
-        // Check if there is a player or not
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "You cannot be in two kingdoms");
+        // Make sure player doesn't have a kingdom
+        assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "You cannot be in two kingdoms at the same time");
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
@@ -62,5 +91,22 @@ export class Kingdom extends RuntimeModule<{}> {
             this.transaction.sender,
             kingdomId
         )
+    }
+
+    @runtimeMethod()
+    public newWarRequest(kingdomId: UInt64) {
+        // Check if the player is not selecting player's kingdom
+        assert(this.playerKingdoms.get(this.transaction.sender).equal(kingdomId).not(), "You cannot declare war to your kingdom");
+        // Check if there is a kingdom in the specified id
+        assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
+        // Get player's current kingdom id
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender).value;
+        // Check if the new kingdom is equal to old kingdom
+        assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
+    }
+
+    @runtimeMethod()
+    public addPointsToWarRequest(warRequestId: UInt64) {
+
     }
 }
