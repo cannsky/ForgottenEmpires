@@ -16,7 +16,9 @@ import {
 import {
     PublicKey,
     Struct,
-    UInt64
+    UInt64,
+    Provable,
+    Bool
 } from "o1js";
 
 export class WarRequest extends Struct({
@@ -35,7 +37,8 @@ export class PeaceRequest extends Struct({
 export class KingdomWar extends Struct({
     warid: UInt64,
     kingdomoneid: UInt64,
-    kingdomtwoid: UInt64
+    kingdomtwoid: UInt64,
+    active: Bool
 }) {}
 
 export class KingdomEntity extends Struct({
@@ -69,11 +72,11 @@ export class Kingdom extends RuntimeModule<{}> {
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
-        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender).value;
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
         // Check if the new kingdom is equal to old kingdom
         assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
         // Get kingdom
-        const kingdom = this.kingdoms.get(kingdomId).value;
+        const kingdom = this.kingdoms.get(kingdomId);
         // Get the member count of the kingdom
         const kingdomMemberCount = kingdom.memberCount;
         // Increase member count of the kingdom by 1
@@ -100,9 +103,24 @@ export class Kingdom extends RuntimeModule<{}> {
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
-        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender).value;
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
         // Check if the new kingdom is equal to old kingdom
         assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
+        // Get player kingdom id
+        const playerKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        // Get kingdom war request count
+        const currentWarRequestCount = this.kingdomWarRequestCount.get();
+        // add 1 to current kingdom war request count
+        const newWarRequestCount = currentWarRequestCount.add(1);
+        // Create new war request
+        this.kingdomWarRequests.set(
+            newWarRequestCount,
+            new WarRequest({
+                kingdomoneid: playerKingdomId,
+                kingdomtwoid: kingdomId,
+                favor: UInt64.from(1)
+            })
+        );
     }
 
     @runtimeMethod()
