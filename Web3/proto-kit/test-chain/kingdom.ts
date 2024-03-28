@@ -37,9 +37,9 @@ export class PeaceRequest extends Struct({
 }) {}
 
 export class KingdomWar extends Struct({
-    warid: UInt64,
     kingdomoneid: UInt64,
-    kingdomtwoid: UInt64
+    kingdomtwoid: UInt64,
+    active: Bool
 }) {}
 
 export class KingdomEntity extends Struct({
@@ -171,6 +171,9 @@ export class Kingdom extends RuntimeModule<{}> {
         assert(warRequest.active.equal(Bool(true)), "This war request is not active")
         // Make sure that player is in kingdom one
         assert(this.playerKingdoms.get(this.transaction.sender).equal(warRequest.kingdomoneid), "You are not in the same kingdom as this request");
+        // Make sure kingdoms exits
+        assert(this.kingdoms.get(warRequest.kingdomoneid).isSome
+            .and(this.kingdoms.get(warRequest.kingdomtwoid).isSome), "Kingdoms don't exist");
         // Make sure that none of the kingdoms are at war
         assert(this.kingdoms.get(warRequest.kingdomoneid).value.warId.equal(UInt64.from(0))
             .and(this.kingdoms.get(warRequest.kingdomtwoid).value.warId.equal(UInt64.from(0))), "Each kingdom should be in peace to favor war request")
@@ -197,16 +200,56 @@ export class Kingdom extends RuntimeModule<{}> {
                 favor: newRequestFavors,
                 active: newRequest.active
             })
-        )
+        );
         // Check if war request favor is less than 1000 or not
         assert(newRequestFavors.greaterThanOrEqual(1000), "Favor added but favor is still low.");
-
-        /*
-        TODO: Implement create war and set war request active to false.
-        */
-
-        // THIS FUNCTION IS NOT COMPLETED!
-        // CREATE WAR WILL BE IMPLEMENTED.
+        // Get war count
+        const currentWarCount = this.kingdomWarCount.get();
+        // Increase war count by 1
+        const newWarCount = currentWarCount.add(1);
+        // Update new war count
+        this.kingdomWarCount.set(newWarCount);
+        // Create new war entity
+        this.kingdomWars.set(
+            newWarCount,
+            new KingdomWar({
+                kingdomoneid: warRequest.kingdomoneid,
+                kingdomtwoid: warRequest.kingdomtwoid,
+                active: Bool(true)
+            })
+        );
+        // Get kingdom one
+        const kingdomOne = this.kingdoms.get(warRequest.kingdomoneid).value;
+        // Update kingdom one war id
+        this.kingdoms.set(
+            warRequest.kingdomoneid,
+            new KingdomEntity({
+                leader: kingdomOne.leader,
+                memberCount: kingdomOne.memberCount,
+                warid: newWarCount
+            })
+        );
+        // Get kingdom two
+        const kingdomTwo = this.kingdoms.get(warRequest.kingdomtwoid).value;
+        // Update kingdom two war id
+        this.kingdoms.set(
+            warRequest.kingdomtwoid,
+            new KingdomEntity({
+                leader: kingdomTwo.leader,
+                memberCount: kingdomTwo.memberCount,
+                warid: newWarCount
+            })
+        );
+        // Disable war request
+        this.kingdomWarRequests.set(
+            warRequestId,
+            new WarRequest({
+                kingdomoneid: warRequest.kingdomoneid,
+                kingdomtwoid: warRequest.kingdomtwoid,
+                favor: newRequestFavors,
+                active: Bool(false)
+            })
+        );
     }
 
     @runtimeMethod()
