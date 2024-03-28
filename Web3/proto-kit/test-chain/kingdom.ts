@@ -365,7 +365,27 @@ export class Kingdom extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public addPointsToWarRequest(warRequestId: UInt64) {
-
+    public getEnemyKingdom(kingdomId: UInt64) {
+        // Make sure kingdom exists
+        assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom with given id");
+        // Get player kingdom
+        const kingdom = this.kingdoms.get(kingdomId).value;
+        // Get player kingdom war id
+        const kingdomWarId = kingdom.warid;
+        // Ensure kingdom is in war
+        assert(kingdomWarId.greaterThanOrEqual(1)
+            .and(this.kingdomWars.get(kingdomWarId).isSome), "Kingdom is not in a war");
+        // Get war
+        const kingdomWar = this.kingdomWars.get(kingdomWarId);
+        // Make sure that kingdoms exists
+        assert(this.playerKingdoms.get(kingdomWar.kingdomoneid).isSome
+            .and(this.playerKingdoms.get(kingdomWar.kingdomtwoid).isSome), "One of the kingdoms doesn't exist");
+        // Get enemy kingdom
+        const enemyKingdomId = Provable.if(kingdomWar.kingdomoneid.equal(kingdomId),
+            kingdomWar.kingdomtwoid,
+            kingdomWar.kingdomoneid
+        );
+        // Return enemy kingdom id
+        return enemyKingdomId;
     }
 }
