@@ -29,6 +29,7 @@ export class WarRequest extends Struct({
 }) {}
 
 export class PeaceRequest extends Struct({
+    warid: UInt64,
     kingdomoneid: UInt64,
     kingdomtwoid: UInt64,
     favorone: UInt64,
@@ -150,6 +151,7 @@ export class Kingdom extends RuntimeModule<{}> {
         this.kingdomPeaceRequests.set(
             newPeaceRequestCount,
             new PeaceRequest({
+                warid: warId;
                 kingdomoneid: kingdomWar.kingdomoneid,
                 kingdomtwoid: kingdomWar.kingdomtwoid,
                 favorone: UInt64.from(0),
@@ -188,7 +190,7 @@ export class Kingdom extends RuntimeModule<{}> {
         // Update player new vote count
         this.playerRequestVoteCounts.set(this.transaction.sender, newPlayerVoteCount);
         // Get war request favors
-        const currentRequestFavors = warRequest.favor.get();
+        const currentRequestFavors = warRequest.favor;
         // Add amount of new favors to the current request favors
         const newRequestFavors = currentRequestFavors.add(voteCount);
         // Update war request
@@ -247,6 +249,116 @@ export class Kingdom extends RuntimeModule<{}> {
                 kingdomoneid: warRequest.kingdomoneid,
                 kingdomtwoid: warRequest.kingdomtwoid,
                 favor: newRequestFavors,
+                active: Bool(false)
+            })
+        );
+    }
+
+    @runtimeMethod()
+    public favorPeaceRequest(peaceRequestId: UInt64, voteCount: UInt64) {
+        // Make sure player has a kingdom
+        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        // Check if there is a peace request or not
+        assert(this.kingdomPeaceRequests.get(peaceRequestId).isSome, "There is no peace request in the given war request")
+        // Get the peace request
+        const peaceRequest = this.kingdomPeaceRequests.get(peaceRequestId).value;
+        // Ensure peace request is active
+        assert(peaceRequest.active.equal(Bool(true)), "This peace request is not active")
+        // Make sure that player is in any of the kingdoms
+        assert(this.playerKingdoms.get(this.transaction.sender).equal(peaceRequest.kingdomoneid)
+            .or(this.playerKingdoms.get(this.transaction.sender).equal(peaceRequest.kingdomtwoid)), "You are not in any of the kingdoms");
+        // Make sure kingdoms exits
+        assert(this.kingdoms.get(peaceRequest.kingdomoneid).isSome
+            .and(this.kingdoms.get(peaceRequest.kingdomtwoid).isSome), "Kingdoms don't exist");
+        // Make sure that there is a war
+        assert(this.kingdomWars.get(peaceRequest.warid).isSome, "There is no war with specified id");
+        // Get kingdom war
+        const kingdomWar = this.kingdomWars.get(peaceRequest.warid).value;
+        // Make sure that the war is active
+        assert(kingdomWar.active.equal(Bool(true)));
+        // Make sure that peace request has the same kingdoms
+        assert(peaceRequest.kingdomoneid.equal(kingdomWar.kingdomoneid)
+            .and(peaceRequest.kingdomtwoid.equal(kingdomWar.kingdomtwoid)), "Peace request kingdoms don't match with kingdom war kingdoms");
+        // Ensure player has vote counts
+        assert(this.playerRequestVoteCounts.get(this.transaction.sender).isSome, "You don't have vote counts");
+        // Get player vote count
+        const playerVoteCount = this.playerRequestVoteCounts.get(this.transaction.sender);
+        // Ensure player has amount of counts available
+        assert(playerVoteCount.greaterThanOrEqual(voteCount), "You don't have enough vote counts");
+        // Decrease player vote count
+        const newPlayerVoteCount = playerVoteCount.sub(voteCount);
+        // Update player new vote count
+        this.playerRequestVoteCounts.set(this.transaction.sender, newPlayerVoteCount);
+        // Get player kingdom
+        const playerKingdom = this.playerKingdoms.get(this.transaction.sender).value;
+        // Get favor one
+        const currentFavorOne = peaceRequest.favorone;
+        // Get favor two
+        const currentFavorTwo = peaceRequest.favortwo
+        // Increase favor one if player is in kingdom one
+        const newFavorOne = Provable.if(playerKingdom.equal(peaceRequest.kingdomoneid),
+            currentFavorOne.add(voteCount),
+            currentFavorOne
+        );
+        // Increase favor two if player is in kingdom two
+        const newFavorTwo = Provable.if(playerKingdom.equal(peaceRequest.kingdomtwoid),
+            currentFavorTwo.add(voteCount),
+            currentFavorTwo
+        );
+        // Update peace request
+        this.kingdomPeaceRequests.set(
+            peaceRequestId,
+            new PeaceRequest({
+                warid: peaceRequest.warid,
+                kingdomoneid: peaceRequest.kingdomoneid,
+                kingdomtwoid: peaceRequest.kingdomtwoid,
+                favorone: newFavorOne,
+                favortwo: newFavorTwo,
+                active: peaceRequest.active
+            })
+        );
+        // Check if both favors are greater than 1000 or not
+        assert(newFavorOne.greaterThanOrEqual(1000).and(newFavorTwo.greaterThanOrEqual(1000)), "Both favors should be enough to make peace");
+        // Finish battle between two kingdoms
+        this.kingdomWars.set(
+            peaceRequest.warid,
+            new KingdomWar({
+                kingdomoneid: kingdomWar.kingdomoneid,
+                kingdomtwoid: kingdomWar.kingdomtwoid,
+                active: Bool(false)
+            })
+        );
+        // Get kingdom one
+        const kingdomOne = this.kingdoms.get(peaceRequest.kingdomoneid).value;
+        // Set kingdom one war id to zero for peace
+        this.kingdoms.set(
+            peaceRequest.kingdomoneid,
+            new KingdomEntity({
+                leader: kingdomOne.leader,
+                memberCount: kingdomOne.memberCount,
+                warid: UInt64.from(0)
+            })
+        );
+        // Get kingdom two
+        const kingdomTwo = this.kingdoms.get(peaceRequest.kingdomtwoid).value;
+        // Set kingdom two war id to zero for peace
+        this.kingdoms.set(
+            peaceRequest.kingdomtwoid,
+            new KingdomEntity({
+                leader: kingdomTwo.leader,
+                memberCount: kingdomTwo.memberCount,
+                warid: UInt64.from(0)
+            })
+        );
+        // Disable peace request
+        this.kingdomPeaceRequests.set(
+            peaceRequestId,
+            new PeaceRequest({
+                warid: peaceRequest.warid,
+                kingdomoneid: peaceRequest.kingdomoneid,
+                kingdomtwoid: peaceRequest.kingdomtwoid,
+                favorone: newFavorOne,
+                favortwo: newFavorTwo,
                 active: Bool(false)
             })
         );
