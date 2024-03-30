@@ -8,15 +8,11 @@ export interface PlayerState {
     players: {
         [key: string]: {level: string, xp: string};
     },
+    playerStats: {
+        [key: string]: {charisma: string, reputation: string, maxupgrade: string, leadership: string, bravery: string}
+    },
     newPlayer: (client: Client, address: string) => Promise<void>,
     levelUp: (client: Client, address: string) => Promise<void>,
     increaseLeadership: (client: Client, address: string) => Promise<void>,
     increaseBravery: (client: Client, address: string) => Promise<void>,
-}
-
-export interface PlayerStatsState {
-    loading: boolean,
-    playerStats: {
-        [key: string]: {charisma: string, reputation: string, maxupgrade: string, leadership: string, bravery: string}
-    }
 }
