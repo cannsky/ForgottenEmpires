@@ -1,6 +1,8 @@
 // This code is not completed.
 // This code is not audited.
 
+import { Client } from "./chain";
+
 export interface ComputedTransactionJSON {
     argFields: string[];
     argsJSON: string[];
@@ -27,6 +29,12 @@ export interface ChainState {
         height: string;
     } & ComputedBlockJSON;
     loadBlock: () => Promise<void>;
+}
+
+export interface ClientState {
+    loading: boolean;
+    client?: Client;
+    start: () => Promise<void>;
 }
 
 export interface BlockQueryResponse {
