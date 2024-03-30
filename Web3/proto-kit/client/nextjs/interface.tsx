@@ -1,3 +1,6 @@
+// This code is not completed.
+// This code is not audited.
+
 export interface ComputedTransactionJSON {
     argFields: string[];
     argsJSON: string[];
