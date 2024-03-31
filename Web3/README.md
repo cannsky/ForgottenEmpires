@@ -39,3 +39,11 @@ Team class introduces a sophisticated team management system that allows players
 #### Proofs
 
 Guild creation and Kingdom creation is only available if a wallet address is described as "can create guild or kingdom". This boolean is later set to false, if a kingdom or guild is created once, the wallet address cannot create guild or kingdom again.
+
+**Proof Usage:** Proofs are used for checking if player is eligible or not to perform certain actions.
+
+1) Proof is verified (if player is eligible or not)
+2) Proof verification is checked (if verification is verified or not)
+3) Get is nullifier used value
+4) Check if nullifier used or not
+5) If nullifier is not used, perform action
