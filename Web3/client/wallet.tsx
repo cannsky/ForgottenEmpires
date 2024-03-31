@@ -4,6 +4,7 @@
 import { WalletState } from "./interface";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
+import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 
 export const useWalletStore = create<WalletState, [["zustand/immer", never]]>(
     immer((set) => ({
@@ -33,6 +34,19 @@ export const useWalletStore = create<WalletState, [["zustand/immer", never]]>(
                     state.wallet = wallet;
                 });
             });
+        },
+        pendingTransactions: [] as PendingTransaction[],
+        addPendingTransaction(pendingTransaction) {
+            set((state) => {
+                state.pendingTransactions.push(pendingTransaction)
+            });
+        },
+        removePendingTransaction(pendingTransaction) {
+            set((state) => {
+                state.pendingTransactions = state.pendingTransactions.filter((tx) => {
+                    return tx.hash().toString() !== pendingTransaction.hash().toString();
+                });
+            });
         }
     }))
-)
+);
