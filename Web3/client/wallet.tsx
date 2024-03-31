@@ -10,6 +10,7 @@ import { useClientStore } from "./client";
 import { useCallback, useEffect, useMemo } from "react";
 import { MethodIdResolver } from "@proto-kit/module"
 import truncateMiddle from "truncate-middle";
+import { Field, UInt64, PublicKey, Signature, Bool } from "o1js";
 
 export const useWalletStore = create<WalletState, [["zustand/immer", never]]>(
     immer((set) => ({
@@ -99,4 +100,45 @@ export const useNotifyTransactions = () => {
 
         console.log(title());
     }, [client.client]);
-}
+
+    useEffect(() => {
+        // Notify pending transaction
+        newPendingTransactions.forEach((pendingTransaction) => { notifyTransaction("PENDING", pendingTransaction); });
+    }, [newPendingTransactions, notifyTransaction]);
+
+    useEffect(() => {
+        const confirmedTransactions = chain.block?.txs?.map(
+            ({ tx, status, statusMessage}) => {
+                return {
+                    tx: new PendingTransaction({
+                        methodId: Field(tx.methodId),
+                        nonce: UInt64.from(tx.nonce),
+                        isMessage: false,
+                        sender: PublicKey.fromBase58(tx.sender),
+                        argsFields: tx.argsFields.map((arg) => Field(arg)),
+                        argsJSON: tx.argsJSON,
+                        signature: Signature.fromJSON({
+                            r: tx.signature.r,
+                            s: tx.signature.s,
+                        })
+                    }),
+                    status,
+                    statusMessage
+                };
+            }
+        );
+
+        const confirmedPendingTransactions = confirmedTransactions?.filter(
+            ({ tx }) => {
+                return wallet.pendingTransactions?.find((pendingTransaction) => {
+                    return pendingTransaction.hash().toString() === tx.hash().toString();
+                });
+            }
+        );
+
+        confirmedPendingTransactions?.forEach(({ tx, status }) => {
+            wallet.removePendingTransaction(tx);
+            notifyTransaction(status ? "SUCCESS" : "FAILURE", tx);
+        });
+    }, [chain.block, wallet.pendingTransaction, client.client, notifyTransaction]);
+};
