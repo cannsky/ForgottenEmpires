@@ -5,9 +5,10 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
-import { useEffect, useState } from "react";
+import { useEffect, useCallback } from "react";
 import { BlockQueryResponse, PlayerState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
+import { useWalletStore } from "../../wallet";
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {
@@ -108,4 +109,69 @@ export const useNewPlayer = () => {
     const client = useClientStore();
     // Get player
     const player = usePlayerStore();
-}
+    // Get wallet
+    const wallet = useWalletStore();
+
+    return useCallback(async() => {
+        // If client or wallet is not defined return
+        if(!client.client || !wallet.wallet) return;
+        // New pending transaction
+        const pendingTransaction = await player.newPlayer(client.client, wallet.wallet);
+        // Add pending transaction to wallet
+        wallet.addPendingTransaction(pendingTransaction);
+    }, [client.client, wallet.wallet]);
+};
+
+export const useLevelUp = () => {
+    // Get client
+    const client = useClientStore();
+    // Get player
+    const player = usePlayerStore();
+    // Get wallet
+    const wallet = useWalletStore();
+
+    return useCallback(async() => {
+        // If client or wallet is not defined return
+        if(!client.client || !wallet.wallet) return;
+        // New pending transaction
+        const pendingTransaction = await player.levelUp(client.client, wallet.wallet);
+        // Add pending transaction to wallet
+        wallet.addPendingTransaction(pendingTransaction);
+    }, [client.client, wallet.wallet]);
+};
+
+export const useIncreaseLeadership = () => {
+    // Get client
+    const client = useClientStore();
+    // Get player
+    const player = usePlayerStore();
+    // Get wallet
+    const wallet = useWalletStore();
+
+    return useCallback(async() => {
+        // If client or wallet is not defined return
+        if(!client.client || !wallet.wallet) return;
+        // New pending transaction
+        const pendingTransaction = await player.increaseLeadership(client.client, wallet.wallet);
+        // Add pending transaction to wallet
+        wallet.addPendingTransaction(pendingTransaction);
+    }, [client.client, wallet.wallet]);
+};
+
+export const useIncreaseBravery = () => {
+    // Get client
+    const client = useClientStore();
+    // Get player
+    const player = usePlayerStore();
+    // Get wallet
+    const wallet = useWalletStore();
+
+    return useCallback(async() => {
+        // If client or wallet is not defined return
+        if(!client.client || !wallet.wallet) return;
+        // New pending transaction
+        const pendingTransaction = await player.increaseBravery(client.client, wallet.wallet);
+        // Add pending transaction to wallet
+        wallet.addPendingTransaction(pendingTransaction);
+    }, [client.client, wallet.wallet]);
+};
