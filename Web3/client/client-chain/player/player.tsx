@@ -6,7 +6,7 @@ import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
 import { useEffect, useCallback } from "react";
-import { BlockQueryResponse, PlayerState } from "./interface";
+import { PlayerState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
 
@@ -18,15 +18,19 @@ function isPendingTransaction(transaction: PendingTransaction | UnsignedTransact
 export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     immer((set) => ({
         loading: Boolean(false),
+        players: {},
         async someFunc(client: Client, address: string) {
             set((state) => {
                 state.loading = true;
             });
-
-            // TODO IMPLEMENT HERE
-
+            // Get client player
+            const clientPlayer = await client.query.runtime.Player.players.get(PublicKey.fromBase58(address));
+            // Get client player stats
+            const clientPlayerStats = await client.query.runtime.Player.playerStats.get(PublicKey.fromBase58(address));
+            // Add client player and player stats to players
             set((state) => {
                 state.loading = false;
+                state.players[address] = { clientPlayer: clientPlayer, clientPlayerStats: clientPlayerStats };
             });
         },
         async newPlayer(client: Client, address: string) {
