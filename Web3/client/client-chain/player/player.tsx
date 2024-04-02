@@ -30,7 +30,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
             // Add client player and player stats to players
             set((state) => {
                 state.loading = false;
-                state.players[address] = { clientPlayer: clientPlayer, clientPlayerStats: clientPlayerStats };
+                state.players[address] = { player: clientPlayer, playerStats: clientPlayerStats };
             });
         },
         async newPlayer(client: Client, address: string) {
