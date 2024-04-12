@@ -14,9 +14,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
-    PublicKey,
-    Struct,
     UInt64
+} from "@proto-kit/library";
+
+import {
+    PublicKey,
+    Struct
 } from "o1js";
 
 export class GuildEntity extends Struct({
@@ -50,13 +53,13 @@ export class Guild extends RuntimeModule<{}> {
         // Get the guild
         const guild = this.guilds.get(guildId).value;
         // Ensure the guild is not full
-        assert(guild.value.memberCount.lessThan(50), "Guild is full");
+        assert(guild.value.memberCount.lessThan(UInt64.from(50)), "Guild is full");
         // Ensure the player is not already in a guild
-        assert(this.playerGuilds.get(this.transaction.sender).isSome.not(), "You are already in a guild");
+        assert(this.playerGuilds.get(this.transaction.sender.value).isSome.not(), "You are already in a guild");
         // Get guild member count
         const guildMemberCount = guild.memberCount;
         // Increase guild member count by 1
-        const newGuildMemberCount = guildMemberCount.add(1);
+        const newGuildMemberCount = guildMemberCount.add(UInt64.from(1));
         // Update guild member count
         this.guilds.set(
             guildId,
@@ -66,7 +69,7 @@ export class Guild extends RuntimeModule<{}> {
             })
         );
         // Set players guild as the joined guild
-        this.playerGuilds.set(this.transaction.sender, guildId);
+        this.playerGuilds.set(this.transaction.sender.value, guildId);
     }
 
     @runtimeMethod()
@@ -76,17 +79,17 @@ export class Guild extends RuntimeModule<{}> {
         // Get the guild
         const guild = this.guilds.get(guildId).value;
         // Ensure the guild have at least 2 members
-        assert(guild.memberCount.greaterThan(2), "You are the only player at the guild, you cannot leave the guild");
+        assert(guild.memberCount.greaterThan(UInt64.from(2)), "You are the only player at the guild, you cannot leave the guild");
         // Ensure the guild leader is not leaving
-        assert(this.transaction.sender.equal(guild.leader).not(), "Leader cannot leave the guild");
+        assert(this.transaction.sender.value.equal(guild.leader).not(), "Leader cannot leave the guild");
         // Ensure that player is in some guild
-        assert(this.playerGuilds.get(this.transaction.sender).isSome, "You are not in any guild!");
+        assert(this.playerGuilds.get(this.transaction.sender.value).isSome, "You are not in any guild!");
         // Ensure the player is in the given guild
-        assert(this.playerGuilds.get(this.transaction.sender).equal(guildId), "This is not your guild!");
+        assert(this.playerGuilds.get(this.transaction.sender.value).equal(guildId), "This is not your guild!");
         // Get guild member count
         const guildMemberCount = guild.memberCount;
         // Decrease guild member count by 1
-        const newGuildMemberCount = guildMemberCount.sub(1);
+        const newGuildMemberCount = UInt64.from(guildMemberCount).sub(UInt64.from(1));
         // Update guild member count
         this.guilds.set(
             guildId,
@@ -96,7 +99,7 @@ export class Guild extends RuntimeModule<{}> {
             })
         );
         // Remove player from the guild
-        this.playerGuilds.set(this.transaction.sender, UInt64.From(0));
+        this.playerGuilds.set(this.transaction.sender.value, UInt64.From(0));
     }
 
     @runtimeMethod()
@@ -110,11 +113,11 @@ export class Guild extends RuntimeModule<{}> {
         // Get the guild
         const guild = this.guilds.get(guildId).value;
         // Ensure the guild have at least 2 members
-        assert(guild.memberCount.greaterThan(2), "You are the only player at the guild, you need at least 2 players to declare war");
+        assert(guild.memberCount.greaterThan(UInt64.from(2)), "You are the only player at the guild, you need at least 2 players to declare war");
         // Get guild war count
-        const guildWarCount = this.guildWarCount.get();
+        const guildWarCount = this.guildWarCount.get().value;
         // Decrease guild member count by 1
-        const newGuildWarCount = guildWarCount.add(1);
+        const newGuildWarCount = UInt64.from(guildWarCount).add(UInt64.from(1));
         // Update new guild war count
         this.guildWarCount.set(newGuildWarCount);
         // Add new guild war
