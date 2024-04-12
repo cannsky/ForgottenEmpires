@@ -15,9 +15,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
+    UInt32
+} from "@proto-kit/library";
+
+import {
     PublicKey,
     Struct,
-    UInt32,
     Bool
 } from "o1js";
 
@@ -70,17 +73,17 @@ export class Item extends RuntimeModule<{}> {
     @runtimeMethod()
     public newItem(itemType: UInt32) {
         // Check if item type is lower than 2, if zero type it is a removed item (or consumed?)
-        assert(itemType.value.lessThanOrEqual(2), "There are only 2 item types in the game.");
+        assert(itemType.value.lessThanOrEqual(UInt32.from(2)), "There are only 2 item types in the game.");
         // Get item count
-        const itemCount = this.itemCount.get();
+        const itemCount = this.itemCount.get().value;
         // Add 1 to item count
-        itemCount.value.add(1);
+        UInt32.from(itemCount).value.add(UInt32.from(1));
         // Update item count
         this.itemCount.set(itemCount);
         // Add new item to the address
         this.items.set(
             new ItemKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: itemCount
             }),
             new ItemEntity({ 
@@ -100,15 +103,15 @@ export class Item extends RuntimeModule<{}> {
     public equipItem(equippeditemslot: UInt32, itemid: UInt32) {
         // Check if there is an item with item id on the player or not
         assert(this.items.get(new ItemKey({ 
-            owner: this.transaction.sender, 
-            id: itemid 
+            owner: this.transaction.sender.value, 
+            id: itemid
         })).isSome, "there is no item specified for this address");
         // Get inventory slot
-        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equippeditemslot }).value;
+        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender.value, slot: equippeditemslot })).value;
         // Get current item id of the inventory slot
         const currentItemID = equipmentSlot.itemid;
         // If this slot is full return error
-        assert(currentItemID.value.greaterThanOrEqual(1), "This slot is already filled with an another item.");
+        assert(currentItemID.value.greaterThanOrEqual(UInt32.from(1)), "This slot is already filled with an another item.");
         // Set the new item of the equipment slot
         this.equippedItems.set(
             new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }),
@@ -119,46 +122,46 @@ export class Item extends RuntimeModule<{}> {
     @runtimeMethod()
     public unequipItem(equipeditemslot: UInt32) {
         // Get inventory slot
-        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }).value;
+        const equipmentSlot = this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender.value, slot: equipeditemslot })).value;
         // Get current item id of the inventory slot
         const currentItemID = equipmentSlot.itemid;
         // If this slot is full return error
-        assert(currentItemID.value.lessThanOrEqual(0), "This slot is already empty.");
+        assert(currentItemID.value.lessThanOrEqual(UInt32.from(0)), "This slot is already empty.");
         // Unequip the item from the equipment slot
         this.equippedItems.set(
             new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot }),
-            new EquippedItemEntity({ itemid: UInt32.from(0) })
+            new EquippedItemEntity({ itemid: UInt32.from(UInt32.from(0)) })
         );
     }
 
     @runtimeMethod()
     public getEquippedItem(equipeditemslot: UInt32) {
         // Return item id of the equipment Slot
-        return this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender, slot: equipeditemslot })).value.itemid;
+        return this.equippedItems.get(new EquippedItemKey({ owner: this.transaction.sender.value, slot: equipeditemslot })).value.itemid;
     }
 
     @runtimeMethod()
     public upgradeDamage(id: UInt32) {
         // Check if there is an item with item id on the player or not
         assert(this.items.get(new ItemKey({ 
-            owner: this.transaction.sender, 
-            id: id 
+            owner: this.transaction.sender.value, 
+            id: id
         })).isSome, "there is no item specified for this address");
         // Get item
-        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current stat xp value of the item
         const currentStatXP = item.statxp;
         // Get current damage value of the item
         const currentDamage = item.damage;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new damage value of the item
-        const newDamage = currentDamage.value.add(1);
+        const newDamage = UInt32.from(currentDamage).add(UInt32.from(1));
         // Calculate new stat xp of the item
-        const newStatXP = currentStatXP.value.sub(1);
+        const newStatXP = UInt32.from(currentStatXP).sub(UInt32.from(1));
         // Set new stat xp and damage value of the item
         this.items.set(
-            new ItemKey({ owner: this.transaction.sender, id: id }), 
+            new ItemKey({ owner: this.transaction.sender.value, id: id }), 
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: newDamage, 
@@ -176,24 +179,24 @@ export class Item extends RuntimeModule<{}> {
     public upgradeDefense(id: UInt32) {
         // Check if there is an item with item id on the player or not
         assert(this.items.get(new ItemKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no item specified for this address");
         // Get item
-        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current stat xp value of the item
         const currentStatXP = item.statxp;
         // Get current defense value of the item
         const currentDefense = item.defense;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new defense value of the item
-        const newDefense = currentDefense.value.add(1);
+        const newDefense = UInt32.from(currentDefense).add(UInt32.from(1));
         // Calculate new stat xp of the item
-        const newStatXP = currentStatXP.value.sub(1);
+        const newStatXP = UInt32.from(currentStatXP).sub(UInt32.from(1));
         // Set new stat xp and defense value of the item
         this.items.set(
-            new ItemKey({ owner: this.transaction.sender, id: id }), 
+            new ItemKey({ owner: this.transaction.sender.value, id: id }), 
             new ItemEntity({ 
                 statxp: newStatXP, 
                 damage: item.damage, 
@@ -211,11 +214,11 @@ export class Item extends RuntimeModule<{}> {
     public consumeItem(id: UInt32) {
         // Check if there is an item with item id on the player or not
         assert(this.items.get(new ItemKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no item specified for this address");
         // Get item
-        const item = this.items.get(new ItemKey({ owner: this.transaction.sender, id: id })).value;
+        const item = this.items.get(new ItemKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get item's consumable value
         const isConsumable = item.consumable;
         // Check if item is consumable or not
@@ -224,13 +227,9 @@ export class Item extends RuntimeModule<{}> {
         const isConsumed= item.consumed;
         // Check if item is consumed or not
         assert(isConsumed.not(), "this item is already consumed");
-        // Get current type of the item
-        const type = item.type;
-        // Get current value of the item
-        const value = item.value;
         // Consume item
         this.items.set(
-            new ItemKey({ owner: this.transaction.sender, id: id }), 
+            new ItemKey({ owner: this.transaction.sender.value, id: id }), 
             new ItemEntity({ 
                 statxp: item.statxp, 
                 damage: item.damage, 
@@ -244,7 +243,7 @@ export class Item extends RuntimeModule<{}> {
         );
         // Add consumed item to the consumed items
         this.consumedItems.set(
-            new ConsumedItemKey({ owner: this.transaction.sender, id: id }), 
+            new ConsumedItemKey({ owner: this.transaction.sender.value, id: id }), 
             new ConsumedItemEntity({ 
                 type: item.type,
                 value: item.value,
@@ -253,7 +252,7 @@ export class Item extends RuntimeModule<{}> {
     }
 
     @runtimeMethod()
-    public getTotalItemDamage(ItemOwner: PublicKey, itemId: UInt32) {
+    public getTotalItemDamage(itemOwner: PublicKey, itemId: UInt32) {
         // Check if there is an item or not at specified item key
         assert(this.items.get(new ItemKey({ 
             owner: itemOwner, 
@@ -269,7 +268,7 @@ export class Item extends RuntimeModule<{}> {
         // Get item damage
         const itemDamage = item.damage;
         // Get total damage
-        const totalDamage = itemDamage.mul(itemLevel);
+        const totalDamage = UInt32.from(itemDamage).mul(UInt32.from(itemLevel));
         // Return total damage calculated
         return totalDamage;
     }
@@ -291,7 +290,7 @@ export class Item extends RuntimeModule<{}> {
         // Get item defense
         const itemDefense = item.defense;
         // Get total defense
-        const totalDefense = itemDefense.mul(itemLevel);
+        const totalDefense = UInt32.from(itemDefense).mul(UInt32.from(itemLevel));
         // Return total damage calculated
         return totalDefense;
     }
