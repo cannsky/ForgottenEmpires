@@ -14,9 +14,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
-    PublicKey,
-    Struct,
     UInt32
+} from "@proto-kit/library";
+
+import {
+    PublicKey,
+    Struct
 } from "o1js";
 
 export class CharacterKey extends Struct({
@@ -46,15 +49,15 @@ export class Character extends RuntimeModule<{}> {
     @runtimeMethod()
     public newCharacter(type: UInt32) {
         // Get character count of the player
-        const characterCount = this.characterCounts.get(this.transaction.sender);
+        const characterCount = this.characterCounts.get(this.transaction.sender.value);
         // Increase character count by 1
-        characterCount.value.add(1);
+        UInt32.from(characterCount).add(UInt32.from(1));
         // Update character counts
-        this.characterCounts.set(this.transaction.sender, characterCount);
+        this.characterCounts.set(this.transaction.sender.value, characterCount);
         // Create new character
         this.characters.set(
             new CharacterKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: characterCount 
             }), 
             new CharacterEntity({ 
@@ -75,24 +78,24 @@ export class Character extends RuntimeModule<{}> {
     public levelUP(id: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current xp value of the character
         const currentXP = character.xp;
         // Get current level value of the character
         const currentLevel = character.level;
         // Check if the xp is enough for a level up
-        assert(currentXP.value.greaterThanOrEqual(100), "not enough xp");
+        assert(currentXP.value.greaterThanOrEqual(UInt32.from(100)), "not enough xp");
         // Calculate new level of the character
-        const newLevel = currentLevel.value.add(1);
+        const newLevel = UInt32.from(currentLevel).add(UInt32.from(1));
         // Calculate new xp of the character
-        const newXP = currentXP.value.sub(100);
+        const newXP = UInt32.from(currentXP).sub(UInt32.from(100));
         // Set new xp and level of the character
         this.characters.set(
-            new CharacterKey({ owner: this.transaction.sender, id: id }), 
+            new CharacterKey({ owner: this.transaction.sender.value, id: id }), 
             new CharacterEntity({ 
                 level: newLevel, 
                 xp: newXP, 
@@ -111,25 +114,25 @@ export class Character extends RuntimeModule<{}> {
     public upgradeDamage(id: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current stat xp value of the character
         const currentStatXP = character.statxp;
         // Get current damage value of the character
         const currentDamage = character.damage;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new damage value of the character
-        const newDamage = currentDamage.value.add(1);
+        const newDamage = UInt32.from(currentDamage).add(UInt32.from(1));
         // Calculate new stat xp of the character
-        const newStatXP = currentStatXP.value.sub(1);
+        const newStatXP = UInt32.from(currentStatXP).sub(UInt32.from(1));
         // Set new stat xp and damage value of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: id 
             }), 
             new CharacterEntity({ 
@@ -150,25 +153,25 @@ export class Character extends RuntimeModule<{}> {
     public upgradeDefense(id: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current stat xp value of the character
         const currentStatXP = character.statxp;
         // Get current defense value of the character
         const currentDefense = character.defense;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(1), "not enough stat xp");
+        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new defense value of the character
-        const newDefense = currentDefense.value.add(1);
+        const newDefense = UInt32.from(currentDefense).add(UInt32.from(1));
         // Calculate new stat xp of the character
-        const newStatXP = currentStatXP.value.sub(1);
+        const newStatXP = UInt32.from(currentStatXP).sub(UInt32.from(1));
         // Set stat xp and defense value of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: id 
             }), 
             new CharacterEntity({ 
@@ -189,21 +192,21 @@ export class Character extends RuntimeModule<{}> {
     public upgradeMaxUpgrade(id: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 
-            owner: this.transaction.sender, 
-            id: id 
+            owner: this.transaction.sender.value, 
+            id: id
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current max upgrade value of the character
         const currentMaxUpgrade = character.maxupgrade;
         // The maximum upgrade limit is 25
-        assert(currentMaxUpgrade.value.greaterThanOrEqual(25), "you cannot upgrade more than 25");
+        assert(currentMaxUpgrade.value.greaterThanOrEqual(UInt32.from(25)), "you cannot upgrade more than 25");
         // Calculate new max upgrade value of the character
-        const newMaxUpgrade = currentMaxUpgrade.value.add(1);
+        const newMaxUpgrade = UInt32.from(currentMaxUpgrade).add(UInt32.from(1));
         // Set new max upgrade value of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: id 
             }), 
             new CharacterEntity({ 
@@ -224,11 +227,11 @@ export class Character extends RuntimeModule<{}> {
     public changeWorld(id: UInt32, worldId: UInt32) {
         // Check if there is a character with character id on the player or not
         assert(this.characters.get(new CharacterKey({ 
-            owner: this.transaction.sender, 
+            owner: this.transaction.sender.value, 
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
         // Get current world of the character
         const currentWorld = character.world;
         // Make sure the current world is not equal to the world id
@@ -238,7 +241,7 @@ export class Character extends RuntimeModule<{}> {
         // Set new world of the character
         this.characters.set(
             new CharacterKey({ 
-                owner: this.transaction.sender, 
+                owner: this.transaction.sender.value, 
                 id: id 
             }), 
             new CharacterEntity({ 
@@ -272,7 +275,7 @@ export class Character extends RuntimeModule<{}> {
         // Get character damage
         const characterDamage = character.damage;
         // Get total damage
-        const totalDamage = characterDamage.mul(characterLevel);
+        const totalDamage = UInt32.from(characterDamage).mul(UInt32.from(characterLevel));
         // Return total damage calculated
         return totalDamage;
     }
@@ -294,7 +297,7 @@ export class Character extends RuntimeModule<{}> {
         // Get character defense
         const characterDefense = character.defense;
         // Get total defense
-        const totalDefense = characterDefense.mul(characterLevel);
+        const totalDefense = UInt32.from(characterDefense).mul(UInt32.from(characterLevel));
         // Return total defense calculated
         return totalDefense;
     }
