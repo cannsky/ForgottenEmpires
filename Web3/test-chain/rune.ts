@@ -14,9 +14,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
-    PublicKey,
-    Struct,
     UInt64
+} from "@proto-kit/library";
+
+import {
+    PublicKey,
+    Struct
 } from "o1js";
 
 export class RunePointEntity extends Struct({
@@ -43,10 +46,10 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public newPlayerRuneStats() {
         // Ensure the caller is not already having a rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome.not(), "you already have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome.not(), "you already have rune stats");
         // Create new rune stats for the player
         this.playerRunes.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 firelevel: UInt64.From(1),
                 waterlevel: UInt64.From(1),
@@ -57,7 +60,7 @@ export class Rune extends RuntimeModule<{}> {
         );
         // Create new rune points for the player
         this.playerRunePoints.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 x: UInt64.From(0),
                 y: UInt64.From(0),
@@ -69,11 +72,11 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public upgradeFireRune() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player rune points
-        const runePoints = this.playerRunePoints.get(this.transaction.sender).value;
+        const runePoints = this.playerRunePoints.get(this.transaction.sender.value).value;
         // Get x rune points
         const currentXPoints = runePoints.x;
         // Get y rune points
@@ -83,7 +86,7 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure at least 1 y points is available
         assert(currentYPoints.greaterThanOrEqual(UInt64.from(1)), "you don't have enough y points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player fire rune level
         const currentFireLevel = runes.firelevel;
         // Get player max rune level
@@ -91,14 +94,14 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure fire rune level is not maxed yet
         assert(currentFireLevel.lessThanOrEqual(currentMaxRuneLevel), "you already maxed your rune level");
         // Increase rune level by 1
-        const newFireLevel = currentFireLevel.add(1);
+        const newFireLevel = UInt64.from(currentFireLevel).add(UInt64.from(1));
         // Decrease x rune points by 2
-        const newXPoints = currentXPoints.sub(2);
+        const newXPoints = UInt64.from(currentXPoints).sub(UInt64.from(2));
         // Decrease y rune points by 1
-        const newYPoints = currentYPoints.sub(1);
+        const newYPoints = UInt64.from(currentYPoints).sub(UInt64.from(1));
         // Update player runes for new rune level
         this.playerRunes.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 firelevel: newFireLevel,
                 waterlevel: runes.waterlevel,
@@ -109,7 +112,7 @@ export class Rune extends RuntimeModule<{}> {
         );
         // Update player rune points for new rune points
         this.playerRunePoints.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 x: newXPoints,
                 y: newYPoints,
@@ -121,11 +124,11 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public upgradeWaterRune() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player rune points
-        const runePoints = this.playerRunePoints.get(this.transaction.sender).value;
+        const runePoints = this.playerRunePoints.get(this.transaction.sender.value).value;
         // Get x rune points
         const currentXPoints = runePoints.x;
         // Get z rune points
@@ -135,7 +138,7 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure at least 2 z points is available
         assert(currentZPoints.greaterThanOrEqual(UInt64.from(2)), "you don't have enough z points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player water rune level
         const currentWaterLevel = runes.waterlevel;
         // Get player max rune level
@@ -143,14 +146,14 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure water rune level is not maxed yet
         assert(currentWaterLevel.lessThanOrEqual(currentMaxRuneLevel), "you already maxed your rune level");
         // Increase rune level by 1
-        const newWaterLevel = currentWaterLevel.add(1);
+        const newWaterLevel = UInt64.from(currentWaterLevel).add(UInt64.from(1));
         // Decrease x rune points by 1
-        const newXPoints = currentXPoints.sub(1);
+        const newXPoints = UInt64.from(currentXPoints).sub(UInt64.from(1));
         // Decrease z rune points by 2
-        const newZPoints = currentZPoints.sub(2);
+        const newZPoints = UInt64.from(currentZPoints).sub(UInt64.from(2));
         // Update player runes for new rune level
         this.playerRunes.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({
                 firelevel: runes.firelevel,
                 waterlevel: newWaterLevel,
@@ -161,7 +164,7 @@ export class Rune extends RuntimeModule<{}> {
         );
         // Update player rune points for new rune points
         this.playerRunePoints.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 x: newXPoints,
                 y: runePoints.y,
@@ -173,11 +176,11 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public upgradeAirRune() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player rune points
-        const runePoints = this.playerRunePoints.get(this.transaction.sender).value;
+        const runePoints = this.playerRunePoints.get(this.transaction.sender.value).value;
         // Get x rune points
         const currentXPoints = runePoints.x;
         // Get y rune points
@@ -187,7 +190,7 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure at least 2 y points is available
         assert(currentYPoints.greaterThanOrEqual(UInt64.from(2)), "you don't have enough y points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player air rune level
         const currentAirLevel = runes.airlevel;
         // Get player max rune level
@@ -195,14 +198,14 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure air rune level is not maxed yet
         assert(currentAirLevel.lessThanOrEqual(currentMaxRuneLevel), "you already maxed your rune level");
         // Increase rune level by 1
-        const newAirLevel = currentAirLevel.add(1);
+        const newAirLevel = UInt64.from(currentAirLevel).add(UInt64.from(1));
         // Decrease x rune points by 1
-        const newXPoints = currentXPoints.sub(1);
+        const newXPoints = UInt64.from(currentXPoints).sub(UInt64.from(1));
         // Decrease y rune points by 2
-        const newYPoints = currentYPoints.sub(2);
+        const newYPoints = UInt64.from(currentYPoints).sub(UInt64.from(2));
         // Update player runes for new rune level
         this.playerRunes.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 firelevel: runes.firelevel,
                 waterlevel: runes.waterlevel,
@@ -213,7 +216,7 @@ export class Rune extends RuntimeModule<{}> {
         );
         // Update player rune points for new rune points
         this.playerRunePoints.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             new RuneEntity({ 
                 x: newXPoints,
                 y: newYPoints,
@@ -225,11 +228,11 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public upgradeEarthRune() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player rune points
-        const runePoints = this.playerRunePoints.get(this.transaction.sender).value;
+        const runePoints = this.playerRunePoints.get(this.transaction.sender.value).value;
         // Get x rune points
         const currentXPoints = runePoints.x;
         // Get z rune points
@@ -239,7 +242,7 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure at least 1 z points is available
         assert(currentZPoints.greaterThanOrEqual(UInt64.from(1)), "you don't have enough z points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player earth rune level
         const currentEarthLevel = runes.earthlevel;
         // Get player max rune level
@@ -247,11 +250,11 @@ export class Rune extends RuntimeModule<{}> {
         // Ensure earth rune level is not maxed yet
         assert(currentEarthLevel.lessThanOrEqual(currentMaxRuneLevel), "you already maxed your rune level");
         // Increase rune level by 1
-        const newEarthLevel = currentEarthLevel.add(1);
+        const newEarthLevel = UInt64.from(currentEarthLevel).add(UInt64.from(1));
         // Decrease x rune points by 2
-        const newXPoints = currentXPoints.sub(2);
+        const newXPoints = currentXPoints.sub(UInt64.from(2));
         // Decrease z rune points by 1
-        const newZPoints = currentZPoints.sub(1);
+        const newZPoints = currentZPoints.sub(UInt64.from(1));
         // Update player runes for new rune level
         this.playerRunes.set(
             this.transaction.sender,
@@ -277,17 +280,17 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public getAttackRunePower() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player fire rune level
         const currentFireLevel = runes.firelevel;
         // Get player air rune level
         const currentAirLevel = runes.airlevel;
         // Calculate attack power
-        const attackRunePower = currentFireLevel.add(currentAirLevel);
+        const attackRunePower = UInt64.from(currentFireLevel).add(UInt64.from(currentAirLevel));
         // Return attack rune power
         return attackRunePower;
     }
@@ -295,17 +298,17 @@ export class Rune extends RuntimeModule<{}> {
     @runtimeMethod()
     public getDefenseRunePower() {
         // Ensure the caller has rune stats
-        assert(this.playerRunes.get(this.transaction.sender).isSome, "you don't have rune stats");
+        assert(this.playerRunes.get(this.transaction.sender.value).isSome, "you don't have rune stats");
         // Ensure the caller has rune points
-        assert(this.playerRunePoints.get(this.transaction.sender).isSome, "you don't have rune points");
+        assert(this.playerRunePoints.get(this.transaction.sender.value).isSome, "you don't have rune points");
         // Get player runes
-        const runes = this.playerRunes.get(this.transaction.sender).value;
+        const runes = this.playerRunes.get(this.transaction.sender.value).value;
         // Get player water rune level
         const currentWaterLevel = runes.waterlevel;
         // Get player earth rune level
         const currentEarthLevel = runes.earthlevel;
         // Calculate attack power
-        const defenseRunePower = currentWaterLevel.add(currentEarthLevel);
+        const defenseRunePower = UInt64.from(currentWaterLevel).add(UInt64.from(currentEarthLevel));
         // Return defense rune power
         return defenseRunePower;
     }
