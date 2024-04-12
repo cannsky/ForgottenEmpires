@@ -43,23 +43,23 @@ export class Team extends RuntimeModule<{}> {
     @runtimeMethod()
     public newTeam() {
         // Ensure the caller is not already inside a team
-        assert(this.playerTeams.get(this.transaction.sender).isSome.not(), "you cannot be in two teams at the same time")
+        assert(this.playerTeams.get(this.transaction.sender.value).isSome.not(), "you cannot be in two teams at the same time")
         // Get team count
-        const teamCount = this.teamCount.get();
+        const teamCount = this.teamCount.get().value;
         // Add 1 to team count
-        const newTeamCount = teamCount.add(1);
+        const newTeamCount = UInt64.from(teamCount).add(UInt64.from(1));
         // Update team count
         this.teamCount.set(newTeamCount);
         // Create new team
         this.teams.set(
             newTeamCount,
             new TeamEntity({ 
-                leader: this.transaction.sender,
+                leader: this.transaction.sender.value,
                 memberCount: UInt64.From(1)
             })
         );
         // Add the player who created the team to the team as member
-        this.playerTeams.set(this.transaction.sender, newTeamCount);
+        this.playerTeams.set(this.transaction.sender.value, newTeamCount);
     }
 
     @runtimeMethod()
@@ -71,9 +71,9 @@ export class Team extends RuntimeModule<{}> {
         // Get the team
         const team = this.teams.get(teamId).value;
         // Ensure the team is not full
-        assert(team.memberCount.lessThanOrEqual(4), "Team is full");
+        assert(team.memberCount.lessThanOrEqual(UInt64.from(4)), "Team is full");
         // Ensure the player is not already in a team
-        assert(this.playerTeams.get(this.transaction.sender).isSome.not(), "The player is already in a team");
+        assert(this.playerTeams.get(this.transaction.sender.value).isSome.not(), "The player is already in a team");
         // Invite the player
         this.playerInvitations.set(
             new TeamInvitationKey({
@@ -91,13 +91,13 @@ export class Team extends RuntimeModule<{}> {
         // Get the team
         const team = this.teams.get(teamId).value;
         // Ensure the team is not full
-        assert(team.memberCount.lessThanOrEqual(4), "Team is full");
+        assert(team.memberCount.lessThanOrEqual(UInt64.from(4)), "Team is full");
         // Ensure the player is not already in a team
-        assert(this.playerTeams.get(this.transaction.sender).isSome.not(), "You are already in a team");
+        assert(this.playerTeams.get(this.transaction.sender.value).isSome.not(), "You are already in a team");
         // Get team member count
         const teamMemberCount = team.memberCount;
         // Add 1 to team member count
-        const newTeamMemberCount = teamMemberCount.add(1);
+        const newTeamMemberCount = UInt64.from(teamMemberCount).add(UInt64.from(1));
         // Update team member count
         this.teams.set(
             teamId,
@@ -108,7 +108,7 @@ export class Team extends RuntimeModule<{}> {
         );
         // Set players team as the joined team
         this.playerTeams.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             teamId
         );
     }
@@ -120,13 +120,13 @@ export class Team extends RuntimeModule<{}> {
         // Get the team
         const team = this.teams.get(teamId).value;
         // Ensure the team member count is more than 1
-        assert(team.memberCount.greaterThanOrEqual(2), "You are the only player at the team, you cannot leave the team");
+        assert(team.memberCount.greaterThanOrEqual(UInt64.from(2)), "You are the only player at the team, you cannot leave the team");
         // Ensure member leaving is not the leader of the team
-        assert(this.transaction.sender.equal(team.leader).not(), "Leader cannot leave the guild");
+        assert(this.transaction.sender.value.equal(team.leader).not(), "Leader cannot leave the guild");
         // Get team member count
         const teamMemberCount = team.memberCount;
         // Decrease team member count by 1
-        const newTeamMemberCount = teamMemberCount.sub(1);
+        const newTeamMemberCount = UInt64.from(teamMemberCount).sub(UInt64.from(1));
         // Update team member count
         this.teams.set(
             teamId,
@@ -137,7 +137,7 @@ export class Team extends RuntimeModule<{}> {
         );
         // Remove player from the team
         this.playerTeams.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             UInt64.from(0)
         );
     }
