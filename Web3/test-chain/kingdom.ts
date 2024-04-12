@@ -14,9 +14,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
+    UInt64
+} from "@proto-kit/library";
+
+import {
     PublicKey,
     Struct,
-    UInt64,
     Provable,
     Bool
 } from "o1js";
@@ -75,19 +78,19 @@ export class Kingdom extends RuntimeModule<{}> {
     @runtimeMethod()
     public changeKingdom(kingdomId: UInt64) {
         // Make sure player doesn't have a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome.not(), "You cannot be in two kingdoms at the same time");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).isSome.not(), "You cannot be in two kingdoms at the same time");
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
-        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender.value).value;
         // Check if the new kingdom is equal to old kingdom
         assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
         // Get kingdom
-        const kingdom = this.kingdoms.get(kingdomId);
+        const kingdom = this.kingdoms.get(kingdomId).value;
         // Get the member count of the kingdom
         const kingdomMemberCount = kingdom.memberCount;
         // Increase member count of the kingdom by 1
-        const newKingdomMemberCount = kingdomMemberCount.add(1);
+        const newKingdomMemberCount = UInt64.from(kingdomMemberCount).add(UInt64.from(1));
         // Update the kingdom with new member count
         this.kingdoms.set(
             kingdomId,
@@ -99,7 +102,7 @@ export class Kingdom extends RuntimeModule<{}> {
         );
         // Set players kingdom
         this.playerKingdoms.set(
-            this.transaction.sender,
+            this.transaction.sender.value,
             kingdomId
         )
     }
@@ -107,19 +110,19 @@ export class Kingdom extends RuntimeModule<{}> {
     @runtimeMethod()
     public newWarRequest(kingdomId: UInt64) {
         // Make sure player has a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).isSome, "You need to be in a kingdom");
         // Check if there is a kingdom in the specified id
         assert(this.kingdoms.get(kingdomId).isSome, "There is no kingdom in the specified id");
         // Get player's current kingdom id
-        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        const currentKingdomId = this.playerKingdoms.get(this.transaction.sender.value).value;
         // Check if the new kingdom is equal to old kingdom
         assert(currentKingdomId.equal(kingdomId).not(), "Selected kingdom cannot be the same kingdom");
         // Get player kingdom id
-        const playerKingdomId = this.playerKingdoms.get(this.transaction.sender);
+        const playerKingdomId = this.playerKingdoms.get(this.transaction.sender.value).value;
         // Get kingdom war request count
-        const currentWarRequestCount = this.kingdomWarRequestCount.get();
+        const currentWarRequestCount = this.kingdomWarRequestCount.get().value;
         // add 1 to current kingdom war request count
-        const newWarRequestCount = currentWarRequestCount.add(1);
+        const newWarRequestCount = UInt64.from(currentWarRequestCount).add(UInt64.from(1));
         // Create new war request
         this.kingdomWarRequests.set(
             newWarRequestCount,
@@ -135,18 +138,18 @@ export class Kingdom extends RuntimeModule<{}> {
     @runtimeMethod()
     public newPeaceRequest(warId: UInt64) {
         // Make sure player has a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).isSome, "You need to be in a kingdom");
         // Check if there is a kingdom war in the specified id
         assert(this.kingdomWars.get(warId).isSome, "There is no kingdom war in the specified id");
         // Get war
         const kingdomWar = this.kingdomWars.get(warId).value;
         // Ensure player is in one of the kingdoms
-        assert(this.playerKingdoms.get(this.transaction.sender).equal(kingdomWar.kingdomoneid)
-            .or(this.playerKingdoms.get(this.transaction.sender).equal(kingdomWar.kingdomtwoid)), "You are not in any of the two kingdoms")
+        assert(this.playerKingdoms.get(this.transaction.sender.value).equal(kingdomWar.kingdomoneid)
+            .or(this.playerKingdoms.get(this.transaction.sender.value).equal(kingdomWar.kingdomtwoid)), "You are not in any of the two kingdoms")
         // Get kingdom peace request count
-        const currentPeaceRequestCount = this.kingdomPeaceRequestCount.get();
+        const currentPeaceRequestCount = this.kingdomPeaceRequestCount.get().value;
         // add 1 to current kingdom peace request count
-        const newPeaceRequestCount = currentPeaceRequestCount.add(1);
+        const newPeaceRequestCount = UInt64.from(currentPeaceRequestCount).add(UInt64.from(1));
         // Create new peace request
         this.kingdomPeaceRequests.set(
             newPeaceRequestCount,
@@ -164,7 +167,7 @@ export class Kingdom extends RuntimeModule<{}> {
     @runtimeMethod()
     public favorWarRequest(warRequestId: UInt64, voteCount: UInt64) {
         // Make sure player has a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).isSome, "You need to be in a kingdom");
         // Check if there is a war request or not
         assert(this.kingdomWarRequests.get(warRequestId).isSome, "There is no war request in the given war request.")
         // Get the war request
@@ -172,7 +175,7 @@ export class Kingdom extends RuntimeModule<{}> {
         // Ensure war request is active
         assert(warRequest.active.equal(Bool(true)), "This war request is not active")
         // Make sure that player is in kingdom one
-        assert(this.playerKingdoms.get(this.transaction.sender).equal(warRequest.kingdomoneid), "You are not in the same kingdom as this request");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).value.equal(warRequest.kingdomoneid), "You are not in the same kingdom as this request");
         // Make sure kingdoms exits
         assert(this.kingdoms.get(warRequest.kingdomoneid).isSome
             .and(this.kingdoms.get(warRequest.kingdomtwoid).isSome), "Kingdoms don't exist");
@@ -180,19 +183,19 @@ export class Kingdom extends RuntimeModule<{}> {
         assert(this.kingdoms.get(warRequest.kingdomoneid).value.warId.equal(UInt64.from(0))
             .and(this.kingdoms.get(warRequest.kingdomtwoid).value.warId.equal(UInt64.from(0))), "Each kingdom should be in peace to favor war request")
         // Ensure player has vote counts
-        assert(this.playerRequestVoteCounts.get(this.transaction.sender).isSome, "You don't have vote counts");
+        assert(this.playerRequestVoteCounts.get(this.transaction.sender.value).isSome, "You don't have vote counts");
         // Get player vote count
-        const playerVoteCount = this.playerRequestVoteCounts.get(this.transaction.sender);
+        const playerVoteCount = this.playerRequestVoteCounts.get(this.transaction.sender.value);
         // Ensure player has amount of counts available
         assert(playerVoteCount.greaterThanOrEqual(voteCount), "You don't have enough vote counts");
         // Decrease player vote count
-        const newPlayerVoteCount = playerVoteCount.sub(voteCount);
+        const newPlayerVoteCount = UInt64.from(playerVoteCount).sub(UInt64.from(voteCount));
         // Update player new vote count
-        this.playerRequestVoteCounts.set(this.transaction.sender, newPlayerVoteCount);
+        this.playerRequestVoteCounts.set(this.transaction.sender.value, newPlayerVoteCount);
         // Get war request favors
         const currentRequestFavors = warRequest.favor;
         // Add amount of new favors to the current request favors
-        const newRequestFavors = currentRequestFavors.add(voteCount);
+        const newRequestFavors = UInt64.from(currentRequestFavors).add(UInt64.from(voteCount));
         // Update war request
         this.kingdomWarRequests.set(
             warRequestId,
@@ -204,11 +207,11 @@ export class Kingdom extends RuntimeModule<{}> {
             })
         );
         // Check if war request favor is less than 1000 or not
-        assert(newRequestFavors.greaterThanOrEqual(1000), "Favor added but favor is still low.");
+        assert(newRequestFavors.greaterThanOrEqual(UInt64.from(1000)), "Favor added but favor is still low.");
         // Get war count
-        const currentWarCount = this.kingdomWarCount.get();
+        const currentWarCount = this.kingdomWarCount.get().value;
         // Increase war count by 1
-        const newWarCount = currentWarCount.add(1);
+        const newWarCount = UInt64.from(currentWarCount).add(UInt64.from(1));
         // Update new war count
         this.kingdomWarCount.set(newWarCount);
         // Create new war entity
@@ -257,7 +260,7 @@ export class Kingdom extends RuntimeModule<{}> {
     @runtimeMethod()
     public favorPeaceRequest(peaceRequestId: UInt64, voteCount: UInt64) {
         // Make sure player has a kingdom
-        assert(this.playerKingdoms.get(this.transaction.sender).isSome, "You need to be in a kingdom");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).isSome, "You need to be in a kingdom");
         // Check if there is a peace request or not
         assert(this.kingdomPeaceRequests.get(peaceRequestId).isSome, "There is no peace request in the given war request")
         // Get the peace request
@@ -265,8 +268,8 @@ export class Kingdom extends RuntimeModule<{}> {
         // Ensure peace request is active
         assert(peaceRequest.active.equal(Bool(true)), "This peace request is not active")
         // Make sure that player is in any of the kingdoms
-        assert(this.playerKingdoms.get(this.transaction.sender).equal(peaceRequest.kingdomoneid)
-            .or(this.playerKingdoms.get(this.transaction.sender).equal(peaceRequest.kingdomtwoid)), "You are not in any of the kingdoms");
+        assert(this.playerKingdoms.get(this.transaction.sender.value).value.equal(peaceRequest.kingdomoneid)
+            .or(this.playerKingdoms.get(this.transaction.sender.value).value.equal(peaceRequest.kingdomtwoid)), "You are not in any of the kingdoms");
         // Make sure kingdoms exits
         assert(this.kingdoms.get(peaceRequest.kingdomoneid).isSome
             .and(this.kingdoms.get(peaceRequest.kingdomtwoid).isSome), "Kingdoms don't exist");
@@ -280,13 +283,13 @@ export class Kingdom extends RuntimeModule<{}> {
         assert(peaceRequest.kingdomoneid.equal(kingdomWar.kingdomoneid)
             .and(peaceRequest.kingdomtwoid.equal(kingdomWar.kingdomtwoid)), "Peace request kingdoms don't match with kingdom war kingdoms");
         // Ensure player has vote counts
-        assert(this.playerRequestVoteCounts.get(this.transaction.sender).isSome, "You don't have vote counts");
+        assert(this.playerRequestVoteCounts.get(this.transaction.sender.value).isSome, "You don't have vote counts");
         // Get player vote count
-        const playerVoteCount = this.playerRequestVoteCounts.get(this.transaction.sender);
+        const playerVoteCount = this.playerRequestVoteCounts.get(this.transaction.sender.value);
         // Ensure player has amount of counts available
         assert(playerVoteCount.greaterThanOrEqual(voteCount), "You don't have enough vote counts");
         // Decrease player vote count
-        const newPlayerVoteCount = playerVoteCount.sub(voteCount);
+        const newPlayerVoteCount = UInt64.from(playerVoteCount).sub(UInt64.from(voteCount));
         // Update player new vote count
         this.playerRequestVoteCounts.set(this.transaction.sender, newPlayerVoteCount);
         // Get player kingdom
@@ -318,7 +321,7 @@ export class Kingdom extends RuntimeModule<{}> {
             })
         );
         // Check if both favors are greater than 1000 or not
-        assert(newFavorOne.greaterThanOrEqual(1000).and(newFavorTwo.greaterThanOrEqual(1000)), "Both favors should be enough to make peace");
+        assert(newFavorOne.greaterThanOrEqual(UInt64.from(1000)).and(newFavorTwo.greaterThanOrEqual(UInt64.from(1000))), "Both favors should be enough to make peace");
         // Finish battle between two kingdoms
         this.kingdomWars.set(
             peaceRequest.warid,
@@ -373,10 +376,10 @@ export class Kingdom extends RuntimeModule<{}> {
         // Get player kingdom war id
         const kingdomWarId = kingdom.warid;
         // Ensure kingdom is in war
-        assert(kingdomWarId.greaterThanOrEqual(1)
+        assert(kingdomWarId.greaterThanOrEqual(UInt64.from(1))
             .and(this.kingdomWars.get(kingdomWarId).isSome), "Kingdom is not in a war");
         // Get war
-        const kingdomWar = this.kingdomWars.get(kingdomWarId);
+        const kingdomWar = this.kingdomWars.get(kingdomWarId).value;
         // Make sure that kingdoms exists
         assert(this.playerKingdoms.get(kingdomWar.kingdomoneid).isSome
             .and(this.playerKingdoms.get(kingdomWar.kingdomtwoid).isSome), "One of the kingdoms doesn't exist");

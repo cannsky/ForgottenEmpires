@@ -146,7 +146,7 @@ export class Rune extends RuntimeModule<{}> {
         // Get player upgrade points
         const skillUpgradePoints = this.playerSkillUpgradePoints.get(this.transaction.sender.value);
         // Check if there are any skill points or not
-        assert(skillUpgradePoints.greaterThanOrEqual(1), "you don't have any skill upgrade points available");
+        assert(skillUpgradePoints.greaterThanOrEqual(UInt64.from(1)), "you don't have any skill upgrade points available");
         // Get player debuff skill
         const debuffSkill = this.playerDebuffSkills.get(this.transaction.sender.value).value;
         // Get level of the debuff skill
