@@ -2,7 +2,7 @@ import { TestingAppChain } from "@proto-kit/sdk";
 
 import { PrivateKey } from "o1js";
 
-import { Player } from "../../player";
+import { Player } from "../../src/player";
 
 import { log } from "@proto-kit/common";
 

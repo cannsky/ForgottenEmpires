@@ -42,10 +42,17 @@ describe("Character Upgrade Damage Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Create a new character key
+        const aliceCharacter = new CharacterKey({ 
+            owner: alice, 
+            id: UInt32.from(1)
+        });
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Character.characters.get(aliceCharacter);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Character.characters.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -61,11 +68,13 @@ describe("Character Upgrade Damage Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get the character upgraded
-        let aliceCharacterDefense = await appChain.query.runtime.Character.characters.get(new CharacterKey({ owner: alice, id: UInt32.from(1) })).value.damage;
+        // Get promise
+        let aliceCharacterDamagePromise = await appChain.query.runtime.Character.characters.get(aliceCharacter);
+        // Get character damage
+        let aliceCharacterDamage = aliceCharacterDamagePromise?.damage;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
         // Expect character damage to be 2
-        expect(aliceCharacterDefense?.toBigInt()).toBe(2n);
+        expect(aliceCharacterDamage?.toBigInt()).toBe(2n);
     });
 });

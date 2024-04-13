@@ -25,7 +25,7 @@ import {
 export class CharacterKey extends Struct({
     owner: PublicKey,
     id: UInt32,
-}) {}
+}) { }
 
 export class CharacterEntity extends Struct({
     level: UInt32,
@@ -49,16 +49,16 @@ export class Character extends RuntimeModule<{}> {
     @runtimeMethod()
     public newCharacter(type: UInt32) {
         // Get character count of the player
-        const characterCount = this.characterCounts.get(this.transaction.sender.value);
+        const characterCount = this.characterCounts.get(this.transaction.sender.value).value;
         // Increase character count by 1
-        UInt32.from(characterCount).add(UInt32.from(1));
+        const newCharacterCount = UInt32.from(characterCount).add(UInt32.from(1));
         // Update character counts
         this.characterCounts.set(this.transaction.sender.value, characterCount);
         // Create new character
         this.characters.set(
             new CharacterKey({ 
                 owner: this.transaction.sender.value, 
-                id: characterCount 
+                id: newCharacterCount 
             }), 
             new CharacterEntity({ 
                 level: UInt32.from(1), 
@@ -82,20 +82,27 @@ export class Character extends RuntimeModule<{}> {
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
+        const character = this.characters.get(
+            new CharacterKey({ 
+                owner: this.transaction.sender.value, 
+                id: id 
+            })).value;
         // Get current xp value of the character
         const currentXP = character.xp;
         // Get current level value of the character
         const currentLevel = character.level;
         // Check if the xp is enough for a level up
-        assert(currentXP.value.greaterThanOrEqual(UInt32.from(100)), "not enough xp");
+        assert(UInt32.from(currentXP).greaterThanOrEqual(UInt32.from(100)), "not enough xp");
         // Calculate new level of the character
         const newLevel = UInt32.from(currentLevel).add(UInt32.from(1));
         // Calculate new xp of the character
         const newXP = UInt32.from(currentXP).sub(UInt32.from(100));
         // Set new xp and level of the character
         this.characters.set(
-            new CharacterKey({ owner: this.transaction.sender.value, id: id }), 
+            new CharacterKey({ 
+                owner: this.transaction.sender.value, 
+                id: id 
+            }), 
             new CharacterEntity({ 
                 level: newLevel, 
                 xp: newXP, 
@@ -118,13 +125,17 @@ export class Character extends RuntimeModule<{}> {
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
+        const character = this.characters.get(
+            new CharacterKey({ 
+                owner: this.transaction.sender.value, 
+                id: id 
+            })).value;
         // Get current stat xp value of the character
         const currentStatXP = character.statxp;
         // Get current damage value of the character
         const currentDamage = character.damage;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
+        assert(UInt32.from(currentStatXP).greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new damage value of the character
         const newDamage = UInt32.from(currentDamage).add(UInt32.from(1));
         // Calculate new stat xp of the character
@@ -163,7 +174,7 @@ export class Character extends RuntimeModule<{}> {
         // Get current defense value of the character
         const currentDefense = character.defense;
         // Check if the stat xp is enough for an upgrade
-        assert(currentStatXP.value.greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
+        assert(UInt32.from(currentStatXP).greaterThanOrEqual(UInt32.from(1)), "not enough stat xp");
         // Calculate new defense value of the character
         const newDefense = UInt32.from(currentDefense).add(UInt32.from(1));
         // Calculate new stat xp of the character
@@ -200,7 +211,7 @@ export class Character extends RuntimeModule<{}> {
         // Get current max upgrade value of the character
         const currentMaxUpgrade = character.maxupgrade;
         // The maximum upgrade limit is 25
-        assert(currentMaxUpgrade.value.greaterThanOrEqual(UInt32.from(25)), "you cannot upgrade more than 25");
+        assert(UInt32.from(currentMaxUpgrade).greaterThanOrEqual(UInt32.from(25)), "you cannot upgrade more than 25");
         // Calculate new max upgrade value of the character
         const newMaxUpgrade = UInt32.from(currentMaxUpgrade).add(UInt32.from(1));
         // Set new max upgrade value of the character
@@ -231,11 +242,14 @@ export class Character extends RuntimeModule<{}> {
             id: id 
         })).isSome, "there is no character specified for this address");
         // Get character
-        const character = this.characters.get(new CharacterKey({ owner: this.transaction.sender.value, id: id })).value;
+        const character = this.characters.get(new CharacterKey({ 
+            owner: this.transaction.sender.value, 
+            id: id 
+        })).value;
         // Get current world of the character
         const currentWorld = character.world;
         // Make sure the current world is not equal to the world id
-        assert(currentWorld.equal(worldId).not(), "you are trying to change to the same world");
+        assert(UInt32.from(currentWorld).equals(UInt32.from(worldId)).not(), "you are trying to change to the same world");
         // Set new world
         const newWorld = worldId;
         // Set new world of the character
