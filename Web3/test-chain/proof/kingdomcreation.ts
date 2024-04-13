@@ -15,9 +15,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
+    UInt64
+} from "@proto-kit/library";
+
+import {
     PublicKey,
     Struct,
-    UInt64,
     Bool,
     Field,
     MerkleMapWitness,
@@ -108,23 +111,23 @@ export class KingdomCreation extends RuntimeModule<KingdomCreationConfig>{
         // Set kingdom created nullifier to true
         this.nullifiers.set(kingdomCreationProof.publicOutput.nullifier, Bool(true));
         // Ensure the caller is not already in a kingdom
-        assert(this.kingdom.playerKingdoms.get(this.transaction.sender).isSome.not(), "you cannot be in two kingdoms at the same time")
+        assert(this.kingdom.playerKingdoms.get(this.transaction.sender.value).isSome.not(), "you cannot be in two kingdoms at the same time")
         // Get kingdom count
-        const kingdomCount = this.kingdom.kingdomCount.get();
+        const kingdomCount = this.kingdom.kingdomCount.get().value;
         // Add 1 to kingdom count
-        const newKingdomCount = kingdomCount.add(1);
+        const newKingdomCount = UInt64.from(kingdomCount).add(UInt64.from(1));
         // Update kingdom count
         this.kingdom.kingdomCount.set(newKingdomCount);
         // Create new kingdom
         this.kingdom.kingdoms.set(
             newKingdomCount,
             new KingdomEntity({ 
-                leader: this.transaction.sender,
+                leader: this.transaction.sender.value,
                 memberCount: UInt64.From(0),
                 warid: UInt64.from(0)
             })
         );
         // Add the player who created the kingdom to the kingdom as member
-        this.kingdom.playerKingdoms.set(this.transaction.sender, newKingdomCount);
+        this.kingdom.playerKingdoms.set(this.transaction.sende.value, newKingdomCount);
     }
 }
