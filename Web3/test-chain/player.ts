@@ -94,7 +94,7 @@ export class Player extends RuntimeModule<{}> {
         // Check if there is a player stats or not
         assert(this.playerStats.get(this.transaction.sender.value).isSome, "there is no player stats on this address");
         // Get player stats
-        const playerStats = this.playerStats.get(this.transaction.sender).value;
+        const playerStats = this.playerStats.get(this.transaction.sender.value).value;
         // Get current charisma
         const currentCharisma = playerStats.charisma;
         // Increase current charisma by 1

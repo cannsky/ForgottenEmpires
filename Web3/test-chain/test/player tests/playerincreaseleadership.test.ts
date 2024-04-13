@@ -12,15 +12,17 @@ describe("Player Increase Leadership Test", () => {
     it("Tests player increase leadership functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
-            modules: {
-                Player,
-            },
-            config: {
-                Player: {},
-            },
+            Player,
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Player: {},
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -42,10 +44,12 @@ describe("Player Increase Leadership Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -61,11 +65,13 @@ describe("Player Increase Leadership Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get the leadership increased
-        let aliceLeadership = await appChain.query.runtime.Player.players.get(alice).value.leadership;
+        // Get the promise
+        let aliceLeadershipPromise = await appChain.query.runtime.Player.playerStats.get(alice);
+        // Get the leadership of player
+        let aliceLeadership = await aliceLeadershipPromise?.leadership;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
         // Expect player leadership to be 2
-        expect(aliceLeadership?.toBigInt()).toBe(1n);
+        expect(aliceLeadership?.toBigInt()).toBe(2n);
     });
 });

@@ -1,6 +1,6 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey } from "o1js";
 
 import { Player } from "../../player";
 
@@ -12,14 +12,12 @@ describe("Player Level Up Test", () => {
     it("Tests player level up functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
-            modules: {
-                Player,
-            },
+            Player,
         });
         // Configure
         appChain.configurePartial({
-            Runtime: {
-                Player: {}
+            Runtime: {
+                Player: {},
             }
         });
 
