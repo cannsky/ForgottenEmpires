@@ -15,9 +15,12 @@ import {
 } from "@proto-kit/protocol";
 
 import {
+    UInt64
+} from "@proto-kit/library";
+
+import {
     PublicKey,
     Struct,
-    UInt64,
     Bool,
     Field,
     MerkleMapWitness,
@@ -108,22 +111,22 @@ export class GuildCreation extends RuntimeModule<GuildCreationConfig>{
         // Set guild created nullifier to true
         this.nullifiers.set(guildCreationProof.publicOutput.nullifier, Bool(true));
         // Ensure the caller is not already leading a guild
-        assert(this.guild.playerGuilds.get(this.transaction.sender).isSome.not(), "you cannot be in two guilds at the same time")
+        assert(this.guild.playerGuilds.get(this.transaction.sender.value).isSome.not(), "you cannot be in two guilds at the same time")
         // Get guild count
-        const guildCount = this.guild.guildCount.get();
+        const guildCount = this.guild.guildCount.get().value;
         // Add 1 to guild count
-        const newGuildCount = guildCount.add(1);
+        const newGuildCount = UInt64.from(guildCount).add(UInt64.from(1));
         // Update guild count
         this.guild.guildCount.set(newGuildCount);
         // Create new guild
         this.guild.guilds.set(
             newGuildCount,
             new GuildEntity({ 
-                leader: this.transaction.sender,
+                leader: this.transaction.sender.value,
                 memberCount: UInt64.From(0)
             })
         );
         // Add the player who created the guild to the guild as member
-        this.guild.playerGuilds.set(this.transaction.sender, newGuildCount);
+        this.guild.playerGuilds.set(this.transaction.sender.value, newGuildCount);
     }
 }
