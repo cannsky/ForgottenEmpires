@@ -19,7 +19,6 @@ import {
 } from "@proto-kit/library";
 
 import {
-    PublicKey,
     Struct,
     Bool,
     Field,

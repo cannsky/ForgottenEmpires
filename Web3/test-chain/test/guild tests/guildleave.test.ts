@@ -1,10 +1,12 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey } from "o1js";
 
-import { Player } from "../../player";
+import { UInt64 } from "@proto-kit/library";
 
-import { Guild } from "../../guild";
+import { Player } from "../../src/player";
+
+import { Guild } from "../../src/guild";
 
 import { log } from "@proto-kit/common";
 
@@ -14,17 +16,19 @@ describe("Guild New Guild Test", () => {
     it("Tests guild new guild functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
-            modules: {
-                Player,
-                Guild,
-            },
-            config: {
-                Player: {},
-                Guild: {},
-            },
+            Guild,
+            Player,
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Guild: {},
+                Player: {},
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -33,13 +37,14 @@ describe("Guild New Guild Test", () => {
         appChain.setSigner(alicePrivateKey);
         // Get Player
         const player = appChain.runtime.resolve("Player");
+        // Get guild creation
         const guild = appChain.runtime.resolve("Guild");
 
         // CREATE A NEW PLAYER FOR TESTING
 
         // Create a new player for the key
         const startTX = await appChain.transaction(alice, () => {
-            player.newPlayer(UInt64.from(0));
+            player.newPlayer();
         });
         // Sign the tx
         await startTX.sign();
@@ -47,10 +52,12 @@ describe("Guild New Guild Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -66,14 +73,16 @@ describe("Guild New Guild Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get the guild count
-        let guildCount = await appChain.query.runtime.Guild.guildCount.get().value;
+        // Get promise
+        let guildMemberCountPromise = await appChain.query.runtime.Guild.guilds.get(UInt64.from(1));
+        // Get guild member count
+        let guildMemberCount = await guildMemberCountPromise?.memberCount;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
-        // Expect guild count to be 1
-        expect(guildCount?.toBigInt()).toBe(1n);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
+        // Expect guild member count to be 1
+        expect(guildMemberCount?.toBigInt()).toBe(1n);
 
-        // CREATE A NEW PLAYER FOR TESTING JOIN TO THE GUILD
+        // CREATE A NEW PLAYER FOR TESTING JOINIG TO THE GUILD
 
         // Create a random private key
         const bobPrivateKey = PrivateKey.random();
@@ -84,7 +93,7 @@ describe("Guild New Guild Test", () => {
 
         // Create a new player for the key
         const startJoinTX = await appChain.transaction(bob, () => {
-            player.newPlayer(UInt64.from(0));
+            player.newPlayer();
         });
         // Sign the tx
         await startJoinTX.sign();
@@ -92,10 +101,12 @@ describe("Guild New Guild Test", () => {
         await startJoinTX.send();
         // Produce block
         const blockjoinStart = await appChain.produceBlock();
-        // Get the level of the new player
-        let startJoinLevel = await appChain.query.runtime.Player.players.get(bob).value.level;
+        // Get promise
+        let startJoinLevelPromise = await appChain.query.runtime.Player.players.get(bob);
+        // Get level of the new player
+        let startJoinLevel = await startJoinLevelPromise?.level;
         // Expect block to be true
-        expect(blockjoinStart?.txs[0].status).toBe(true);
+        expect(blockjoinStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startJoinLevel?.toBigInt()).toBe(1n);
 
@@ -111,12 +122,14 @@ describe("Guild New Guild Test", () => {
         await guildJoinTX.send();
         // Produce block 
         const blockGuildJoin = await appChain.produceBlock();
-        // Get the level of the new character
-        let newGuildCount = await appChain.query.runtime.Guild.guildCount.get().value;
+        // Get promise
+        let newGuildMemberCountPromise = await appChain.query.runtime.Guild.guilds.get(UInt64.from(1));
+        // Get new guild member count
+        let newGuildMemberCount = await newGuildMemberCountPromise?.memberCount;
         // Expect block to be true
-        expect(blockGuildJoin?.txs[0].status).toBe(true);
-        // Expect guild count to be 2
-        expect(newGuildCount?.toBigInt()).toBe(2n);
+        expect(blockGuildJoin?.transactions[0].status.toBoolean()).toBe(true);
+        // Expect guild member count to be 2
+        expect(newGuildMemberCount?.toBigInt()).toBe(2n);
 
         // TEST LEAVING THE GUILD
 
@@ -128,13 +141,15 @@ describe("Guild New Guild Test", () => {
         await guildLeaveTx.sign();
         // Send the tx
         await guildLeaveTx.send();
-        // Produce block 
+        // Produce block
         const blockGuildLeave = await appChain.produceBlock();
-        // Get the level of the new character
-        let newGuildCountAfterPlayerLeft = await appChain.query.runtime.Guild.guildCount.get().value;
+        // Get promise
+        let newGuildMemberCountAfterPlayerLeftPromise = await appChain.query.runtime.Guild.guilds.get(UInt64.from(1));
+        // Get new guild member count after member left
+        let newGuildMemberCountAfterPlayerLeft = await newGuildMemberCountAfterPlayerLeftPromise?.memberCount;
         // Expect block to be true
-        expect(blockGuildLeave?.txs[0].status).toBe(true);
+        expect(blockGuildLeave?.transactions[0].status.toBoolean()).toBe(true);
         // Expect guild count to be 1
-        expect(newGuildCountAfterPlayerLeft?.toBigInt()).toBe(1n)
+        expect(newGuildMemberCountAfterPlayerLeft?.toBigInt()).toBe(1n);
     });
 });
