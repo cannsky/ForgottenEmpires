@@ -1,12 +1,14 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey } from "o1js";
 
-import { Player } from "../../player";
+import { Player } from "../../src/player";
 
-import { Team } from "../../team";
+import { Team } from "../../src/team";
 
 import { log } from "@proto-kit/common";
+
+import { UInt64 } from "@proto-kit/library";
 
 log.setLevel("error");
 
@@ -14,17 +16,19 @@ describe("Team New Team Test", () => {
     it("Tests team new team functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
-            modules: {
-                Player,
-                Team,
-            },
-            config: {
-                Player: {},
-                Team: {}
-            },
+            Player,
+            Team,
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Player: {},
+                Team: {},
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -47,10 +51,12 @@ describe("Team New Team Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -66,11 +72,13 @@ describe("Team New Team Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get total team count
-        let teamCount = await appChain.query.runtime.Team.teamCount.get().value;
+        // Get promise
+        let teamMemberCountPromise = await appChain.query.runtime.Team.teams.get(UInt64.from(1));
+        // Get team member count
+        let teamMemberCount = await teamMemberCountPromise?.memberCount;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
-        // Expect team count to be 1
-        expect(teamCount?.toBigInt()).toBe(1n);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
+        // Expect team member count to be 1
+        expect(teamMemberCount?.toBigInt()).toBe(1n);
     });
 });

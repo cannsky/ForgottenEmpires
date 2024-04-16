@@ -1,6 +1,6 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey } from "o1js";
 
 import { Player } from "../../src/player";
 

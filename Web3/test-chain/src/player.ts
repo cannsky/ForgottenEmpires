@@ -213,6 +213,4 @@ export class Player extends RuntimeModule<{}> {
         // Return total bravery calculated
         return totalBravery;
     }
-
-    // methods will be added later...
 }

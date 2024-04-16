@@ -1,10 +1,12 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { PrivateKey, UInt64 } from "o1js";
+import { PrivateKey } from "o1js";
 
-import { Player } from "../../player";
+import { UInt64 } from "@proto-kit/library";
 
-import { Team, TeamInvitationKey } from "../../team";
+import { Player } from "../../src/player";
+
+import { Team, TeamInvitationKey } from "../../src/team";
 
 import { log } from "@proto-kit/common";
 
@@ -14,17 +16,19 @@ describe("Team Invite Player Test", () => {
     it("Tests team invite player functionality", async () => {
         // Define appchain
         const appChain = TestingAppChain.fromRuntime({
-            modules: {
-                Player,
-                Team,
-            },
-            config: {
-                Player: {},
-                Team: {}
-            },
+            Player,
+            Team,
         });
+        // Configure
+        appChain.configurePartial({
+            Runtime: {
+                Player: {},
+                Team: {},
+            }
+        });
+
         // Start appchain
-        await appChain.Start();
+        await appChain.start();
         // Create a random private key
         const alicePrivateKey = PrivateKey.random();
         // Get public key of the private key
@@ -47,10 +51,12 @@ describe("Team Invite Player Test", () => {
         await startTX.send();
         // Produce block
         const blockStart = await appChain.produceBlock();
+        // Get the promise
+        let startLevelPromise = await appChain.query.runtime.Player.players.get(alice);
         // Get the level of the new character
-        let startLevel = await appChain.query.runtime.Player.players.get(alice).value.level;
+        let startLevel = await startLevelPromise?.level;
         // Expect block to be true
-        expect(blockStart?.txs[0].status).toBe(true);
+        expect(blockStart?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(startLevel?.toBigInt()).toBe(1n);
 
@@ -66,12 +72,14 @@ describe("Team Invite Player Test", () => {
         await tx1.send();
         // Produce block
         const block1 = await appChain.produceBlock();
-        // Get total team count
-        let teamCount = await appChain.query.runtime.Team.teamCount.get().value;
+        // Get promise
+        let teamMemberCountPromise = await appChain.query.runtime.Team.teams.get();
+        // Get team member count
+        let teamMemberCount = await teamMemberCountPromise?.memberCount;
         // Expect block to be true
-        expect(block1?.txs[0].status).toBe(true);
-        // Expect team count to be 1
-        expect(teamCount?.toBigInt()).toBe(1n);
+        expect(block1?.transactions[0].status.toBoolean()).toBe(true);
+        // Expect team member count to be 1
+        expect(teamMemberCount?.toBigInt()).toBe(1n);
 
         // CREATE A NEW OTHER PLAYER
 
@@ -79,6 +87,8 @@ describe("Team Invite Player Test", () => {
         const bobPrivateKey = PrivateKey.random();
         // Get public key of the private key
         const bob = bobPrivateKey.toPublicKey();
+        // Set private key
+        appChain.setSigner(bobPrivateKey);
 
         // Create a new player for the key
         const otherPlayerTX = await appChain.transaction(bob, () => {
@@ -90,14 +100,19 @@ describe("Team Invite Player Test", () => {
         await otherPlayerTX.send();
         // Produce block
         const blockOtherPlayer = await appChain.produceBlock();
-        // Get the level of the new character
-        let otherPlayerStartLevel = await appChain.query.runtime.Player.players.get(bob).value.level;
+        // Get promise
+        let otherPlayerStartLevelPromise = await appChain.query.runtime.Player.players.get(bob);
+        // Get player start level
+        let otherPlayerStartLevel = otherPlayerStartLevelPromise?.level;
         // Expect block to be true
-        expect(blockOtherPlayer?.txs[0].status).toBe(true);
+        expect(blockOtherPlayer?.transactions[0].status.toBoolean()).toBe(true);
         // Expect start level to be 1
         expect(otherPlayerStartLevel?.toBigInt()).toBe(1n);
 
         // INVITE NEW PLAYER TO THE TEAM
+
+        // Set private key
+        appChain.setSigner(alicePrivateKey);
 
         // Invite player to the team
         const tx2 = await appChain.transaction(alice, () => {
@@ -109,15 +124,18 @@ describe("Team Invite Player Test", () => {
         await tx2.send();
         // Produce block
         const block2 = await appChain.produceBlock();
-        // Get invited players invitation
-        let playerInvitation = await appChain.query.runtime.Team.playerInvitations.get(
-            new TeamInvitationKey({
-                teamid: UInt64.from(0),
-                invitedplayer: bob
-        })).value;
+        // Generate team invitation key
+        let teamInvitation = new TeamInvitationKey({
+            teamid: UInt64.from(1),
+            invitedplayer: bob
+        });
+        // Get promise
+        let playerInvitationActivePromise = await appChain.query.runtime.Team.playerInvitations.get(teamInvitation);
+        // Get invited player's invitation
+        let playerInvitationActive = await playerInvitationActivePromise?.active;
         // Expect block to be true
-        expect(block2?.txs[0].status).toBe(true);
+        expect(block2?.transactions[0].status.toBoolean()).toBe(true);
         // Expect invitation value to be 1
-        expect(playerInvitation?.toBigInt()).toBe(1n);
+        expect(playerInvitationActive?.toBigInt()).toBe(1n);
     });
 });

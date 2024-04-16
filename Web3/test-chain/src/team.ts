@@ -10,13 +10,17 @@ import {
 
 import {
     StateMap,
+    State,
     assert
 } from "@proto-kit/protocol";
 
 import {
-    PublicKey,
-    Struct,
     UInt64
+} from "@proto-kit/library";
+
+import {
+    PublicKey,
+    Struct
 } from "o1js";
 
 export class TeamEntity extends Struct({
@@ -27,7 +31,12 @@ export class TeamEntity extends Struct({
 export class TeamInvitationKey extends Struct({
     teamid: UInt64,
     invitedplayer: PublicKey,
-})
+}) {}
+
+export class TeamInvitationEntity extends Struct({
+    invitedby: PublicKey,
+    active: UInt64
+}) {}
 
 @runtimeModule()
 export class Team extends RuntimeModule<{}> {
@@ -38,7 +47,7 @@ export class Team extends RuntimeModule<{}> {
 
     @state() public teamCount = State.from<UInt64>(UInt64);
 
-    @state() public playerInvitations = StateMap.from<TeamInvitationKey, UInt64>(TeamInvitationKey, UInt64);
+    @state() public playerInvitations = StateMap.from<TeamInvitationKey, TeamInvitationEntity>(TeamInvitationKey, TeamInvitationEntity);
 
     @runtimeMethod()
     public newTeam() {
@@ -55,7 +64,7 @@ export class Team extends RuntimeModule<{}> {
             newTeamCount,
             new TeamEntity({ 
                 leader: this.transaction.sender.value,
-                memberCount: UInt64.From(1)
+                memberCount: UInt64.from(1)
             })
         );
         // Add the player who created the team to the team as member
@@ -67,20 +76,23 @@ export class Team extends RuntimeModule<{}> {
         // Ensure the team exists
         assert(this.teams.get(teamId).isSome, "Team does not exist");
         // Ensure the invitation is sent by the team leader
-        assert(this.teams.get(teamId).value.leader.equals(this.transaction.sender), "You are not the leader of the team");
+        assert(this.teams.get(teamId).value.leader.equals(this.transaction.sender.value), "You are not the leader of the team");
         // Get the team
         const team = this.teams.get(teamId).value;
         // Ensure the team is not full
         assert(team.memberCount.lessThanOrEqual(UInt64.from(4)), "Team is full");
         // Ensure the player is not already in a team
-        assert(this.playerTeams.get(this.transaction.sender.value).isSome.not(), "The player is already in a team");
+        assert(this.playerTeams.get(playerKey).isSome.not(), "The player is already in a team");
         // Invite the player
         this.playerInvitations.set(
             new TeamInvitationKey({
                 teamid: teamId,
                 invitedplayer: playerKey,
             }),
-            UInt64.from(1)
+            new TeamInvitationEntity({
+                invitedby: this.transaction.sender.value,
+                active: UInt64.from(1),
+            })
         );
     }
 
@@ -94,6 +106,18 @@ export class Team extends RuntimeModule<{}> {
         assert(team.memberCount.lessThanOrEqual(UInt64.from(4)), "Team is full");
         // Ensure the player is not already in a team
         assert(this.playerTeams.get(this.transaction.sender.value).isSome.not(), "You are already in a team");
+        // Make sure there is an invitation
+        assert(this.playerInvitations.get(new TeamInvitationKey({
+            teamid: teamId,
+            invitedplayer: this.transaction.sender.value,
+        })).isSome, "You are not invited to the team");
+        // Get player invitation
+        const playerInvitation = this.playerInvitations.get(new TeamInvitationKey({
+            teamid: teamId,
+            invitedplayer: this.transaction.sender.value,
+        })).value;
+        // Make sure player didn't accept invitation
+        assert(UInt64.from(playerInvitation.active).equals(UInt64.from(1)), "You already accepted the invitation");
         // Get team member count
         const teamMemberCount = team.memberCount;
         // Add 1 to team member count
@@ -111,6 +135,17 @@ export class Team extends RuntimeModule<{}> {
             this.transaction.sender.value,
             teamId
         );
+        // Deactive player invitation
+        this.playerInvitations.set(
+            new TeamInvitationKey({
+                teamid: teamId,
+                invitedplayer: this.transaction.sender.value,
+            }),
+            new TeamInvitationEntity({
+                invitedby: playerInvitation.invitedby,
+                active: UInt64.from(0),
+            })
+        );
     }
 
     @runtimeMethod()
@@ -122,7 +157,7 @@ export class Team extends RuntimeModule<{}> {
         // Ensure the team member count is more than 1
         assert(team.memberCount.greaterThanOrEqual(UInt64.from(2)), "You are the only player at the team, you cannot leave the team");
         // Ensure member leaving is not the leader of the team
-        assert(this.transaction.sender.value.equal(team.leader).not(), "Leader cannot leave the guild");
+        assert(this.transaction.sender.value.equals(team.leader).not(), "Leader cannot leave the guild");
         // Get team member count
         const teamMemberCount = team.memberCount;
         // Decrease team member count by 1
@@ -141,6 +176,4 @@ export class Team extends RuntimeModule<{}> {
             UInt64.from(0)
         );
     }
-
-    // methods will be added later...
 }

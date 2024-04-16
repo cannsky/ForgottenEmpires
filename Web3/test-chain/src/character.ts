@@ -315,6 +315,4 @@ export class Character extends RuntimeModule<{}> {
         // Return total defense calculated
         return totalDefense;
     }
-
-    // methods will be added later...
 }
