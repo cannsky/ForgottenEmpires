@@ -38,7 +38,7 @@ export class DebuffSkillEntity extends Struct({
 }) {}
 
 @runtimeModule()
-export class Rune extends RuntimeModule<{}> {
+export class Skill extends RuntimeModule<{}> {
 
     @state() public playerBuffSkills = StateMap.from<PublicKey, BuffSkillEntity>(PublicKey, BuffSkillEntity);
 
