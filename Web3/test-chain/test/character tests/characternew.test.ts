@@ -1,6 +1,6 @@
 import { TestingAppChain } from "@proto-kit/sdk";
 
-import { UInt32 } from "@proto-kit/library";
+import { UInt64 } from "@proto-kit/library";
 
 import { PrivateKey } from "o1js";
 
@@ -38,7 +38,7 @@ describe("Character New Character Test", () => {
 
         // Create a new character for the key
         const startTX = await appChain.transaction(alice, () => {
-            character.newCharacter(UInt32.from(0));
+            character.newCharacter(UInt64.from(0));
         });
         // Sign the tx
         await startTX.sign();
@@ -49,7 +49,7 @@ describe("Character New Character Test", () => {
         // Create a new character key
         const aliceCharacter = new CharacterKey({ 
             owner: alice, 
-            id: UInt32.from(1)
+            id: UInt64.from(1)
         });
         // Get the promise
         let startLevelPromise = await appChain.query.runtime.Character.characters.get(aliceCharacter);
