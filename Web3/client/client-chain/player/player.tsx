@@ -5,7 +5,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
-import { useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { PlayerState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
@@ -19,7 +19,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     immer((set) => ({
         loading: Boolean(false),
         players: {},
-        async someFunc(client: Client, address: string) {
+        async login(client: Client, address: string) {
             set((state) => {
                 state.loading = true;
             });
@@ -107,6 +107,24 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
         }
     }))
 );
+
+export const useLogin = () => {
+    // Get client
+    const client = useClientStore();
+    // Get player
+    const player = usePlayerStore();
+    // Get wallet
+    const wallet = useWalletStore();
+
+    return useCallback(async() => {
+        // If client or wallet is not defined return
+        if(!client.client || !wallet.wallet) return;
+        // New pending transaction
+        const pendingTransaction = await player.login(client.client, wallet.wallet);
+        // Add pending transaction to wallet
+        wallet.addPendingTransaction(pendingTransaction);
+    }, [client.client, wallet.wallet]);
+};
 
 export const useNewPlayer = () => {
     // Get client
