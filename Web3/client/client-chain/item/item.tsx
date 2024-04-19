@@ -9,6 +9,7 @@ import { useCallback } from "react";
 import { ItemState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
+import { UInt64 } from "@proto-kit/library";
 
 export class ItemKey extends Struct({
     owner: PublicKey,
