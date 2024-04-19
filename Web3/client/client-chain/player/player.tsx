@@ -108,7 +108,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     }))
 );
 
-export const useLogin = () => {
+export const usePlayerLogin = () => {
     // Get client
     const client = useClientStore();
     // Get player
@@ -126,7 +126,7 @@ export const useLogin = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useNewPlayer = () => {
+export const usePlayerNewPlayer = () => {
     // Get client
     const client = useClientStore();
     // Get player
@@ -144,7 +144,7 @@ export const useNewPlayer = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useLevelUp = () => {
+export const usePlayerLevelUp = () => {
     // Get client
     const client = useClientStore();
     // Get player
@@ -162,7 +162,7 @@ export const useLevelUp = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useIncreaseLeadership = () => {
+export const usePlayerIncreaseLeadership = () => {
     // Get client
     const client = useClientStore();
     // Get player
@@ -180,7 +180,7 @@ export const useIncreaseLeadership = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useIncreaseBravery = () => {
+export const usePlayerIncreaseBravery = () => {
     // Get client
     const client = useClientStore();
     // Get player

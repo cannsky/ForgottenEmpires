@@ -101,7 +101,7 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
     }))
 );
 
-export const useGetPlayerGuild = () => {
+export const useGuildGetPlayerGuild = () => {
     // Get client
     const client = useClientStore();
     // Get guild
@@ -119,7 +119,7 @@ export const useGetPlayerGuild = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useNewGuild = () => {
+export const useGuildNewGuild = () => {
     // Get client
     const client = useClientStore();
     // Get guild
@@ -137,7 +137,7 @@ export const useNewGuild = () => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useJoinGuild = (guildId: number) => {
+export const useGuildJoinGuild = (guildId: number) => {
     // Get client
     const client = useClientStore();
     // Get guild
@@ -155,7 +155,7 @@ export const useJoinGuild = (guildId: number) => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useLeaveGuild = (guildId: number) => {
+export const useGuildLeaveGuild = (guildId: number) => {
     // Get client
     const client = useClientStore();
     // Get guild

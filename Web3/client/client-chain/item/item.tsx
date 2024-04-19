@@ -4,57 +4,53 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
-import { PublicKey, Struct } from "o1js";
+import { PublicKey } from "o1js";
 import { useCallback } from "react";
-import { CharacterState } from "./interface";
+import { ItemState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
-import { UInt64 } from "@proto-kit/library";
+
+export class ItemKey extends Struct({
+    owner: PublicKey,
+    id: UInt64,
+}) {}
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {
     if (!(transaction instanceof PendingTransaction)) throw new Error("Transaction is not a pending transaction");
 }
 
-export class CharacterKey extends Struct({
-    owner: PublicKey,
-    id: UInt64,
-}) {}
-
-export const useCharacterStore = create<CharacterState, [["zustand/immer", never]]>(
+export const useItemStore = create<ItemState, [["zustand/immer", never]]>(
     immer((set) => ({
         loading: Boolean(false),
-        characters: {},
-        async getSelectedCharacter(client: Client, address: string, characterId: number) {
+        items: {},
+        async getItem(client: Client, address: string, itemid: number) {
             set((state) => {
                 state.loading = true;
             });
             // Get address
             const ownerAddress = PublicKey.fromBase58(address);
-            // Get id
-            const selectedCharacterId = UInt64.from(characterId);
-            // Get client character
-            const clientCharacter = await client.query.runtime.Character.characters.get(
-                new CharacterKey({
+            // Get client player
+            const item = await client.query.runtime.Item.items.get(
+                new ItemKey({
                     owner: ownerAddress,
-                    id: selectedCharacterId
+                    id: UInt64.from(itemid),
                 })
             );
-            // Add client character to characters
             set((state) => {
                 state.loading = false;
-                state.characters[address] = { character: clientCharacter };
+                state.items[address][itemid] = { item: item };
             });
         },
-        async newCharacter(client: Client, address: string, characterType: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async newItem(client: Client, address: string, itemType: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.newCharacter(
-                    UInt64.from(characterType)
+                item.newItem(
+                    UInt64.from(itemType)
                 );
             });
             // Sign transaction 
@@ -66,15 +62,16 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async levelUP(client: Client, address: string, characterId: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async equipItem(client: Client, address: string, equipeditemslot: number, itemid: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.levelUP(
-                    UInt64.from(characterId)
+                item.equipItem(
+                    UInt64.from(equipeditemslot),
+                    UInt64.from(itemid)
                 );
             });
             // Sign transaction 
@@ -86,15 +83,15 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async upgradeDamage(client: Client, address: string, characterId: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async unequipItem(client: Client, address: string, equipeditemslot: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.upgradeDamage(
-                    UInt64.from(characterId)
+                item.unequipItem(
+                    UInt64.from(equipeditemslot)
                 );
             });
             // Sign transaction 
@@ -106,15 +103,15 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async upgradeDefense(client: Client, address: string, characterId: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async upgradeDamage(client: Client, address: string, itemid: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.upgradeDefense(
-                    UInt64.from(characterId)
+                item.upgradeDamage(
+                    UInt64.from(itemid)
                 );
             });
             // Sign transaction 
@@ -126,15 +123,15 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async upgradeMaxUpgrade(client: Client, address: string, characterId: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async upgradeDefense(client: Client, address: string, itemid: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.upgradeMaxUpgrade(
-                    UInt64.from(characterId)
+                item.upgradeDefense(
+                    UInt64.from(itemid)
                 );
             });
             // Sign transaction 
@@ -146,16 +143,15 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async changeWorld(client: Client, address: string, characterId: number, worldId: number) {
-            // Get character
-            const character = client.runtime.resolve("Character");
+        async consumeItem(client: Client, address: string, itemid: number) {
+            // Get item
+            const item = client.runtime.resolve("Item");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                character.changeWorld(
-                    UInt64.from(characterId), 
-                    UInt64.from(worldId)
+                item.consumeItem(
+                    UInt64.from(itemid)
                 );
             });
             // Sign transaction 
@@ -170,11 +166,11 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
     }))
 );
 
-export const useCharacterGetSelectedCharacter = (characterId: number) => {
+export const useItemGetItem = () => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -182,17 +178,17 @@ export const useCharacterGetSelectedCharacter = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.getSelectedCharacter(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.getItem(client.client, wallet.wallet);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterNewCharacter = (characterType: number) => {
+export const useItemNewItem = () => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -200,17 +196,17 @@ export const useCharacterNewCharacter = (characterType: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.newCharacter(client.client, wallet.wallet, characterType);
+        const pendingTransaction = await item.newItem(client.client, wallet.wallet);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterLevelUP = (characterId: number) => {
+export const useItemEquipItem = (equipeditemslot: number, itemid: number) => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -218,17 +214,17 @@ export const useCharacterLevelUP = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.levelUP(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.equipItem(client.client, wallet.wallet, equipeditemslot, itemid);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterUpgradeDamage = (characterId: number) => {
+export const useItemUnequipItem = (equipeditemslot: number) => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -236,17 +232,17 @@ export const useCharacterUpgradeDamage = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.upgradeDamage(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.equipItem(client.client, wallet.wallet, equipeditemslot);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterUpgradeDefense = (characterId: number) => {
+export const useItemUpgradeDamage = (itemid: number) => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -254,17 +250,17 @@ export const useCharacterUpgradeDefense = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.upgradeDefense(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.upgradeDamage(client.client, wallet.wallet, itemid);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterUpgradeMaxUpgrade = (characterId: number) => {
+export const useItemUpgradeDefense = (itemid: number) => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -272,17 +268,17 @@ export const useCharacterUpgradeMaxUpgrade = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.upgradeMaxUpgrade(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.upgradeDefense(client.client, wallet.wallet, itemid);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterChangeWorld = (characterId: number) => {
+export const useItemConsumeItem = (itemid: number) => {
     // Get client
     const client = useClientStore();
-    // Get character
-    const character = useCharacterStore();
+    // Get item
+    const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -290,7 +286,7 @@ export const useCharacterChangeWorld = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.changeWorld(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await item.consumeItem(client.client, wallet.wallet, itemid);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
