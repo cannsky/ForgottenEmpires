@@ -154,6 +154,4 @@ export class Guild extends RuntimeModule<{}> {
             })
         );
     }
-
-    // methods will be added later...
 }
