@@ -9,10 +9,10 @@ import {
     useCharacterChangeWorld,
     useCharacterLevelUP,
     useCharacterNewCharacter,
-    useCharacterUpgradeDefense
+    useCharacterUpgradeDefense,
     useCharacterUpgradeDamage,
     useCharacterStore
-} from "@/lib/stores/player/player";
+} from "@/lib/stores/character/character";
 
 export interface CharacterProps {
     wallet?: string,
@@ -26,7 +26,7 @@ export function Character({
     loading,
 } : CharacterProps) {
     const form = useForm();
-    // New character method
+    // Change world method
     const changeWorld = useCharacterChangeWorld();
     // Level up method
     const levelUP = useCharacterLevelUP();

@@ -38,7 +38,7 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
             // Add player guild to guild
             set((state) => {
                 state.loading = false;
-                state.guilds[address] = {
+                state.guilds[clientPlayerGuildId.toString()] = {
                     leader: clientPlayerGuild?.leader.toString(),
                     memberCount: clientPlayerGuild?.memberCount.toString()
                 };
@@ -105,7 +105,7 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
     }))
 );
 
-export const useGuildGetPlayerGuild = () => {
+export const UseObserveGuild = () => {
     // Get client
     const client = useClientStore();
     // Get chain
