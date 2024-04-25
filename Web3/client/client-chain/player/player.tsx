@@ -5,10 +5,11 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { PlayerState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
+import { useChainStore } from "../../chain";
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {
@@ -19,6 +20,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     immer((set) => ({
         loading: Boolean(false),
         players: {},
+        playerStats: {},
         async login(client: Client, address: string) {
             set((state) => {
                 state.loading = true;
@@ -30,7 +32,17 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
             // Add client player and player stats to players
             set((state) => {
                 state.loading = false;
-                state.players[address] = { player: clientPlayer, playerStats: clientPlayerStats };
+                state.players[address] = { 
+                    level: clientPlayer?.level.toString(), 
+                    playerStats: clientPlayer?.xp.toString() 
+                };
+                state.playerStats[address] = { 
+                    charisma: clientPlayerStats?.charisma.toString(), 
+                    reputation: clientPlayerStats?.reputation.toString(),
+                    maxupgrade: clientPlayerStats?.maxupgrade.toString(),
+                    leadership: clientPlayerStats?.leadership.toString(),
+                    bravery: clientPlayerStats?.bravery.toString()
+                };
             });
         },
         async newPlayer(client: Client, address: string) {
@@ -108,22 +120,22 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     }))
 );
 
-export const usePlayerLogin = () => {
+export const useObserverPlayer = () => {
     // Get client
     const client = useClientStore();
+    // Get chain
+    const chain = useChainStore();
     // Get player
     const player = usePlayerStore();
     // Get wallet
     const wallet = useWalletStore();
 
-    return useCallback(async() => {
+    return useEffect(() => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
-        // New pending transaction
-        const pendingTransaction = await player.login(client.client, wallet.wallet);
-        // Add pending transaction to wallet
-        wallet.addPendingTransaction(pendingTransaction);
-    }, [client.client, wallet.wallet]);
+        // Get client player data
+        player.login(client.client, wallet.wallet);
+    }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
 export const usePlayerNewPlayer = () => {
