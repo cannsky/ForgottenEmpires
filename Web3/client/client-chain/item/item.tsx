@@ -5,11 +5,12 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { ItemState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
 import { UInt64 } from "@proto-kit/library";
+import { useChainStore } from "../../chain";
 
 export class ItemKey extends Struct({
     owner: PublicKey,
@@ -31,7 +32,7 @@ export const useItemStore = create<ItemState, [["zustand/immer", never]]>(
             });
             // Get address
             const ownerAddress = PublicKey.fromBase58(address);
-            // Get client player
+            // Get client item
             const item = await client.query.runtime.Item.items.get(
                 new ItemKey({
                     owner: ownerAddress,
@@ -40,7 +41,15 @@ export const useItemStore = create<ItemState, [["zustand/immer", never]]>(
             );
             set((state) => {
                 state.loading = false;
-                state.items[address][itemid] = { item: item };
+                state.items[address][itemid] = {
+                    statxp: item?.statxp.toString(), 
+                    damage: item?.damage.toString(),
+                    defense: item?.defense.toString(),
+                    consumable: item?.consumable.toBool(),
+                    upgradable: item?.upgradable.toBool(),
+                    type: item?.type.toString(),
+                    value: item?.value.toString(),
+                };
             });
         },
         async newItem(client: Client, address: string, itemType: number) {
@@ -170,19 +179,19 @@ export const useItemStore = create<ItemState, [["zustand/immer", never]]>(
 export const useItemGetItem = () => {
     // Get client
     const client = useClientStore();
+    // Get chain
+    const chain = useChainStore();
     // Get item
     const item = useItemStore();
     // Get wallet
     const wallet = useWalletStore();
 
-    return useCallback(async() => {
+    return useEffect(() => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
-        // New pending transaction
-        const pendingTransaction = await item.getItem(client.client, wallet.wallet);
-        // Add pending transaction to wallet
-        wallet.addPendingTransaction(pendingTransaction);
-    }, [client.client, wallet.wallet]);
+        // Get item data
+        item.getItem(client.client, wallet.wallet);
+    }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
 export const useItemNewItem = () => {

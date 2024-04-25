@@ -5,11 +5,12 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey, Struct } from "o1js";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { CharacterState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
 import { UInt64 } from "@proto-kit/library";
+import { useChainStore } from "../../chain";
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {
@@ -43,7 +44,17 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Add client character to characters
             set((state) => {
                 state.loading = false;
-                state.characters[address] = { character: clientCharacter };
+                state.characters[address] = {
+                    level: clientCharacter?.level.toString(),
+                    xp: clientCharacter?.xp.toString(), 
+                    statxp: clientCharacter?.statxp.toString(), 
+                    damage: clientCharacter?.damage.toString(), 
+                    defense: clientCharacter?.defense.toString(), 
+                    type: clientCharacter?.type.toString(), 
+                    maxupgrade: clientCharacter?.maxupgrade.toString(),
+                    maxlevel: clientCharacter?.maxlevel.toString(),
+                    world: clientCharacter?.world.toString()
+                };
             });
         },
         async newCharacter(client: Client, address: string, characterType: number) {
@@ -170,22 +181,22 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
     }))
 );
 
-export const useCharacterGetSelectedCharacter = (characterId: number) => {
+export const useObserveCharacter = (characterId: number) => {
     // Get client
     const client = useClientStore();
+    // Get chain
+    const chain = useChainStore();
     // Get character
     const character = useCharacterStore();
     // Get wallet
     const wallet = useWalletStore();
 
-    return useCallback(async() => {
+    return useEffect(() => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
-        // New pending transaction
-        const pendingTransaction = await character.getSelectedCharacter(client.client, wallet.wallet, characterId);
-        // Add pending transaction to wallet
-        wallet.addPendingTransaction(pendingTransaction);
-    }, [client.client, wallet.wallet]);
+        // Get client character data
+        character.getSelectedCharacter(client.client, wallet.wallet, characterId);
+    }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
 export const useCharacterNewCharacter = (characterType: number) => {

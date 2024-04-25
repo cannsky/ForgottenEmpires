@@ -120,7 +120,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
     }))
 );
 
-export const useObserverPlayer = () => {
+export const useObservePlayer = () => {
     // Get client
     const client = useClientStore();
     // Get chain

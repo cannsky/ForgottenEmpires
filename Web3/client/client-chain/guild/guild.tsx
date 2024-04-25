@@ -5,11 +5,12 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
 import { PublicKey } from "o1js";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { GuildState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../../wallet";
 import { UInt64 } from "@proto-kit/library";
+import { useChainStore } from "../../chain";
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {
@@ -37,7 +38,10 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
             // Add player guild to guild
             set((state) => {
                 state.loading = false;
-                state.guilds[address] = { guild: clientPlayerGuild };
+                state.guilds[address] = {
+                    leader: clientPlayerGuild?.leader.toString(),
+                    memberCount: clientPlayerGuild?.memberCount.toString()
+                };
             });
         },
         async newGuild(client: Client, address: string) {
@@ -104,19 +108,19 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
 export const useGuildGetPlayerGuild = () => {
     // Get client
     const client = useClientStore();
+    // Get chain
+    const chain = useChainStore();
     // Get guild
     const guild = useGetPlayerGuild();
     // Get wallet
     const wallet = useWalletStore();
 
-    return useCallback(async() => {
+    return useEffect(() => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
-        // New pending transaction
-        const pendingTransaction = await guild.getPlayerGuild(client.client, wallet.wallet);
-        // Add pending transaction to wallet
-        wallet.addPendingTransaction(pendingTransaction);
-    }, [client.client, wallet.wallet]);
+        // Get client player guild data
+        guild.getPlayerGuild(client.client, wallet.wallet);
+    }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
 export const useGuildNewGuild = () => {
