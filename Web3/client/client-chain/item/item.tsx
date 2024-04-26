@@ -4,7 +4,7 @@
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import { Client, useClientStore } from "../../client";
-import { PublicKey } from "o1js";
+import { PublicKey, Struct } from "o1js";
 import { useCallback, useEffect } from "react";
 import { ItemState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
@@ -194,7 +194,7 @@ export const useItemGetItem = () => {
     }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
-export const useItemNewItem = () => {
+export const useItemNewItem = (itemType: number) => {
     // Get client
     const client = useClientStore();
     // Get item
@@ -206,7 +206,7 @@ export const useItemNewItem = () => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await item.newItem(client.client, wallet.wallet);
+        const pendingTransaction = await item.newItem(client.client, wallet.wallet, itemType);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
@@ -230,7 +230,7 @@ export const useItemEquipItem = (equipeditemslot: number, itemid: number) => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useItemUnequipItem = (equipeditemslot: number) => {
+export const useItemUnequipItem = (equipeditemslot: number, itemid: number) => {
     // Get client
     const client = useClientStore();
     // Get item
@@ -242,7 +242,7 @@ export const useItemUnequipItem = (equipeditemslot: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await item.equipItem(client.client, wallet.wallet, equipeditemslot);
+        const pendingTransaction = await item.equipItem(client.client, wallet.wallet, equipeditemslot, itemid);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);

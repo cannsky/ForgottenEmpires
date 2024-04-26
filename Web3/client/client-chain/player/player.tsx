@@ -34,7 +34,7 @@ export const usePlayerStore = create<PlayerState, [["zustand/immer", never]]>(
                 state.loading = false;
                 state.players[address] = { 
                     level: clientPlayer?.level.toString(), 
-                    playerStats: clientPlayer?.xp.toString() 
+                    xp: clientPlayer?.xp.toString() 
                 };
                 state.playerStats[address] = { 
                     charisma: clientPlayerStats?.charisma.toString(), 

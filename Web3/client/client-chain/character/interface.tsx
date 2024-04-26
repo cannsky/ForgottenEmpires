@@ -19,7 +19,7 @@ export interface CharacterState {
             world: string
         };
     },
-    getSelectedCharacter: (client: Client, address: string) => Promise<void>,
+    getSelectedCharacter: (client: Client, address: string, characterId: number) => Promise<void>,
     newCharacter: (client: Client, address: string, characterType: number) => Promise<PendingTransaction>,
     levelUp: (client: Client, address: string, characterId: number) => Promise<PendingTransaction>,
     upgradeDamage: (client: Client, address: string, characterId: number) => Promise<PendingTransaction>,

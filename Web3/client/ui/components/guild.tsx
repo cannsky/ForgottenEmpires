@@ -42,11 +42,13 @@ export function Guild({
                 <p className="mt-1 text-sm text-zinc-500">
                     Interact with guild runtime manually
                 </p>
-                { guild && wallet && guild.guilds["0"] && guild.guilds["0"].memberCount != null ?
+                { guild && wallet && guild.guilds["1"] && guild.guilds["1"].memberCount != null ?
                 (
                     <div>
-                        <p className="mt-1 text-sm"> { "Leader: " + guild.guilds["0"].leader }</p>
-                        <p className="mt-1 text-sm"> { "Member Count: " + guild.guilds["0"].memberCount }</p>
+                        <p className="mt-1 text-sm"> 
+                            { "Leader: " + guild.guilds["1"].leader.slice(0,7) + "..." +  guild.guilds["1"].leader.slice(-7)}
+                            { ", Member Count: " + guild.guilds["1"].memberCount }
+                        </p>
                     </div>
                 ) : (
                     <p className="mt-1 text-sm">This wallet address has no guild, create a new one or join</p>
@@ -55,19 +57,23 @@ export function Guild({
             </div>
             <Form {...form}>
                 { wallet ? (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newGuild() }}>
-                        New Guild
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { joinGuild() }}>
-                        Join Guild
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { leaveGuild() }}>
-                        Leave Guild
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newGuild() }}>
+                            New Guild
+                        </Button>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { joinGuild(1) }}>
+                            Join Guild
+                        </Button>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { leaveGuild(1) }}>
+                            Leave Guild
+                        </Button>
+                    </div>
                 ) : (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
-                        Connect Wallet
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
+                            Connect Wallet
+                        </Button>
+                    </div>
                     )
                 }
             </Form>

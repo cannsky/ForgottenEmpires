@@ -7,7 +7,7 @@ import { Button } from "./ui/button";
 import {
     useObserveCharacter,
     useCharacterChangeWorld,
-    useCharacterLevelUP,
+    useCharacterLevelUp,
     useCharacterNewCharacter,
     useCharacterUpgradeDefense,
     useCharacterUpgradeDamage,
@@ -29,7 +29,7 @@ export function Character({
     // Change world method
     const changeWorld = useCharacterChangeWorld();
     // Level up method
-    const levelUP = useCharacterLevelUP();
+    const levelUp = useCharacterLevelUp();
     // New character method
     const newCharacter = useCharacterNewCharacter();
     // Upgrade damage method
@@ -48,16 +48,18 @@ export function Character({
                 <p className="mt-1 text-sm text-zinc-500">
                     Interact with character runtime manually
                 </p>
-                { character && wallet && character.characters[wallet]["0"] && character.characters[wallet]["0"].level != null ?
+                { character && wallet && character.characters[wallet] && character.characters[wallet].level != null ?
                 (
                     <div>
-                        <p className="mt-1 text-sm"> { "Level: " + character.characters[wallet]["0"].level }</p>
-                        <p className="mt-1 text-sm"> { "XP: " + character.characters[wallet]["0"].xp }</p>
-                        <p className="mt-1 text-sm"> { "Stat XP: " + character.characters[wallet]["0"].statxp }</p>
-                        <p className="mt-1 text-sm"> { "Damage: " + character.characters[wallet]["0"].damage }</p>
-                        <p className="mt-1 text-sm"> { "Defense: " + character.characters[wallet]["0"].defense }</p>
-                        <p className="mt-1 text-sm"> { "Type: " + character.characters[wallet]["0"].type }</p>
-                        <p className="mt-1 text-sm"> { "World: " + character.characters[wallet]["0"].world }</p>
+                        <p className="mt-1 text-sm"> 
+                            { ", Level: " + character.characters[wallet].level }
+                            { ", XP: " + character.characters[wallet].xp }
+                            { ", Stat XP: " + character.characters[wallet].statxp }
+                            { ", Damage: " + character.characters[wallet].damage }
+                            { ", Defense: " + character.characters[wallet].defense }
+                            { ", Type: " + character.characters[wallet].type }
+                            { ", World: " + character.characters[wallet].world }
+                        </p>
                     </div>
                 ) : (
                     <p className="mt-1 text-sm">This wallet address has no character, create a new one</p>
@@ -66,25 +68,29 @@ export function Character({
             </div>
             <Form {...form}>
                 { wallet ? (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newCharacter() }}>
-                        New Character
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUP() }}>
-                        Level UP
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { upgradeDamage() }}>
-                        Upgrade Damage
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { upgradeDefense() }}>
-                        Upgrade Defense
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { changeWorld() }}>
-                        Change World
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newCharacter(1) }}>
+                            New Character
+                        </Button>
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUp(1) }}>
+                            Level Up
+                        </Button>
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { upgradeDamage(1) }}>
+                            Upgrade Damage
+                        </Button>
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { upgradeDefense(1) }}>
+                            Upgrade Defense
+                        </Button>
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { changeWorld(1, 1) }}>
+                            Change World
+                        </Button>
+                    </div>
                 ) : (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
-                        Connect Wallet
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
+                            Connect Wallet
+                        </Button>
+                    </div>
                     )
                 }
             </Form>

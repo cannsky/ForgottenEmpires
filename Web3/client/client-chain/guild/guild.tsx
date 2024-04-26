@@ -33,13 +33,13 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
             );
             // Get player guild
             const clientPlayerGuild = await client.query.runtime.Guild.guilds.get(
-                UInt64.from(clientPlayerGuildId)
+                UInt64.from(clientPlayerGuildId ? clientPlayerGuildId : 0)
             );
             // Add player guild to guild
             set((state) => {
                 state.loading = false;
                 state.guilds[clientPlayerGuildId.toString()] = {
-                    leader: clientPlayerGuild?.leader.toString(),
+                    leader: PublicKey.toBase58(clientPlayerGuild?.leader),
                     memberCount: clientPlayerGuild?.memberCount.toString()
                 };
             });
@@ -69,7 +69,7 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                guild.newGuild(
+                guild.joinGuild(
                     UInt64.from(guildId)
                 );
             });
@@ -153,7 +153,7 @@ export const useGuildJoinGuild = (guildId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await guild.newGuild(client.client, wallet.wallet, guildId);
+        const pendingTransaction = await guild.joinGuild(client.client, wallet.wallet, guildId);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
@@ -171,7 +171,7 @@ export const useGuildLeaveGuild = (guildId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await guild.newGuild(client.client, wallet.wallet, guildId);
+        const pendingTransaction = await guild.leaveGuild(client.client, wallet.wallet, guildId);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);

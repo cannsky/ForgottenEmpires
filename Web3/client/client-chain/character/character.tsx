@@ -77,7 +77,7 @@ export const useCharacterStore = create<CharacterState, [["zustand/immer", never
             // Return transaction
             return tx.transaction;
         },
-        async levelUP(client: Client, address: string, characterId: number) {
+        async levelUp(client: Client, address: string, characterId: number) {
             // Get character
             const character = client.runtime.resolve("Character");
             // Get public key of sender
@@ -217,7 +217,7 @@ export const useCharacterNewCharacter = (characterType: number) => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterLevelUP = (characterId: number) => {
+export const useCharacterLevelUp = (characterId: number) => {
     // Get client
     const client = useClientStore();
     // Get character
@@ -229,7 +229,7 @@ export const useCharacterLevelUP = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.levelUP(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await character.levelUp(client.client, wallet.wallet, characterId);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);
@@ -289,7 +289,7 @@ export const useCharacterUpgradeMaxUpgrade = (characterId: number) => {
     }, [client.client, wallet.wallet]);
 };
 
-export const useCharacterChangeWorld = (characterId: number) => {
+export const useCharacterChangeWorld = (characterId: number, worldId: number) => {
     // Get client
     const client = useClientStore();
     // Get character
@@ -301,7 +301,7 @@ export const useCharacterChangeWorld = (characterId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // New pending transaction
-        const pendingTransaction = await character.changeWorld(client.client, wallet.wallet, characterId);
+        const pendingTransaction = await character.changeWorld(client.client, wallet.wallet, characterId, worldId);
         // Add pending transaction to wallet
         wallet.addPendingTransaction(pendingTransaction);
     }, [client.client, wallet.wallet]);

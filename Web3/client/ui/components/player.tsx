@@ -8,7 +8,7 @@ import {
     useObservePlayer,
     usePlayerIncreaseBravery,
     usePlayerIncreaseLeadership,
-    usePlayerLevelUP,
+    usePlayerLevelUp,
     usePlayerNewPlayer,
     usePlayerStore
 } from "@/lib/stores/player/player";
@@ -28,7 +28,7 @@ export function Player({
     // New player method
     const newPlayer = usePlayerNewPlayer();
     // Level up method
-    const levelUP = usePlayerLevelUP();
+    const levelUp = usePlayerLevelUp();
     // Increase bravery method
     const increaseBravery = usePlayerIncreaseBravery();
     // Increase leadership method
@@ -48,12 +48,14 @@ export function Player({
                 { player && wallet && player.players[wallet] && player.players[wallet].level != null ?
                 (
                     <div>
-                        <p className="mt-1 text-sm"> { "Level: " + player.players[wallet].level }</p>
-                        <p className="mt-1 text-sm"> { "XP: " + player.players[wallet].level }</p>
-                        <p className="mt-1 text-sm"> { "Charisma: " + player.playerStats[wallet].charisma }</p>
-                        <p className="mt-1 text-sm"> { "Reputation: " + player.playerStats[wallet].reputation }</p>
-                        <p className="mt-1 text-sm"> { "Leadership: " + player.playerStats[wallet].leadership }</p>
-                        <p className="mt-1 text-sm"> { "Bravery: " + player.playerStats[wallet].bravery }</p>
+                        <p className="mt-1 text-sm"> 
+                            { ", Level: " + player.players[wallet].level }
+                            { ", XP: " + player.players[wallet].level }
+                            { ", Charisma: " + player.playerStats[wallet].charisma }
+                            { ", Reputation: " + player.playerStats[wallet].reputation }
+                            { ", Leadership: " + player.playerStats[wallet].leadership }
+                            { ", Bravery: " + player.playerStats[wallet].bravery }
+                        </p>
                     </div>
                 ) : (
                     <p className="mt-1 text-sm">This wallet address has no player, create a new one</p>
@@ -62,22 +64,26 @@ export function Player({
             </div>
             <Form {...form}>
                 { wallet ? (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newPlayer() }}>
-                        New Player
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUP() }}>
-                        Level UP
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { increaseLeadership() }}>
-                        Increase Leadership
-                    </Button>
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { increaseBravery() }}>
-                        Increase Bravery
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newPlayer() }}>
+                            New Player
+                        </Button>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUP() }}>
+                            Level Up
+                        </Button>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { increaseLeadership() }}>
+                            Increase Leadership
+                        </Button>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { increaseBravery() }}>
+                            Increase Bravery
+                        </Button>
+                    </div>
                 ) : (
-                    <Button size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
-                        Connect Wallet
-                    </Button>
+                    <div className="flex flex-row">
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
+                            Connect Wallet
+                        </Button>
+                    </div>
                     )
                 }
             </Form>

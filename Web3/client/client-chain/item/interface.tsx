@@ -12,8 +12,8 @@ export interface ItemState {
                 statxp: string, 
                 damage: string,
                 defense: string,
-                consumable: Bool,
-                upgradable: Bool,
+                consumable: boolean,
+                upgradable: boolean,
                 type: string,
                 value: string,
             };
