@@ -49,7 +49,7 @@ export function Player({
                 (
                     <div>
                         <p className="mt-1 text-sm"> 
-                            { ", Level: " + player.players[wallet].level }
+                            { "Level: " + player.players[wallet].level }
                             { ", XP: " + player.players[wallet].level }
                             { ", Charisma: " + player.playerStats[wallet].charisma }
                             { ", Reputation: " + player.playerStats[wallet].reputation }
@@ -68,7 +68,7 @@ export function Player({
                         <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newPlayer() }}>
                             New Player
                         </Button>
-                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUP() }}>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { levelUp() }}>
                             Level Up
                         </Button>
                         <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { increaseLeadership() }}>

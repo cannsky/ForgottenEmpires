@@ -1,5 +1,5 @@
 "use client";
-import { Card } from "@components/ui/card";
+import { Card } from "@/components/ui/card";
 
 export interface DashboardProps {
     wallet?: string,

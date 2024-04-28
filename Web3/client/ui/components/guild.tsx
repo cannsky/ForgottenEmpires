@@ -58,19 +58,19 @@ export function Guild({
             <Form {...form}>
                 { wallet ? (
                     <div className="flex flex-row">
-                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newGuild() }}>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { newGuild() }}>
                             New Guild
                         </Button>
-                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { joinGuild(1) }}>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { joinGuild(1) }}>
                             Join Guild
                         </Button>
-                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { leaveGuild(1) }}>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { leaveGuild(1) }}>
                             Leave Guild
                         </Button>
                     </div>
                 ) : (
                     <div className="flex flex-row">
-                        <Button style={{marginLeft: '5px', marginRight: '5px'}} style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
+                        <Button style={{marginLeft: '5px', marginRight: '5px'}} size={"lg"} type="submit" className="mt-6 w-full" loading={loading} onClick={() => { onConnectWallet() }}>
                             Connect Wallet
                         </Button>
                     </div>

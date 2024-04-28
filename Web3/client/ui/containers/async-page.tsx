@@ -3,7 +3,7 @@ import { Character } from "../components/character";
 import { Dashboard } from "../components/dashboard";
 import { Guild } from "../components/guild";
 import { Player } from "../components/player";
-import { useWalletStore } from "../../wallet";
+import { useWalletStore } from "@/lib/stores/wallet";
 
 export default function Home() {
     const wallet = useWalletStore();

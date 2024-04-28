@@ -38,7 +38,7 @@ export const useGuildStore = create<GuildState, [["zustand/immer", never]]>(
             // Add player guild to guild
             set((state) => {
                 state.loading = false;
-                state.guilds[clientPlayerGuildId.toString()] = {
+                state.guilds[(clientPlayerGuildId ? clientPlayerGuildId : 0).toString()] = {
                     leader: PublicKey.toBase58(clientPlayerGuild?.leader),
                     memberCount: clientPlayerGuild?.memberCount.toString()
                 };
@@ -111,7 +111,7 @@ export const UseObserveGuild = () => {
     // Get chain
     const chain = useChainStore();
     // Get guild
-    const guild = useGetPlayerGuild();
+    const guild = useGuildStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -127,7 +127,7 @@ export const useGuildNewGuild = () => {
     // Get client
     const client = useClientStore();
     // Get guild
-    const guild = useGetPlayerGuild();
+    const guild = useGuildStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -145,7 +145,7 @@ export const useGuildJoinGuild = (guildId: number) => {
     // Get client
     const client = useClientStore();
     // Get guild
-    const guild = useGetPlayerGuild();
+    const guild = useGuildStore();
     // Get wallet
     const wallet = useWalletStore();
 
@@ -163,7 +163,7 @@ export const useGuildLeaveGuild = (guildId: number) => {
     // Get client
     const client = useClientStore();
     // Get guild
-    const guild = useGetPlayerGuild();
+    const guild = useGuildStore();
     // Get wallet
     const wallet = useWalletStore();
 
