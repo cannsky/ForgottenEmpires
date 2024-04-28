@@ -27,9 +27,9 @@ export function Guild({
     // New guild method
     const newGuild = useGuildNewGuild();
     // Join guild method
-    const joinGuild = useGuildJoinGuild();
+    const joinGuild = (guildId: number) => useGuildJoinGuild(guildId);
     // Leave guild method
-    const leaveGuild = useGuildLeaveGuild();
+    const leaveGuild = (guildId: number) => useGuildLeaveGuild(guildId);
     // Get guild store
     const guild = useGuildStore();
     // Start checking the changes on the character runtime module

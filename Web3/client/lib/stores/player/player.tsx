@@ -3,13 +3,13 @@
 
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { Client, useClientStore } from "../../client";
+import { Client, useClientStore } from "../client";
 import { PublicKey } from "o1js";
 import { useCallback, useEffect } from "react";
 import { PlayerState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
-import { useWalletStore } from "../../wallet";
-import { useChainStore } from "../../chain";
+import { useWalletStore } from "../wallet";
+import { useChainStore } from "../chain";
 
 function isPendingTransaction(transaction: PendingTransaction | UnsignedTransaction | undefined) 
     : asserts transaction is PendingTransaction {

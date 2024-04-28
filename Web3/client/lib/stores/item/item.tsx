@@ -3,14 +3,14 @@
 
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
-import { Client, useClientStore } from "../../client";
+import { Client, useClientStore } from "../client";
 import { PublicKey, Struct } from "o1js";
 import { useCallback, useEffect } from "react";
 import { ItemState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
-import { useWalletStore } from "../../wallet";
+import { useWalletStore } from "../wallet";
 import { UInt64 } from "@proto-kit/library";
-import { useChainStore } from "../../chain";
+import { useChainStore } from "../chain";
 
 export class ItemKey extends Struct({
     owner: PublicKey,

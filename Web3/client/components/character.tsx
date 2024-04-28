@@ -27,19 +27,19 @@ export function Character({
 } : CharacterProps) {
     const form = useForm();
     // Change world method
-    const changeWorld = useCharacterChangeWorld();
+    const changeWorld = (characterId: number, characterWorld: number) => useCharacterChangeWorld(characterId, characterWorld);
     // Level up method
-    const levelUp = useCharacterLevelUp();
+    const levelUp = (characterId: number) => useCharacterLevelUp(characterId);
     // New character method
-    const newCharacter = useCharacterNewCharacter();
+    const newCharacter = (characterType: number) => useCharacterNewCharacter(characterType);
     // Upgrade damage method
-    const upgradeDamage = useCharacterUpgradeDamage();
+    const upgradeDamage = (characterId: number) => useCharacterUpgradeDamage(characterId);
     // Upgrade defense method
-    const upgradeDefense = useCharacterUpgradeDefense();
+    const upgradeDefense = (characterId: number) => useCharacterUpgradeDefense(characterId);
     // Get character store
     const character = useCharacterStore();
     // Start checking the changes on the character runtime module
-    useObserveCharacter();
+    useObserveCharacter(1);
 
     return(
         <Card className="w-full p-4">

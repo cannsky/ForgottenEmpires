@@ -1,7 +1,7 @@
 // This code is not completed.
 // This code is not audited.
 
-import { Client } from "../../client";
+import { Client } from "../client";
 import { PendingTransaction } from "@proto-kit/sequencer";
 
 export interface PlayerState {
