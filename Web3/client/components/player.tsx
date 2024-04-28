@@ -50,7 +50,7 @@ export function Player({
                     <div>
                         <p className="mt-1 text-sm"> 
                             { "Level: " + player.players[wallet].level }
-                            { ", XP: " + player.players[wallet].level }
+                            { ", XP: " + player.players[wallet].xp }
                             { ", Charisma: " + player.playerStats[wallet].charisma }
                             { ", Reputation: " + player.playerStats[wallet].reputation }
                             { ", Leadership: " + player.playerStats[wallet].leadership }
