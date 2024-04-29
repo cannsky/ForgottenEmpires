@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
 {
@@ -26,7 +27,7 @@ namespace ForgottenEmpires.Entities.Elements.Enemies.Workers
             if (Time.time - lastSpeakTime >= speakCooldown)
             {
                 // Check player's proximity
-                if (Vector3.Distance(transform.position, Player.instance.transform.position) <= detectionRadius)
+                if (Vector3.Distance(enemyWorker.enemy.transform.position, Player.local.transform.position) <= detectionRadius)
                 {
                     // Player is within range and cooldown has passed, enemy can speak
                     Speak();

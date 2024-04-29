@@ -1,4 +1,4 @@
-namespace ForgottenEmpires.Entities.Kingdoms.Data
+namespace ForgottenEmpires.Entities.Teams.Data
 {
     public class TeamOnChainData
     {

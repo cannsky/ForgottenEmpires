@@ -1,3 +1,5 @@
+using ForgottenEmpires.Entities.Skills.Data;
+
 namespace ForgottenEmpires.Entities.Skills
 {
     public class Skill
@@ -12,6 +14,6 @@ namespace ForgottenEmpires.Entities.Skills
         public string name;
 
         // Create new skill data on skill
-        public Skill() => skillData = new SkillData();
+        public Skill() => skillData = new SkillData(this);
     }
 }

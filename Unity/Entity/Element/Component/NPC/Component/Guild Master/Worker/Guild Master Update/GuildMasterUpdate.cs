@@ -4,7 +4,7 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
     {
         private GuildMasterWorker guildMasterWorker;
 
-        public MerchantUpdate(GuildMasterWorker guildMasterWorker) => this.guildMasterWorker = guildMasterWorker;
+        public GuildMasterUpdate(GuildMasterWorker guildMasterWorker) => this.guildMasterWorker = guildMasterWorker;
 
         public void OnUpdate()
         {

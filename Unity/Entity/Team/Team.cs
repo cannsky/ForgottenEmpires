@@ -1,3 +1,5 @@
+using ForgottenEmpires.Entities.Teams.Data;
+
 namespace ForgottenEmpires.Entities.Teams
 {
     public class Team
@@ -12,6 +14,6 @@ namespace ForgottenEmpires.Entities.Teams
         public string name;
 
         // Create team data on team
-        public Team() => teamData = new TeamData();
+        public Team() => teamData = new TeamData(this);
     }
 }

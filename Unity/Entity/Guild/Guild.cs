@@ -1,3 +1,5 @@
+using ForgottenEmpires.Entities.Guilds.Data;
+
 namespace ForgottenEmpires.Entities.Guilds
 {
     public class Guild
@@ -12,6 +14,6 @@ namespace ForgottenEmpires.Entities.Guilds
         public string name;
 
         // Create new guild data on guild
-        public Guild() => guildData = new GuildData();
+        public Guild() => guildData = new GuildData(this);
     }
 }

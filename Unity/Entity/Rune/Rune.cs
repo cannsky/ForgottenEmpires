@@ -1,5 +1,6 @@
 using ForgottenEmpires.Types;
 using ForgottenEmpires.Managers.JS;
+using ForgottenEmpires.Entities.Runes.Data;
 
 namespace ForgottenEmpires.Entities.Runes
 {
@@ -15,10 +16,10 @@ namespace ForgottenEmpires.Entities.Runes
         public string name;
 
         // Create new rune data on rune
-        public Rune() => runeData = new RuneData();
+        public Rune() => runeData = new RuneData(this);
 
         // Try to upgrade on chain rune
-        public void UpdateRune(Runetype runeType) {
+        public void UpdateRune(RuneType runeType) {
             switch (runeType) {
                 case RuneType.Fire:
                     JSConnector.Instance.UpgradeFireRune();

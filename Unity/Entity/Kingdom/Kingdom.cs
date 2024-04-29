@@ -1,4 +1,6 @@
-﻿namespace ForgottenEmpires.Entities.Kingdoms
+﻿using ForgottenEmpires.Entities.Kingdoms.Data;
+
+namespace ForgottenEmpires.Entities.Kingdoms
 {
     public class Kingdom
     {
@@ -12,6 +14,6 @@
         public string name;
 
         // Create new kingdom data on kingdom
-        public Kingdom() => kingdomData = new KingdomData();
+        public Kingdom() => kingdomData = new KingdomData(this);
     }
 }
