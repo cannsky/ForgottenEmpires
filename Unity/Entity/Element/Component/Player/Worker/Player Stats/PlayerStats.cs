@@ -43,7 +43,7 @@ namespace ForgottenEmpires.Entities.Elements.PlayerWorkers
         public void TakeDamage(float damage)
         {
             // Ensure that applied damage is non-negative
-            var appliedDamage = damage - playerWorker.elementWorker.elementStats.armor + playerWorker.elementWorker.elementStats.armorBonus;
+            var appliedDamage = damage - playerWorker.player.elementWorker.elementStats.armor + playerWorker.player.elementWorker.elementStats.armorBonus;
             if (appliedDamage <= 0) return;
 
             // Reduce player health by the applied damage

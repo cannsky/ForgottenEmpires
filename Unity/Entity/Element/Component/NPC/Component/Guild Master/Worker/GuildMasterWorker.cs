@@ -12,7 +12,7 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
 
         public GuildMasterWorker(GuildMaster guildMaster)
         {
-            this.merchant = merchant;
+            this.guildMaster = guildMaster;
 
             guildMasterUpdate = new GuildMasterUpdate(this);
 

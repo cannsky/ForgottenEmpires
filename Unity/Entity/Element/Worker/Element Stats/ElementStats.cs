@@ -7,9 +7,9 @@ namespace ForgottenEmpires.Entities.Elements.Workers
     {
         private ElementWorker elementWorker;
 
-        private float health, totalHealth;
-        private float attackDamage, attackDamageBonus;
-        private float armor, armorBonus;
+        public float health, totalHealth;
+        public float attackDamage, attackDamageBonus;
+        public float armor, armorBonus;
 
         public ElementStats(ElementWorker elementWorker) => this.elementWorker = elementWorker;
 

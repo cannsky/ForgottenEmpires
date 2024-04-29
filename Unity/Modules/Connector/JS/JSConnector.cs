@@ -23,7 +23,7 @@ namespace ForgottenEmpires.Managers.JS
 
         [DllImport("__Internal")] private static extern void JSGetTotalItemDamage(string callbackObjectName, string callbackMethodName, uint itemID);
 
-        [DllImport("__Internal")] private static extern void JsGetTotalItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
+        [DllImport("__Internal")] private static extern void JSGetTotalItemDefense(string callbackObjectName, string callbackMethodName, uint itemID);
 
         [DllImport("__Internal")] private static extern void JSInvitePlayerToTeam(string callbackObjectName, string callbackMethodName, string playerAddress, uint teamID);
 
@@ -49,25 +49,25 @@ namespace ForgottenEmpires.Managers.JS
         public void CreateGuild() => JSCreateGuild(gameObject.name, "ReturnMessage");
 
         // Called when player joins to a guild
-        public void JoinGuild(int guildID) => JSJoinGuild(gameObject.name, "ReturnMessage", guildID);
+        public void JoinGuild(uint guildID) => JSJoinGuild(gameObject.name, "ReturnMessage", guildID);
 
         // Called when player leaves the guild
-        public void LeaveGuild(int guildID) => JSLeaveGuild(gameObject.name, "ReturnMessage", guildID);
+        public void LeaveGuild(uint guildID) => JSLeaveGuild(gameObject.name, "ReturnMessage", guildID);
 
         // Called when player creates a new item
         public void NewItem() => JSNewItem(gameObject.name, "ReturnMessage");
 
         // Called when player wants to upgrade item damage
-        public void UpgradeItemDamage(int itemID) => JSUpgradeItemDamage(gameObject.name, "ReturnMessage", itemID);
+        public void UpgradeItemDamage(uint itemID) => JSUpgradeItemDamage(gameObject.name, "ReturnMessage", itemID);
 
         // Called when player wants to upgrade item defense
-        public void UpgradeItemDefense(int itemID) => JSUpgradeItemDefense(gameObject.name, "ReturnMessage", itemID);
+        public void UpgradeItemDefense(uint itemID) => JSUpgradeItemDefense(gameObject.name, "ReturnMessage", itemID);
 
         // Called when item total damage on chain data is being requested
-        public void GetTotalItemDamage(int itemID) => JSGetTotalItemDamage(gameObject.name, "ReturnMessage", itemID);
+        public void GetTotalItemDamage(uint itemID) => JSGetTotalItemDamage(gameObject.name, "ReturnMessage", itemID);
 
         // Called when item total defense on chain data is being requested
-        public void GetTotalItemDefense(int itemID) => JSGetTotalItemDefense(gameObject.name, "ReturnMessage", itemID);
+        public void GetTotalItemDefense(uint itemID) => JSGetTotalItemDefense(gameObject.name, "ReturnMessage", itemID);
 
         // Called when a team leader invites a player to the guild
         public void InvitePlayerToTeam(string playerAddress, uint teamID) => JSInvitePlayerToTeam(gameObject.name, "ReturnMessage", playerAddress, teamID);
@@ -79,7 +79,7 @@ namespace ForgottenEmpires.Managers.JS
         public void LeaveTeam(uint teamID) => JSLeaveTeam(gameObject.name, "ReturnMessage", teamID);
 
         // Called when a player wants to change a world
-        public void ChangeWorld(uint characterID, uint worldID) => JSLeaveTeam(gameObject.name, "ReturnMessage", characterID, worldID);
+        public void ChangeWorld(uint characterID, uint worldID) => JSChangeWorld(gameObject.name, "ReturnMessage", characterID, worldID);
 
         // Called when a player wants to upgrade fire rune
         public void UpgradeFireRune() => JSUpgradeFireRune(gameObject.name, "ReturnMessage");

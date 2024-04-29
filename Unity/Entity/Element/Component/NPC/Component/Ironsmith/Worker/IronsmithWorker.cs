@@ -14,7 +14,7 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
         {
             this.ironsmith = ironsmith;
 
-            ironsmithUpdate = new Ironsmithupdate(this);
+            ironsmithUpdate = new IronsmithUpdate(this);
 
             ironsmithInteraction = new IronsmithInteraction(this);
             ironsmithTrigger = new IronsmithTrigger(this);

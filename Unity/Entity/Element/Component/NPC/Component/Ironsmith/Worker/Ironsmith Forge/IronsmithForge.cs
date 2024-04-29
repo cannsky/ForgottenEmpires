@@ -10,8 +10,8 @@ namespace ForgottenEmpires.Entities.Elements.NPCs.Workers
 
         public void NewItem() => JSConnector.Instance.NewItem();
 
-        public void UpgradeItemDamage(int itemID) => JSConnector.Instance.UpgradeItemDamage(itemID);
+        public void UpgradeItemDamage(uint itemID) => JSConnector.Instance.UpgradeItemDamage(itemID);
 
-        public void UpgradeItemDefense(int itemID) => JSConnector.Instance.UpgradeItemDefense(itemID);
+        public void UpgradeItemDefense(uint itemID) => JSConnector.Instance.UpgradeItemDefense(itemID);
     }
 }
