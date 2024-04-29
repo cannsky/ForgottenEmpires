@@ -4,7 +4,7 @@ namespace ForgottenEmpires.Optimizers.Workers
     {
         private OptimizerWorker optimizerWorker;
 
-        public OptimizerStart(OptimizerWorker optimizerWorker) => this.optimizerWorker = optimizerWorker;
+        public OptimizerUpdate(OptimizerWorker optimizerWorker) => this.optimizerWorker = optimizerWorker;
 
         public void OnUpdate()
         {

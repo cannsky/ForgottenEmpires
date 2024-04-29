@@ -1,7 +1,7 @@
 using UnityEngine;
 
 namespace ForgottenEmpires.Optimizers.Workers {
-    public class ShadowOptimizer
+    public class OptimizerShadow
     {
         // Enum for different levels of shadow quality
         private enum ShadowQuality

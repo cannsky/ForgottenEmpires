@@ -1,4 +1,7 @@
-﻿namespace ForgottenEmpires.Entities.Elements.Workers
+﻿using System.Collections;
+using UnityEngine;
+
+namespace ForgottenEmpires.Entities.Elements.Workers
 {
     public class ElementStats
     {
@@ -22,7 +25,7 @@
         public void UpdateAttackBonus(float value, float cooldown)
         {
             attackDamageBonus += value;
-            elementWorker.element.StartCoroutine(ResetAttackBonus(float cooldown));
+            elementWorker.element.StartCoroutine(ResetAttackBonus(cooldown));
         }
 
         public IEnumerator ResetAttackBonus(float cooldown)

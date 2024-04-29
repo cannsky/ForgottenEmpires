@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ForgottenEmpires.Optimizers
 {
-    public class Spawner : NetworkBehaviour
+    public class Optimizer : NetworkBehaviour
     {
         public OptimizerWorker optimizerWorker;
 
