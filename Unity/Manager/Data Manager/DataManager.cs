@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using ForgottenEmpires.Managers.Data.Workers;
 using System.Linq;
 using Mirror;
 
