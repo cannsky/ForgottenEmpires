@@ -7,11 +7,11 @@ using Newtonsoft.Json;
 
 namespace ForgottenEmpires.Managers.Data.Workers
 {
-    public class PlayerDataManagerWorker
+    public class PlayerDataWorker
     {
-        private DataManagerPostRequest playerDataManagerPostRequest;
+        private DataManagerPostRequest playerDataWorkerPostRequest;
 
-        public PlayerDataManagerWorker() => playerDataManagerPostRequest = new DataManagerPostRequest();
+        public PlayerDataWorker() => playerDataWorkerPostRequest = new DataManagerPostRequest();
 
         public void UpdatePlayerData(PlayerData playerData, string walletAddress) {
             // Define Query
@@ -32,7 +32,7 @@ namespace ForgottenEmpires.Managers.Data.Workers
                 }
             ";
             // Send Query
-            DataManager.Instance.StartCoroutine(playerDataManagerPostRequest.SendQuery(query, playerData, UpdatePlayerDataCallback));
+            DataManager.Instance.StartCoroutine(playerDataWorkerPostRequest.SendQuery(query, playerData, UpdatePlayerDataCallback));
         }
 
         public void UpdatePlayerDataCallback(PlayerData playerData, string response) {
@@ -78,7 +78,7 @@ namespace ForgottenEmpires.Managers.Data.Workers
                 }
             ";
             // Send Query
-            DataManager.Instance.StartCoroutine(playerDataManagerPostRequest.SendQuery(query, playerData, UpdatePlayerStatsDataCallback));
+            DataManager.Instance.StartCoroutine(playerDataWorkerPostRequest.SendQuery(query, playerData, UpdatePlayerStatsDataCallback));
         }
 
         public void UpdatePlayerStatsDataCallback(PlayerData playerData, string response) {

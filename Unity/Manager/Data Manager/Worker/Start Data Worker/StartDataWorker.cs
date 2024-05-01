@@ -7,7 +7,7 @@ namespace ForgottenEmpires.Managers.Data.Workers
     {
         public void OnStart()
         {
-            PlayerDataWorker.OnStart();
+            
         }
     }
 }
