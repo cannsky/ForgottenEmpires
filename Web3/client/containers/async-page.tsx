@@ -3,6 +3,7 @@ import { Character } from "../components/character";
 import { Dashboard } from "../components/dashboard";
 import { Guild } from "../components/guild";
 import { Player } from "../components/player";
+import { Team } from "../components/team";
 import { useWalletStore } from "@/lib/stores/wallet";
 
 export default function Home() {
@@ -32,6 +33,12 @@ export default function Home() {
                     </div>
                     <div style={{marginLeft: '20px', marginTop: '20px', width: '100%'}}>
                         <Guild 
+                            wallet = {wallet.wallet}
+                            onConnectWallet={wallet.connectWallet} 
+                            loading={false}/>
+                    </div>
+                    <div style={{marginLeft: '20px', marginTop: '20px', width: '100%'}}>
+                        <Team 
                             wallet = {wallet.wallet}
                             onConnectWallet={wallet.connectWallet} 
                             loading={false}/>

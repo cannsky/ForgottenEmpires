@@ -131,7 +131,7 @@ export const useObserveTeam = (teamId: number) => {
         // If client or wallet is not defined return
         if(!client.client || !wallet.wallet) return;
         // Get client team data
-        player.getTeam(client.client, wallet.wallet, teamId);
+        team.getTeam(client.client, wallet.wallet, teamId);
     }, [client.client, chain.block?.height, wallet.wallet]);
 };
 
