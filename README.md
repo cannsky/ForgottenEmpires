@@ -4,7 +4,7 @@ Forgotten Empires is an onchain game built on the Mina Protocol and based on zk-
 
 #### Version
 
-<img src="https://img.shields.io/badge/Version-Alpha 0.4.0-green">
+<img src="https://img.shields.io/badge/Version-Alpha 0.4.1-green">
 
 #### Docs
 
@@ -28,7 +28,7 @@ A detailed information about Forgotten Empires setup, classes, modules and much 
     - **Modules:** Spawner System, Scene Optimizer, JS Connector, Checker System
   - Server
     - **Data Manager:** On Chain Data, Off Chain Data
-- Onchain Features
+- Onchain
   - **Player:** Levels, experience points (XP), stats (charisma, reputation, leadership, bravery), upgrade.
   - **Character:** Levels, experience points (XP), statistical XP, damage, defense.
   - **Item:** Stat experience points (XP), damage, defense, and flags (consumable or upgradable).
@@ -39,6 +39,7 @@ A detailed information about Forgotten Empires setup, classes, modules and much 
   - **Team:** Form teams, invite members, accept invitations, and leave teams.
   - **Proof (Optional):** Guild creation and Kingdom creation is only available if a wallet address is described as "can create guild or kingdom".
 - Onchain Features are compatible with Proto-kit's Starter kit.
+- Hosted sequencer is available via Proto-kit.
 
 #### Prerequisites
 
