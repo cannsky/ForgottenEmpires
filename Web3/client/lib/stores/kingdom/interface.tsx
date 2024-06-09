@@ -14,9 +14,9 @@ export interface KingdomState {
         };
     },
     getPlayerKingdom: (client: Client, address: string) => Promise<void>,
-    changeKingdom: (client: Client, address: string) => Promise<PendingTransaction>,
-    newWarRequest: (client: Client, address: string, guildId: number) => Promise<PendingTransaction>,
-    newPeaceRequest: (client: Client, address: string, guildId: number) => Promise<PendingTransaction>,
-    favorWarRequest: (client: Client, address: string, guildId: number) => Promise<PendingTransaction>,
-    favorPeaceRequest: (client: Client, address: string, guildId: number) => Promise<PendingTransaction>,
+    changeKingdom: (client: Client, address: string, kingdomId: number) => Promise<PendingTransaction>,
+    newWarRequest: (client: Client, address: string, kingdomId: number) => Promise<PendingTransaction>,
+    newPeaceRequest: (client: Client, address: string, warId: number) => Promise<PendingTransaction>,
+    favorWarRequest: (client: Client, address: string, warRequestId: number, voteCount: number) => Promise<PendingTransaction>,
+    favorPeaceRequest: (client: Client, address: string, peaceRequestId: number, voteCount: number) => Promise<PendingTransaction>,
 }
