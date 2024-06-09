@@ -1,3 +1,9 @@
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
+import { Client, useClientStore } from "../client";
+import { PublicKey } from "o1js";
+import { useCallback, useEffect } from "react";
+import { KingdomState } from "./interface";
 import { PendingTransaction, UnsignedTransaction } from "@proto-kit/sequencer";
 import { useWalletStore } from "../wallet";
 import { UInt64 } from "@proto-kit/library";
@@ -26,7 +32,7 @@ export const useGuildStore = create<KingdomState, [["zustand/immer", never]]>(
             const clientPlayerKingdom = await client.query.runtime.Kingdom.kingdoms.get(
                 UInt64.from(clientPlayerKingdomId ? clientPlayerKingdomId : 0)
             );
-            // Add player guild to guild
+            // Add player kingdom to kingdom
             set((state) => {
                 state.loading = false;
                 state.kingdoms[(clientPlayerKingdomId ? clientPlayerKingdomId : 0).toString()] = {
@@ -36,14 +42,98 @@ export const useGuildStore = create<KingdomState, [["zustand/immer", never]]>(
                 };
             });
         },
-        async newKingdom(client: Client, address: string) {
-            // Get guild
+        async changeKingdom(client: Client, address: string, kingdomId: number) {
+            // Get kingdom
             const kingdom = client.runtime.resolve("Kingdom");
             // Get public key of sender
             const sender = PublicKey.fromBase58(address);
             // Create transaction
             const tx = await client.transaction(sender, () => {
-                kingdom.newKingdom();
+                kingdom.changeKingdom(
+                    UInt64.from(kingdomId)
+                );
+            });
+            // Sign transaction 
+            await tx.sign();
+            // Send transaction
+            await tx.send();
+            // Check if the transaction is pending or not
+            isPendingTransaction(tx.transaction);
+            // Return transaction
+            return tx.transaction;
+        },
+        async newWarRequest(client: Client, address: string, kingdomId: number) {
+            // Get kingdom
+            const kingdom = client.runtime.resolve("Kingdom");
+            // Get public key of sender
+            const sender = PublicKey.fromBase58(address);
+            // Create transaction
+            const tx = await client.transaction(sender, () => {
+                kingdom.newWarRequest(
+                    UInt64.from(kingdomId)
+                );
+            });
+            // Sign transaction 
+            await tx.sign();
+            // Send transaction
+            await tx.send();
+            // Check if the transaction is pending or not
+            isPendingTransaction(tx.transaction);
+            // Return transaction
+            return tx.transaction;
+        },
+        async newPeaceRequest(client: Client, address: string, warId: number) {
+            // Get kingdom
+            const kingdom = client.runtime.resolve("Kingdom");
+            // Get public key of sender
+            const sender = PublicKey.fromBase58(address);
+            // Create transaction
+            const tx = await client.transaction(sender, () => {
+                kingdom.newPeaceRequest(
+                    UInt64.from(warId)
+                );
+            });
+            // Sign transaction 
+            await tx.sign();
+            // Send transaction
+            await tx.send();
+            // Check if the transaction is pending or not
+            isPendingTransaction(tx.transaction);
+            // Return transaction
+            return tx.transaction;
+        },
+        async favorWarRequest(client: Client, address: string, warRequestId: number, voteCount: number) {
+            // Get kingdom
+            const kingdom = client.runtime.resolve("Kingdom");
+            // Get public key of sender
+            const sender = PublicKey.fromBase58(address);
+            // Create transaction
+            const tx = await client.transaction(sender, () => {
+                kingdom.favorWarRequest(
+                    UInt64.from(warRequestId),
+                    UInt64.from(voteCount)
+                );
+            });
+            // Sign transaction 
+            await tx.sign();
+            // Send transaction
+            await tx.send();
+            // Check if the transaction is pending or not
+            isPendingTransaction(tx.transaction);
+            // Return transaction
+            return tx.transaction;
+        },
+        async favorPeaceRequest(client: Client, address: string, peaceRequestId: number, voteCount: number) {
+            // Get kingdom
+            const kingdom = client.runtime.resolve("Kingdom");
+            // Get public key of sender
+            const sender = PublicKey.fromBase58(address);
+            // Create transaction
+            const tx = await client.transaction(sender, () => {
+                kingdom.favorPeaceRequest(
+                    UInt64.from(peaceRequestId),
+                    UInt64.from(voteCount)
+                );
             });
             // Sign transaction 
             await tx.sign();
